@@ -1,4 +1,10 @@
 const MERCADOPAGO_PREFERENCES_URL = "https://api.mercadopago.com/checkout/preferences";
+const allowedOriginPatterns = [
+  /^https:\/\/kunsanggar\.vercel\.app$/,
+  /^https:\/\/(www\.)?kunsanggarmexico\.com$/,
+  /^https:\/\/(www\.)?kunsanggarmexico\.org$/,
+  /^https:\/\/[a-z0-9-]+\.hostingersite\.com$/
+];
 
 const numberFromEnv = (name, fallback) => {
   const value = Number(process.env[name]);
@@ -8,12 +14,24 @@ const numberFromEnv = (name, fallback) => {
 const events = {
   tsa_lung: {
     name: "TSA Lung | 20 y 21 junio 2026",
-    price: numberFromEnv("TSA_LUNG_PRICE", 2000)
+    price: numberFromEnv("TSA_LUNG_PRICE", 2000),
+    active: false
   },
   mil_ofrendas: {
     name: "Mil Ofrendas a Nampar Gyalwa | 26, 27 y 28 junio 2026",
-    price: numberFromEnv("MIL_OFRENDAS_PRICE", 2000)
+    price: numberFromEnv("MIL_OFRENDAS_PRICE", 2000),
+    active: true
   }
+};
+
+const setCorsHeaders = (req, res) => {
+  const origin = req.headers.origin || "";
+  const allowedOrigin = allowedOriginPatterns.some((pattern) => pattern.test(origin)) ? origin : "https://kunsanggar.vercel.app";
+
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Vary", "Origin");
 };
 
 const sendJson = (res, statusCode, payload) => {
@@ -24,7 +42,18 @@ const sendJson = (res, statusCode, payload) => {
 
 const parseBody = (req) => {
   if (!req.body) return {};
-  return typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+
+  if (typeof req.body !== "string") {
+    return req.body;
+  }
+
+  const contentType = req.headers["content-type"] || "";
+
+  if (contentType.includes("application/x-www-form-urlencoded")) {
+    return Object.fromEntries(new URLSearchParams(req.body));
+  }
+
+  return JSON.parse(req.body);
 };
 
 const getSupabaseConfig = () => {
@@ -67,6 +96,13 @@ const createExternalReference = (eventSlug) =>
   `${eventSlug}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 
 module.exports = async function handler(req, res) {
+  setCorsHeaders(req, res);
+
+  if (req.method === "OPTIONS") {
+    res.statusCode = 204;
+    return res.end();
+  }
+
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return sendJson(res, 405, { error: "Method not allowed" });
@@ -74,6 +110,9 @@ module.exports = async function handler(req, res) {
 
   const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
   const siteUrl = (process.env.PUBLIC_SITE_URL || "https://kunsanggarmexico.com").replace(/\/$/, "");
+  const contentType = req.headers["content-type"] || "";
+  const acceptsHtml = String(req.headers.accept || "").includes("text/html");
+  const shouldRedirectToCheckout = contentType.includes("application/x-www-form-urlencoded") || acceptsHtml;
 
   if (!accessToken) {
     return sendJson(res, 500, { error: "Falta configurar MERCADOPAGO_ACCESS_TOKEN." });
@@ -94,6 +133,10 @@ module.exports = async function handler(req, res) {
 
   if (!event) {
     return sendJson(res, 400, { error: "Evento no permitido." });
+  }
+
+  if (!event.active) {
+    return sendJson(res, 400, { error: "Este evento ya concluyó." });
   }
 
   if (!Number.isInteger(quantity) || quantity <= 0) {
@@ -198,6 +241,12 @@ module.exports = async function handler(req, res) {
         updated_at: new Date().toISOString()
       })
     });
+
+    if (shouldRedirectToCheckout) {
+      res.statusCode = 303;
+      res.setHeader("Location", data.init_point);
+      return res.end();
+    }
 
     return sendJson(res, 200, {
       init_point: data.init_point,

@@ -1,5 +1,9 @@
+const crypto = require("crypto");
+
 const MERCADOPAGO_PAYMENTS_URL = "https://api.mercadopago.com/v1/payments";
 const MERCADOPAGO_MERCHANT_ORDERS_URL = "https://api.mercadopago.com/merchant_orders";
+const META_PIXEL_ID = "1942816236460649";
+const META_CONVERSIONS_API_URL = `https://graph.facebook.com/v20.0/${META_PIXEL_ID}/events`;
 
 const sendJson = (res, statusCode, payload) => {
   res.statusCode = statusCode;
@@ -97,6 +101,136 @@ const fetchMercadoPagoJson = async (url, accessToken) => {
   }
 
   return data;
+};
+
+const sha256 = (value) =>
+  crypto.createHash("sha256").update(value).digest("hex");
+
+const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
+
+const normalizePhone = (phone) => String(phone || "").replace(/\D/g, "");
+
+const isPlaceholderEmail = (email) => {
+  const normalizedEmail = normalizeEmail(email);
+  return !normalizedEmail || normalizedEmail.endsWith("@kunsanggarmexico.local");
+};
+
+const getClientIp = (req) => {
+  const forwardedFor = req.headers["x-forwarded-for"];
+
+  if (forwardedFor) {
+    return String(forwardedFor).split(",")[0].trim();
+  }
+
+  return req.headers["x-real-ip"] || req.socket?.remoteAddress || null;
+};
+
+const getOrderByExternalReference = async (externalReference) => {
+  const orders = await supabaseRequest(
+    `ticket_orders?external_reference=eq.${encodeURIComponent(externalReference)}&select=event_slug,event_name,total_amount,buyer_email,buyer_phone`
+  );
+
+  return Array.isArray(orders) ? orders[0] : null;
+};
+
+const buildUserData = ({ req, payment, order, updatePayload }) => {
+  const userData = {};
+  const email = normalizeEmail(
+    payment.payer?.email ||
+    updatePayload.buyer_email ||
+    order?.buyer_email
+  );
+  const phone = normalizePhone(
+    payment.payer?.phone?.number ||
+    payment.additional_info?.payer?.phone?.number ||
+    updatePayload.buyer_phone ||
+    order?.buyer_phone
+  );
+
+  if (!isPlaceholderEmail(email)) {
+    userData.em = [sha256(email)];
+  }
+
+  if (phone) {
+    userData.ph = [sha256(phone)];
+  }
+
+  const clientIp = getClientIp(req);
+  const userAgent = req.headers["user-agent"];
+
+  if (clientIp) {
+    userData.client_ip_address = clientIp;
+  }
+
+  if (userAgent) {
+    userData.client_user_agent = String(userAgent);
+  }
+
+  return userData;
+};
+
+const sendMetaPurchaseEvent = async ({ req, payment, externalReference, order, updatePayload }) => {
+  const metaAccessToken = process.env.META_ACCESS_TOKEN;
+
+  if (!metaAccessToken) {
+    console.error("[Meta CAPI] missing META_ACCESS_TOKEN");
+    return { sent: false, skipped: true, reason: "missing_meta_access_token" };
+  }
+
+  const siteUrl = (process.env.PUBLIC_SITE_URL || "https://kunsanggarmexico.com").replace(/\/$/, "");
+  const totalAmount = Number(
+    updatePayload.total_amount ||
+    order?.total_amount ||
+    payment.transaction_amount ||
+    payment.transaction_details?.total_paid_amount ||
+    0
+  );
+  const eventSlug = order?.event_slug || payment.metadata?.evento || payment.additional_info?.items?.[0]?.id || externalReference;
+  const eventName = order?.event_name || payment.metadata?.event_name || payment.additional_info?.items?.[0]?.title || eventSlug;
+  const eventId = externalReference || String(payment.id);
+  const payload = {
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: eventId,
+        action_source: "website",
+        event_source_url: `${siteUrl}/success.html`,
+        user_data: buildUserData({ req, payment, order, updatePayload }),
+        custom_data: {
+          currency: "MXN",
+          value: totalAmount,
+          content_name: eventName,
+          content_ids: [eventSlug],
+          content_type: "product"
+        }
+      }
+    ],
+    access_token: metaAccessToken
+  };
+
+  const response = await fetch(META_CONVERSIONS_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : null;
+
+  if (!response.ok) {
+    throw new Error(data?.error?.message || "Meta CAPI rechazó el evento Purchase.");
+  }
+
+  console.log("[Meta CAPI] Purchase sent", {
+    event_id: eventId,
+    payment_id: String(payment.id),
+    event_slug: eventSlug,
+    events_received: data?.events_received || null
+  });
+
+  return { sent: true, event_id: eventId, response: data };
 };
 
 module.exports = async function handler(req, res) {
@@ -216,6 +350,28 @@ module.exports = async function handler(req, res) {
         body: JSON.stringify(updatePayload)
       });
 
+      let metaPurchase = null;
+
+      if (payment.status === "approved") {
+        try {
+          const order = await getOrderByExternalReference(externalReference);
+          metaPurchase = await sendMetaPurchaseEvent({
+            req,
+            payment,
+            externalReference,
+            order,
+            updatePayload
+          });
+        } catch (error) {
+          metaPurchase = { sent: false, error: error.message || "Error enviando Purchase a Meta CAPI." };
+          console.error("[Meta CAPI] Purchase failed", {
+            payment_id: String(payment.id || paymentId),
+            external_reference: externalReference,
+            error: metaPurchase.error
+          });
+        }
+      }
+
       console.log("[Mercado Pago webhook] payment updated", {
         payment_id: String(payment.id || paymentId),
         external_reference: externalReference,
@@ -226,7 +382,8 @@ module.exports = async function handler(req, res) {
       updates.push({
         payment_id: String(payment.id || paymentId),
         status: normalizeStatus(payment.status),
-        external_reference: externalReference
+        external_reference: externalReference,
+        meta_purchase: metaPurchase
       });
     }
 

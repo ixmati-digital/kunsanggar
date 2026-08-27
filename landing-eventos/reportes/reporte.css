@@ -1,0 +1,289 @@
+.container {
+  width: var(--shell);
+  margin-inline: auto;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid rgba(20, 0, 139, 0.16);
+  border-radius: var(--radius);
+  color: var(--blue);
+  background: var(--white);
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 154, 0, 0.64);
+  box-shadow: 0 18px 38px rgba(20, 0, 139, 0.1);
+}
+
+.btn-dark {
+  border-color: var(--blue);
+  color: var(--white);
+  background: var(--blue);
+}
+
+.btn-light {
+  border-color: var(--white);
+  color: var(--blue);
+  background: var(--white);
+  box-shadow: 0 18px 38px rgba(20, 0, 139, 0.12);
+}
+
+.btn-ghost {
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.platform-page .brand-logo,
+.footer-brand img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.platform-page .site-footer {
+  padding-bottom: 46px;
+}
+
+.platform-page .footer-grid {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(78px, 10vw, 126px) 0;
+  background:
+    linear-gradient(135deg, rgba(20, 0, 139, 0.06), rgba(245, 154, 0, 0.1)),
+    var(--white);
+}
+
+.compact-hero {
+  min-height: auto;
+}
+
+.page-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.74fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 76px);
+}
+
+.page-hero h1 {
+  max-width: 880px;
+  font-size: clamp(3.4rem, 8vw, 7rem);
+}
+
+.hero-copy {
+  max-width: 720px;
+  color: var(--blue);
+  font-size: clamp(1.12rem, 2vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.report-proof-card,
+.report-card,
+.ads-evidence,
+.roadmap-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.report-proof-card span,
+.report-card span,
+.metric-list span,
+.roadmap-item span {
+  display: block;
+  color: var(--orange);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.report-proof-card strong,
+.metric-list strong {
+  display: block;
+  color: var(--blue);
+}
+
+.report-summary-section,
+.report-roadmap-section {
+  background: var(--gray);
+}
+
+.report-hero {
+  background:
+    linear-gradient(135deg, rgba(20, 0, 139, 0.08), rgba(245, 154, 0, 0.16)),
+    var(--white);
+}
+
+.report-proof-card {
+  padding: clamp(24px, 4vw, 36px);
+}
+
+.report-proof-card strong {
+  margin: 8px 0 12px;
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 0.92;
+}
+
+.report-grid,
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.report-card,
+.roadmap-item {
+  padding: 26px;
+}
+
+.report-card span {
+  margin-bottom: 18px;
+}
+
+.report-card p,
+.roadmap-item p,
+.report-proof-card p {
+  margin-bottom: 0;
+}
+
+.report-metrics-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(420px, 1fr);
+  align-items: start;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.metric-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.metric-list article {
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--gray);
+}
+
+.metric-list strong {
+  font-size: 1.5rem;
+}
+
+.ads-evidence {
+  overflow: hidden;
+  margin: 0;
+}
+
+.ads-evidence a {
+  position: relative;
+  display: block;
+  background: var(--gray);
+}
+
+.ads-evidence a::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, transparent 54%, rgba(20, 0, 139, 0.34));
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.ads-evidence img {
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  object-fit: cover;
+  object-position: left top;
+  transition: transform 220ms ease;
+}
+
+.ads-evidence a:hover img {
+  transform: scale(1.015);
+}
+
+.evidence-action {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: var(--radius);
+  color: var(--white);
+  background: rgba(20, 0, 139, 0.84);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.ads-evidence figcaption {
+  padding: 14px 16px 16px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.roadmap-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 920px) {
+  .nav .nav-cta {
+    display: none;
+  }
+
+  .page-hero-grid,
+  .report-metrics-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .report-grid,
+  .roadmap-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .btn {
+    width: 100%;
+  }
+
+  .platform-page .footer-grid,
+  .report-grid,
+  .metric-list,
+  .roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-hero {
+    padding: 58px 0 72px;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(3rem, 18vw, 4.8rem);
+  }
+}

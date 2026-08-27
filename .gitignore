@@ -6,3 +6,9 @@ node_modules/
 dist/
 build/
 .vercel
+.env*
+
+# Local backups
+*.zip
+.DS_Store
+.vscode/
