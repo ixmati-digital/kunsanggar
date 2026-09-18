@@ -12,7 +12,7 @@ public tree until private storage and authorization are implemented.
 - 39 image files: 36 newly downloaded from the old site and 3 existing local assets retained in place.
 - 3 original PDFs downloaded from `/oraciones`; contents were not modified or converted.
 - 5 external video/media records in `video/video-manifest.json`; no YouTube video was downloaded.
-- 1 pending audio record in `audio/audio-manifest.json`, marked `PENDING_CLIENT_MEDIA`.
+- 2 audio records preserved outside the deploy tree; both remain `UNCONFIRMED`.
 - Downloaded content size: 13,337,515 bytes, approximately 12.72 MiB.
 - 42 unique SHA-256 hashes across the cataloged local content assets; no duplicate files remain.
 
@@ -164,12 +164,12 @@ The related Pexels thumbnail is also external: `https://images.pexels.com/videos
 
 ## Audio
 
-Two client-provided local audio files are cataloged in `audio/audio-manifest.json`. They are not embedded or autoplayed in V1 because access and publication rights are still `UNCONFIRMED`:
+Two client-provided audio files are cataloged in `audio/audio-manifest.json` and preserved outside the repository deploy tree. They are not embedded or autoplayed in V1 because access and publication rights are still `UNCONFIRMED`:
 
 | Archivo | Origen | Estado |
 | --- | --- | --- |
-| `audio/mantra-of-all-dakinis.mp3` | `/classes.html` | `AVAILABLE_NOT_PUBLISHED` |
-| `audio/tibet-house-geshe-dangsong-namgyal.mp3` | `/geshe-dangsong.html` | `AVAILABLE_NOT_PUBLISHED` |
+| `PRIVATE_EXTERNAL_MEDIA/v1-audio/mantra-of-all-dakinis.mp3` | `/classes.html` | `PRESERVED_OUTSIDE_DEPLOY_TREE` |
+| `PRIVATE_EXTERNAL_MEDIA/v1-audio/tibet-house-geshe-dangsong-namgyal.mp3` | `/geshe-dangsong.html` | `PRESERVED_OUTSIDE_DEPLOY_TREE` |
 
 ## Duplicates and QA
 

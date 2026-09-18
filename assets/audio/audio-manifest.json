@@ -8,24 +8,24 @@
       "url": null,
       "title": "Mantra of All Dakinis",
       "source_page": "/classes.html",
-      "local_path": "assets/audio/mantra-of-all-dakinis.mp3",
+      "local_path": "PRIVATE_EXTERNAL_MEDIA/v1-audio/mantra-of-all-dakinis.mp3",
       "context": "Client-provided audio associated with the Sadhana de todas las Dakinis class.",
-      "possible_future_location": "Class resource; no public player activated in V1.",
-      "status": "AVAILABLE_NOT_PUBLISHED",
+      "possible_future_location": "Private media storage; no public player activated in V1.",
+      "status": "PRESERVED_OUTSIDE_DEPLOY_TREE",
       "access_level": "UNCONFIRMED",
-      "notes": "Local file validated as MP3 container. Do not expose until access and usage are confirmed."
+      "notes": "File preserved outside the repository deploy tree and validated as MP3 container. Do not expose until access and usage are confirmed."
     },
     {
       "id": "audio-tibet-house-geshe-dangsong-namgyal",
       "url": null,
       "title": "Tibet House - Geshe Dangsong Namgyal",
       "source_page": "/geshe-dangsong.html",
-      "local_path": "assets/audio/tibet-house-geshe-dangsong-namgyal.mp3",
+      "local_path": "PRIVATE_EXTERNAL_MEDIA/v1-audio/tibet-house-geshe-dangsong-namgyal.mp3",
       "context": "Client-provided Geshe media asset.",
-      "possible_future_location": "Teacher media; no public player activated in V1.",
-      "status": "AVAILABLE_NOT_PUBLISHED",
+      "possible_future_location": "Private media storage; no public player activated in V1.",
+      "status": "PRESERVED_OUTSIDE_DEPLOY_TREE",
       "access_level": "UNCONFIRMED",
-      "notes": "Local file validated as MP3 container. Do not expose until access and usage are confirmed."
+      "notes": "File preserved outside the repository deploy tree and validated as MP3 container. Do not expose until access and usage are confirmed."
     }
   ]
 }
