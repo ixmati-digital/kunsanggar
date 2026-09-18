@@ -1,0 +1,32 @@
+.root-page{background:var(--paper);color:var(--ink-deep)}
+.root-page-main{padding-bottom:0}
+.root-page-hero{padding:92px 0 78px;background:var(--indigo);color:#fff;border-bottom:1px solid rgba(255,255,255,.16)}
+.root-page-hero .eyebrow{color:var(--ochre)}
+.root-page-hero h1{max-width:900px;font-size:clamp(3rem,7vw,6.4rem)}
+.root-page-hero p{max-width:720px;color:rgba(255,255,255,.82);font-size:1.08rem}
+.root-page-section{padding:76px 0;border-bottom:1px solid rgba(26,24,49,.14)}
+.root-page-section:nth-child(even){background:#fffaf2}
+.root-page-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);gap:48px;align-items:start}
+.root-page-copy{max-width:760px}
+.root-page-copy p{color:#5d5960;font-size:1.05rem}
+.root-page-copy h2{font-size:clamp(2rem,4vw,3.8rem)}
+.root-page-list{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.root-page-list li{padding:20px;border-left:3px solid var(--ochre);background:rgba(255,255,255,.68)}
+.root-page-list strong{display:block;margin-bottom:5px;font-family:Georgia,serif;font-size:1.35rem;font-weight:400}
+.root-page-list span{color:#655e63;font-size:.92rem}
+.root-page-image{margin:0;border:1px solid rgba(26,24,49,.14);background:#fff}
+.root-page-image img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.root-page-image figcaption{padding:14px 16px;color:#655e63;font-size:.86rem}
+.root-page-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.root-page-note{padding:22px;background:var(--paper-deep);border-left:3px solid var(--coral);color:#514c54}
+.root-page-note strong{display:block;margin-bottom:6px;color:var(--coral)}
+.root-page-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.root-page-card{padding:24px;border-top:4px solid var(--ochre);background:#fff;border:1px solid rgba(26,24,49,.14)}
+.root-page-card:nth-child(2){border-top-color:var(--coral)}
+.root-page-card:nth-child(3){border-top-color:var(--sage)}
+.root-page-card h3{font-size:1.55rem;font-weight:400}
+.root-page-card p{color:#655e63}
+.root-page-form{display:grid;gap:14px;max-width:560px;padding:26px;background:#fff;border:1px solid rgba(26,24,49,.14)}
+.root-page-form label{display:grid;gap:7px;font-weight:800}
+.root-page-form input{min-height:46px;padding:0 12px;border:1px solid rgba(26,24,49,.22);border-radius:4px;font:inherit}
+@media(max-width:800px){.root-page-hero{padding:64px 0 54px}.root-page-section{padding:54px 0}.root-page-grid{grid-template-columns:1fr}.root-page-cards{grid-template-columns:1fr}.root-page-actions .btn{width:100%}}

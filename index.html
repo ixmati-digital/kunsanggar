@@ -1,324 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kunsang Gar México | Visita del Geshe</title>
-  <meta name="description"
-    content="Registro centralizado para la visita de un Geshe y actividades de Budismo Bon durante el tercer y cuarto fin de semana de junio.">
-  <meta property="og:title" content="Kunsang Gar México | Visita del Geshe">
-  <meta property="og:description"
-    content="Conoce el programa, reserva tu lugar y recibe confirmación automática para las enseñanzas, meditaciones y talleres.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" href="/assets/brand/kunsang-gar-site-logo.png">
+  <title>Kunsang Gar México | Sabiduría, práctica y comunidad</title>
+  <meta name="description" content="Kunsang Gar México: sabiduría de Kunsang Gar, tradición Bön, Dzogchen, clases, servicios y comunidad.">
+  <meta property="og:title" content="Kunsang Gar México">
+  <meta property="og:description" content="Sabiduría de Kunsang Gar y tradiciones antiguas en la sociedad moderna.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="kunsaanglogo.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-
-  <!-- Meta Pixel: reemplaza META_PIXEL_ID en producción. -->
-  <script>
-    window.AURA_META_PIXEL_ID = "META_PIXEL_ID";
-    if (window.AURA_META_PIXEL_ID !== "META_PIXEL_ID") {
-      !function (f, b, e, v, n, t, s) {
-        if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
-        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = true; n.version = "2.0"; n.queue = [];
-        t = b.createElement(e); t.async = true; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-      }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-      fbq("init", window.AURA_META_PIXEL_ID);
-      fbq("track", "PageView");
-    }
-  </script>
+  <meta property="og:image" content="assets/geshe.png">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/home.css">
 </head>
+<body class="site-page real-home">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
 
-<body>
-  <a class="skip-link" href="#registro">Ir al registro</a>
-
-  <header class="site-header" id="inicio">
-    <nav class="nav container" aria-label="Principal">
-      <a class="brand" href="index.html" aria-label="Inicio Kunsang Gar México">
-        <img class="brand-logo" src="kunsaanglogo.jpg" alt="" aria-hidden="true">
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Navegación principal">
+      <a class="brand" href="index.html" aria-label="Kunsang Gar México, inicio">
+        <img src="assets/brand/kunsang-gar-site-logo.png" alt="">
         <span>Kunsang Gar México</span>
       </a>
-      <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false"
-        aria-controls="primary-menu">
-        <span></span>
-        <span></span>
+
+      <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-menu">
+        <span></span><span></span><span></span>
       </button>
-      <div class="nav-links" id="primary-menu" aria-label="Secciones">
-        <a href="index.html">Inicio</a>
-        <a href="index.html#programa">Eventos</a>
-        <a href="plataforma.html">Plataforma</a>
-        <a href="portal.html">Portal</a>
-        <a href="inversion.html">Inversión</a>
-        <a href="planeacion/">Planeación</a>
-        <a href="index.html#registro">Contacto</a>
+
+      <div class="nav-links" id="site-menu">
+        <div class="nav-item"><a href="services.html">Servicios</a></div>
+        <div class="nav-item"><a href="index.html" aria-current="page">Inicio</a></div>
+        <div class="nav-item nav-item-menu">
+          <div class="nav-item-main"><a href="contact.html">Contacto</a><button class="submenu-toggle" type="button" aria-label="Abrir submenu Contacto" aria-expanded="false" aria-controls="contact-menu">⌄</button></div>
+          <div class="submenu" id="contact-menu"><a href="donations.html">Donaciones</a></div>
+        </div>
+        <div class="nav-item"><a href="classes.html">Clases</a></div>
+        <div class="nav-item nav-item-menu">
+          <div class="nav-item-main"><a href="kunsang-gar.html">Kunsang Gar</a><button class="submenu-toggle" type="button" aria-label="Abrir submenu Kunsang Gar" aria-expanded="false" aria-controls="kunsang-menu">⌄</button></div>
+          <div class="submenu" id="kunsang-menu">
+            <a href="geshe-dangsong.html">Geshe Dangsong</a>
+            <a href="tradicion-bon.html">Tradición Bön</a>
+            <a href="nuevo-bon.html">Nuevo Bön</a>
+            <a href="rime.html">Rimé</a>
+          </div>
+        </div>
+        <div class="nav-item"><a href="books.html">LIBROS</a></div>
+        <div class="nav-item"><a href="certification.html">CERTIFICACIÓN</a></div>
+        <div class="nav-item"><a href="prayers.html">Oraciones</a></div>
+        <div class="nav-item"><a href="events/">MEXICO 2026</a></div>
       </div>
-      <a class="btn btn-dark nav-cta" href="#registro" data-track="cta_header">Reservar lugar</a>
+
+      <div class="nav-tools">
+        <div class="language-switcher" aria-label="Selector de idioma">
+          <span class="language-current" aria-current="true">ES</span>
+          <button type="button" disabled title="English próximamente">EN</button>
+          <button type="button" disabled title="Tibetano próximamente">བོད</button>
+        </div>
+        <a class="practitioner-link" href="account/"><span aria-hidden="true">•</span> Acceso</a>
+      </div>
     </nav>
   </header>
 
-  <main>
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-media" role="img" aria-label="Arquitectura contemplativa en piedra y luz natural"></div>
-      <div class="hero-shade"></div>
-      <div class="container hero-content">
-        <p class="eyebrow">Kunsang Gar México · Junio</p>
-        <h1 id="hero-title">Visita del Geshe y enseñanzas Bon.</h1>
-        <p class="hero-name">Eventos, práctica y comunidad con registro centralizado</p>
-        <p class="hero-copy">
-          Un encuentro íntimo de práctica, filosofía y contemplación. Registro centralizado, cupo cuidado y
-          confirmación automática para que la experiencia empiece con orden.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-light" href="#registro" data-track="cta_hero_register">Reservar lugar</a>
-          <a class="btn btn-ghost" href="#programa" data-track="cta_hero_program">Ver programa</a>
+  <main id="main">
+    <section class="home-hero" aria-labelledby="hero-title">
+      <div class="shell home-hero-grid">
+        <div class="home-hero-copy">
+          <p class="eyebrow">Centro Budista Kunsang Gar México</p>
+          <h1 id="hero-title">Kunsang Gar México</h1>
+          <p class="hero-display">Sabiduría antigua para la sociedad moderna.</p>
+          <p class="hero-copy">Promover la Sabiduría de Kunsang Gar y llevar las tradiciones antiguas a la sociedad moderna para nutrir mentes más pacíficas, promover la curación física y ambiental y encontrar la máxima realización de la verdadera naturaleza.</p>
+          <div class="button-row">
+            <a class="btn" href="#vision">Conoce Kunsang Gar</a>
+            <a class="btn secondary" href="donations.html">Donaciones</a>
+          </div>
+          <p class="hero-note">Nuestro principal estudio y práctica es Dzogchen o Meditación de la Mente Natural.</p>
         </div>
-      </div>
-      <a class="scroll-cue" href="#geshe" aria-label="Bajar a la siguiente sección"></a>
-    </section>
-
-    <section class="section container intro-band" aria-label="Resumen del sistema">
-      <div class="intro-statement reveal">
-        <p>Evento -> Registro -> Donativo -> Comunidad</p>
-        <h2>Una presencia espiritual merece una operación clara y respetuosa.</h2>
-      </div>
-      <div class="intro-metrics reveal">
-        <article>
-          <span>01</span>
-          <p>Información clara antes del primer mensaje.</p>
-        </article>
-        <article>
-          <span>02</span>
-          <p>Captación ordenada desde el sitio, WhatsApp y formularios.</p>
-        </article>
-        <article>
-          <span>03</span>
-          <p>Confirmaciones, donativos y seguimiento con menos carga manual.</p>
-        </article>
+        <figure class="home-hero-media">
+          <img src="assets/geshe.png" alt="Geshe Dangsong Namgyal sentado con túnica amarilla">
+          <figcaption><span>Enseñanzas y práctica</span><strong>Geshe Dangsong Namgyal</strong></figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="section split-section" id="geshe">
-      <div class="container split-grid">
-        <div class="portrait-frame reveal">
-          <img src="kunsaanglogo.jpg" alt="Logo de Kunsang Gar México" loading="lazy">
+    <section class="home-section vision-section" id="vision" aria-labelledby="vision-title">
+      <div class="shell home-section-grid">
+        <div class="section-intro">
+          <p class="eyebrow">Nuestra visión</p>
+          <h2 id="vision-title">Un lugar para cultivar sabiduría, paz y continuidad.</h2>
+          <a class="text-link" href="kunsang-gar.html">Conoce Kunsang Gar <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="section-copy reveal">
-          <p class="eyebrow">El Geshe</p>
-          <h2>Un maestro invitado para compartir práctica, escucha y claridad.</h2>
-          <p>
-            Un Geshe es un maestro formado durante años en estudio filosófico, disciplina contemplativa y transmisión
-            oral. Su visita abre un espacio poco común para recibir enseñanzas de manera directa, cercana y respetuosa.
-          </p>
-          <p>
-            La propuesta está diseñada para personas con experiencia previa y para quienes se acercan por primera vez:
-            sin solemnidad excesiva, sin presión, con lenguaje humano y una estructura cuidada.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section text-section" id="bon">
-      <div class="container narrow reveal">
-        <p class="eyebrow">Budismo Bon</p>
-        <h2>Una tradición contemplativa vinculada al cultivo de presencia, compasión y conocimiento interior.</h2>
-        <p>
-          El Bon es una tradición espiritual tibetana con prácticas meditativas, reflexión filosófica y métodos para
-          observar la mente con mayor lucidez. Esta landing evita discursos herméticos: presenta el evento como una
-          experiencia cultural y contemplativa abierta, sobria y accesible.
-        </p>
-      </div>
-    </section>
-
-    <section class="section program-section" id="programa">
-      <div class="container">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Programa</p>
-          <h2>Tres encuentros de junio para escuchar, practicar y profundizar.</h2>
-        </div>
-        <div class="event-card-grid">
-          <article class="event-card reveal">
-            <div class="event-image event-image-meditation" role="img" aria-label="Símbolo visual para meditación del espacio interior">
-              <img src="kunsaanglogo.jpg" alt="">
-            </div>
-            <p class="ticket-type">6 y 7 Junio</p>
-            <h3>Meditación del espacio interior</h3>
-            <p>Práctica guiada para cultivar presencia, estabilidad mental y escucha interior desde la tradición Bon.</p>
-            <span class="event-location">Ubicación: Kunsang Gar México</span>
-            <a class="btn btn-outline" href="#registro" data-ticket="Meditación del espacio interior">Registrarme</a>
-          </article>
-          <article class="event-card reveal">
-            <div class="event-image event-image-breath" role="img" aria-label="Símbolo visual para Tsa Lung">
-              <img src="kunsaanglogo.jpg" alt="">
-            </div>
-            <p class="ticket-type">20 y 21 Junio</p>
-            <h3>Tsa Lung</h3>
-            <p>Sesiones de respiración y movimiento sutil para trabajar energía, atención y equilibrio del cuerpo.</p>
-            <span class="event-location">Ubicación: Kunsang Gar México</span>
-            <a class="btn btn-outline" href="#registro" data-ticket="Tsa Lung / Respiración activa">Registrarme</a>
-          </article>
-          <article class="event-card reveal">
-            <div class="event-image event-image-offering" role="img" aria-label="Símbolo visual para ritual de las 1000 ofrendas">
-              <img src="kunsaanglogo.jpg" alt="">
-            </div>
-            <p class="ticket-type">26, 27 y 28 Junio</p>
-            <h3>Ritual de las 1000 Ofrendas</h3>
-            <p>Encuentro ritual de práctica colectiva, ofrenda y dedicación para la comunidad de Kunsang Gar México.</p>
-            <span class="event-location">Ubicación: Kunsang Gar México</span>
-            <a class="btn btn-dark" href="#registro" data-ticket="Ritual de las 1000 ofrendas">Registrarme</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section tickets-section" id="entradas">
-      <div class="container">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Entradas</p>
-          <h2>Accesos claros, cupo limitado y pago rastreable.</h2>
-        </div>
-        <div class="ticket-grid">
-          <article class="ticket-card reveal">
-            <p class="ticket-type">Conferencia</p>
-            <h3>$450 MXN</h3>
-            <p>Acceso a una conferencia y material digital posterior.</p>
-            <span class="capacity">40 lugares</span>
-            <a class="btn btn-outline" href="#registro" data-ticket="Conferencia">Elegir acceso</a>
-          </article>
-          <article class="ticket-card featured reveal">
-            <p class="ticket-type">Fin de semana completo</p>
-            <h3>$1,600 MXN</h3>
-            <p>Acceso a conferencias, meditaciones y taller del fin de semana.</p>
-            <span class="capacity">24 lugares</span>
-            <a class="btn btn-dark" href="#registro" data-ticket="Fin de semana completo">Elegir acceso</a>
-          </article>
-          <article class="ticket-card reveal">
-            <p class="ticket-type">Programa completo</p>
-            <h3>$2,800 MXN</h3>
-            <p>Acceso a los dos fines de semana y prioridad en preguntas.</p>
-            <span class="capacity">18 lugares</span>
-            <a class="btn btn-outline" href="#registro" data-ticket="Programa completo">Elegir acceso</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section register-section" id="registro">
-      <div class="container register-grid">
-        <div class="register-copy reveal">
-          <p class="eyebrow">Registro</p>
-          <h2>Reserva tu lugar sin saturar WhatsApp.</h2>
-          <p>
-            Completa tus datos una sola vez. El sistema puede enviar la información a Google Sheets, activar eventos de
-            Meta Pixel, abrir el pago y preparar mensajes de confirmación.
-          </p>
-          <div class="flow-list" aria-label="Flujo automatizado">
-            <span>Lead</span>
-            <span>Pago</span>
-            <span>Confirmación</span>
-            <span>Recordatorio</span>
+        <div class="vision-copy">
+          <p>Las mayores aspiraciones de Geshe Namgyal y los miembros de Kunsang Gar son promover la Sabiduría de Kunsang Gar y llevar las tradiciones antiguas a la sociedad moderna.</p>
+          <div class="definition-grid">
+            <article><p class="definition-label">Kunsang</p><p>Siempre excelente, todo bueno, completo, perfecto y siempre positivo.</p></article>
+            <article><p class="definition-label">Gar</p><p>Campamento o lugar. Un espacio para la bondad para todos, en todas partes y en todo momento.</p></article>
+            <article><p class="definition-label">Práctica principal</p><p>Dzogchen o Meditación de la Mente Natural.</p></article>
           </div>
         </div>
-
-        <form class="registration-form reveal" id="registration-form" data-endpoint="PEGA_AQUI_URL_APPS_SCRIPT"
-          data-payment-url="PEGA_AQUI_LINK_DE_PAGO">
-          <div class="field">
-            <label for="name">Nombre completo</label>
-            <input id="name" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required>
-          </div>
-          <div class="field-group">
-            <div class="field">
-              <label for="email">Correo</label>
-              <input id="email" name="correo" type="email" autocomplete="email" placeholder="correo@ejemplo.com"
-                required>
-            </div>
-            <div class="field">
-              <label for="phone">Teléfono / WhatsApp</label>
-              <input id="phone" name="telefono" type="tel" autocomplete="tel" placeholder="+52 000 000 0000" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="access">Tipo de acceso</label>
-            <select id="access" name="tipo_acceso" required>
-              <option value="">Seleccionar</option>
-              <option value="Conferencia">Conferencia - $450 MXN</option>
-              <option value="Fin de semana completo">Fin de semana completo - $1,600 MXN</option>
-              <option value="Programa completo">Programa completo - $2,800 MXN</option>
-              <option value="Meditación del espacio interior">Meditación del espacio interior</option>
-              <option value="Tsa Lung / Respiración activa">Tsa Lung / Respiración activa</option>
-              <option value="Ritual de las 1000 ofrendas">Ritual de las 1000 ofrendas</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="notes">Observaciones</label>
-            <textarea id="notes" name="observaciones" rows="4"
-              placeholder="Dudas, requerimientos o actividad de interés"></textarea>
-          </div>
-          <input type="hidden" name="fuente" id="source-field" value="landing">
-          <input type="hidden" name="campaign" id="campaign-field" value="">
-          <button class="btn btn-dark btn-full" type="submit">Continuar a confirmación</button>
-          <p class="form-note">Al enviar, aceptas recibir información operativa del evento. Sin spam.</p>
-          <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
-        </form>
       </div>
     </section>
 
-    <section class="section faq-section" id="dudas">
-      <div class="container faq-grid">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Dudas</p>
-          <h2>Respuestas antes del mensaje.</h2>
-        </div>
-        <div class="faq-list reveal">
-          <details>
-            <summary>¿Necesito experiencia previa?</summary>
-            <p>No. Habrá lenguaje accesible y espacios para preguntas. Las actividades están pensadas para distintos
-              niveles de acercamiento.</p>
-          </details>
-          <details>
-            <summary>¿Cómo se confirma mi lugar?</summary>
-            <p>Después del registro recibirás instrucciones de pago y confirmación. En producción puede conectarse a
-              Google Sheets, correo automático y WhatsApp.</p>
-          </details>
-          <details>
-            <summary>¿Puedo asistir solo a una actividad?</summary>
-            <p>Sí. Elige el acceso que corresponda en el formulario. Los cupos se pueden ajustar según la sede.</p>
-          </details>
+    <section class="home-section teacher-section" aria-labelledby="teacher-title">
+      <div class="shell teacher-feature">
+        <figure class="editorial-image teacher-image"><img src="assets/geshe.png" alt="Geshe Dangsong Namgyal" loading="lazy"></figure>
+        <div class="teacher-copy">
+          <p class="eyebrow">Maestro y fundador</p>
+          <h2 id="teacher-title">Geshe Dangsong Namgyal</h2>
+          <p>Geshe Dangsong Namgyal es el maestro y fundador de Kunsang Gar. Conoce su trayectoria y el contexto institucional de sus enseñanzas.</p>
+          <a class="btn" href="geshe-dangsong.html">Conoce a Geshe Dangsong</a>
         </div>
       </div>
     </section>
 
-    <section class="section automation-section" aria-label="Automatización para captación">
-      <div class="container automation-panel reveal">
-        <p class="eyebrow">Automatización</p>
-        <h2>La campaña deja de vivir en comentarios y se convierte en un sistema medible.</h2>
-        <div class="automation-grid">
-          <p>Meta Pixel con eventos PageView, Lead e InitiateCheckout.</p>
-          <p>UTM y campaña guardadas junto al registro.</p>
-          <p>Google Sheets o CRM como base centralizada.</p>
-          <p>WhatsApp solo para conversaciones calificadas.</p>
+    <section class="home-section services-section" aria-labelledby="services-title">
+      <div class="shell">
+        <div class="section-heading-row">
+          <div><p class="eyebrow">Acompañamiento</p><h2 id="services-title">Servicios y Acompañamiento Espiritual</h2></div>
+          <a class="text-link" href="services.html">Conoce los servicios <span aria-hidden="true">↗</span></a>
         </div>
-        <a class="btn btn-light" href="https://wa.me/520000000000?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20la%20visita%20del%20Geshe"
-          target="_blank" rel="noopener noreferrer" data-track="cta_whatsapp">WhatsApp de apoyo</a>
+        <div class="service-grid">
+          <article class="service-card"><span class="service-number">01</span><h3>Ceremonias y oraciones</h3><p>Prácticas y ceremonias espirituales de Kunsang Gar.</p></article>
+          <article class="service-card"><span class="service-number">02</span><h3>Bendiciones para hogar y negocio</h3><p>Acompañamiento espiritual para espacios de vida y trabajo.</p></article>
+          <article class="service-card"><span class="service-number">03</span><h3>Orientación a través de la muerte / Phowa</h3><p>Orientación espiritual relacionada con la muerte y la transición.</p></article>
+          <article class="service-card"><span class="service-number">04</span><h3>Consulta espiritual</h3><p>Un espacio para solicitar orientación sobre la práctica.</p></article>
+        </div>
       </div>
+    </section>
+
+    <section class="home-section wisdom-section" aria-labelledby="wisdom-title">
+      <div class="shell wisdom-layout">
+        <div class="wisdom-intro"><p class="eyebrow">Estudio y desarrollo</p><h2 id="wisdom-title">Programa de Sabiduría de Kunsang Gar</h2><p>Un programa para comprender los fundamentos y desarrollar una mente con mayor salud mental, equilibrio emocional y paz.</p><a class="btn" href="classes.html">Conoce las clases</a></div>
+        <div class="wisdom-list">
+          <article><span>01</span><div><h3>Sabiduría fundamental</h3><p>Comprensión fundamental y enseñanzas para comenzar el estudio.</p></div></article>
+          <article><span>02</span><div><h3>Desarrollo mental</h3><p>Prácticas para cultivar equilibrio emocional y una mente en paz.</p></div></article>
+          <article><span>03</span><div><h3>Sabiduría por excelencia</h3><p>La profundización del camino de estudio y práctica.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section tradition-section" aria-labelledby="tradition-title">
+      <div class="shell tradition-feature">
+        <div class="tradition-copy"><p class="eyebrow">Tradición</p><h2 id="tradition-title">Bön: cultura del antiguo Tíbet</h2><p>Bön es la cultura espiritual indígena de Zhang Zhung, el área que rodea el monte Kailash en el Tíbet actual. La tradición Bön tiene una rica historia de tantra, chamanismo y meditación.</p><a class="btn secondary" href="tradicion-bon.html">Conoce la Tradición Bön</a></div>
+        <figure class="editorial-image"><img src="assets/tradition/bon-tradition-ritual-01.webp" alt="Reunión de práctica en la playa con banderas de colores" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="home-section classes-section" aria-labelledby="classes-title">
+      <div class="shell classes-layout">
+        <div><p class="eyebrow">Participa</p><h2 id="classes-title">Clases y actividades</h2><p>Encuentra clases semanales, programas y actividades de Kunsang Gar en modalidad presencial y en línea.</p><a class="btn" href="classes.html">Ver clases y actividades</a></div>
+        <div class="activity-list" aria-label="Modalidades y espacios de participación"><div><span class="activity-mark">A</span><strong>Clases semanales</strong><span>Estudio y práctica continua</span></div><div><span class="activity-mark">B</span><strong>Programas</strong><span>Recorridos de aprendizaje</span></div><div><span class="activity-mark">C</span><strong>Presencial y en línea</strong><span>Participación según cada actividad</span></div></div>
+      </div>
+    </section>
+
+    <section class="home-section certification-section" aria-labelledby="certification-title">
+      <div class="shell certification-feature">
+        <figure class="editorial-image"><img src="assets/certification/naljor-certification-01.jpeg" alt="Ilustración de meditación para la certificación Naljor" loading="lazy"></figure>
+        <div><p class="eyebrow">Camino de práctica</p><h2 id="certification-title">Certificado de Finalización de Naljor</h2><p class="certification-lead">Un camino de práctica, sabiduría y reconocimiento espiritual.</p><p>La certificación contempla una participación mínima del 75%.</p><a class="text-link" href="certification.html">Conoce la certificación <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="home-section resources-section" aria-labelledby="resources-title">
+      <div class="shell resources-layout">
+        <div><p class="eyebrow">Práctica</p><h2 id="resources-title">Oraciones y recursos</h2><p>Existen oraciones y recursos de práctica dentro del archivo de Kunsang Gar. Su disponibilidad y uso dependen de las indicaciones correspondientes.</p><a class="btn secondary" href="prayers.html">Conoce Oraciones</a></div>
+        <figure class="editorial-image resource-image"><img src="assets/prayers/sidpa-gyalmo-prayer-image.jpg" alt="Representación de Sidpa Gyalmo" loading="lazy"><figcaption>Recursos de práctica preservados</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="home-section book-section" aria-labelledby="book-title">
+      <div class="shell book-feature">
+        <figure class="book-cover"><img src="assets/mujeres-sagradas-gran-perfeccion.jpeg" alt="Portada de Mujeres Santas de Gran Perfección" loading="lazy"></figure>
+        <div><p class="eyebrow">Libro de Geshe Dangsong</p><h2 id="book-title">Mujeres Santas de Gran Perfección</h2><a class="btn" href="https://books.google.com.np/books/about/Mujeres_Santas_de_Gran_Perfecci%C3%B3n.html?id=xi3V0QEACAAJ&amp;redir_esc=y" target="_blank" rel="noopener">Conoce el libro <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="home-section donations-section" aria-labelledby="donations-title">
+      <div class="shell donations-band"><div><p class="eyebrow">Apoya la continuidad</p><h2 id="donations-title">Donaciones</h2><p>Conoce las formas de apoyar a Kunsang Gar México.</p></div><a class="btn" href="donations.html">Ir a Donaciones <span aria-hidden="true">↗</span></a></div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img src="kunsaanglogo.jpg" alt="Kunsang Gar México">
-        <p>Kunsang Gar México · Visita del Geshe</p>
-      </div>
-      <a href="#inicio">Volver arriba</a>
+  <footer class="site-footer real-footer">
+    <div class="shell footer-top">
+      <div class="footer-identity"><a class="footer-brand" href="index.html"><img src="assets/brand/kunsang-gar-site-logo.png" alt=""><span>Kunsang Gar México</span></a><p>Sabiduría, práctica y comunidad.</p></div>
+      <div class="footer-column"><h2>Navegación institucional</h2><a href="index.html">Inicio</a><a href="services.html">Servicios</a><a href="classes.html">Clases</a><a href="kunsang-gar.html">Kunsang Gar</a><a href="books.html">Libros</a><a href="certification.html">Certificación</a><a href="prayers.html">Oraciones</a></div>
+      <div class="footer-column"><h2>Contacto</h2><a href="contact.html">Contáctanos</a><a href="donations.html">Donaciones</a><a href="mailto:kunsanggarmx@gmail.com">kunsanggarmx@gmail.com</a><a href="account/">Acceso del practicante</a></div>
+      <div class="footer-column"><h2>Redes</h2><a href="https://www.facebook.com/profile.php?id=61553741434871" target="_blank" rel="noopener">Facebook <span aria-hidden="true">↗</span></a><a href="https://www.youtube.com/@KunsangGarMexico" target="_blank" rel="noopener">YouTube <span aria-hidden="true">↗</span></a></div>
     </div>
+    <div class="shell footer-bottom"><span>Copyright 2026 Kunsang Gar México.</span><span>ES <span aria-hidden="true">·</span> EN <span aria-hidden="true">·</span> བོད</span></div>
   </footer>
 
-  <script src="script.js"></script>
+  <button class="back-top" type="button" aria-label="Volver al inicio">↑</button>
+  <script src="assets/site.js"></script>
 </body>
-
 </html>

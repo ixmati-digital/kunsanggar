@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-16",
+  "download_policy": "No audio was downloaded and no URL was invented.",
+  "items": [
+    {
+      "id": "client-mantras-and-geshe-media",
+      "url": null,
+      "title": null,
+      "source_page": null,
+      "context": "New mantra and Geshe media links mentioned by the client were not available in the repository or the reviewed site documentation.",
+      "possible_future_location": "External audio/media catalog",
+      "status": "PENDING_CLIENT_MEDIA",
+      "access_level": "UNCONFIRMED",
+      "notes": "Do not block the rest of the migration on this pending client delivery."
+    }
+  ]
+}

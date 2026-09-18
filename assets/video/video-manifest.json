@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-16",
+  "download_policy": "YouTube videos were cataloged only; no video files were downloaded.",
+  "items": [
+    {
+      "id": "youtube-kunsang-gar-channel",
+      "url": "https://www.youtube.com/@KunsangGarMexico",
+      "title": "Kunsang Gar Mexico YouTube channel",
+      "source_page": ["/", "/clases", "/donaciones"],
+      "context": "Linked social/video channel.",
+      "possible_future_location": "External media / video library",
+      "status": "KEEP_EXTERNAL"
+    },
+    {
+      "id": "youtube-video-htzx4kjvtwc",
+      "url": "https://www.youtube.com/watch?v=HTZX4kJVwTc",
+      "title": null,
+      "source_page": "/kunsang-gar",
+      "context": "YouTube embed/thumbnail ID detected; title was not recovered from the source HTML.",
+      "possible_future_location": "External teaching or institutional media",
+      "status": "KEEP_EXTERNAL"
+    },
+    {
+      "id": "youtube-video-i3607bo9es",
+      "url": "https://youtu.be/-i3607BO9Es",
+      "title": null,
+      "source_page": "/visita-de-ss-34",
+      "context": "Video completo link detected on the event page; title was not recovered.",
+      "possible_future_location": "External event media",
+      "status": "KEEP_EXTERNAL"
+    },
+    {
+      "id": "pexels-video-29457134",
+      "url": "https://videos.pexels.com/video-files/29457134/12680486_360_640_30fps.mp4",
+      "title": null,
+      "source_page": "/",
+      "context": "Externally hosted video asset; appears to be stock/decorative media.",
+      "possible_future_location": "Remove or replace during public redesign",
+      "status": "OPTIONAL"
+    },
+    {
+      "id": "pexels-video-5000086",
+      "url": "https://videos.pexels.com/video-files/5000086/5000086-uhd_3840_2160_30fps.mp4",
+      "title": null,
+      "source_page": "raw embedded configuration",
+      "context": "URL found in page configuration but not confirmed as rendered content.",
+      "possible_future_location": "Needs source-page verification",
+      "status": "UNKNOWN"
+    }
+  ]
+}

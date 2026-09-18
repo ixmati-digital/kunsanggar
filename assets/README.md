@@ -1,10 +1,12 @@
-# Assets
+# Assets de Kunsang Gar México
 
-Coloca aquí los recursos finales del evento:
+Esta carpeta contiene los assets públicos promovidos desde `newplatform/assets/`
+durante el Paso 5. La estructura conserva las categorías aprobadas:
 
-- `geshe-retrato.jpg`: foto autorizada del Geshe.
-- `hero-templo.jpg` o `hero-video.mp4`: visual principal contemplativo.
-- `logo.svg`: identidad del evento u organizadora.
-- `programa.pdf`: documento descargable si se necesita.
+`brand/`, `teacher/`, `events/`, `tradition/`, `prayers/`, `books/`,
+`certification/`, `gallery/`, `documents/`, `video/`, `audio/`.
 
-La landing usa imágenes remotas sobrias como placeholder. Para producción, reemplaza las URLs de Unsplash en `index.html` y `styles.css` por archivos locales de esta carpeta.
+Los manifiestos y el inventario conservan el origen editorial de cada material.
+Los PDFs con acceso no confirmado o restringido no se exponen aquí: permanecen
+preservados fuera del árbol público para una futura migración a almacenamiento
+privado con autorización.
