@@ -603,6 +603,84 @@
       "access_level": "UNCONFIRMED",
       "copyright_notice": "Source prayer page states that some materials require transmission and that copying or distribution is restricted.",
       "notes": "15 pages; original PDF preserved and not published from a new page. Public root path intentionally omitted; private storage required before publication."
+    },
+    {
+      "id": "brochure-programa-sabiduria-es",
+      "filename": "programa-sabiduria-kunsang-gar-es.pdf",
+      "local_path": "assets/documents/public/programa-sabiduria-kunsang-gar-es.pdf",
+      "original_url": null,
+      "source_page": "/classes.html#brochures",
+      "content_type": "application/pdf",
+      "category": "documents",
+      "title": "Programa de Sabiduría de Kunsang Gar - Español",
+      "access_level": "PUBLIC",
+      "copyright_notice": "Brochure entregado por el cliente y autorizado para descarga pública.",
+      "notes": "13 páginas; preservado sin modificaciones. No es material religioso restringido."
+    },
+    {
+      "id": "brochure-wisdom-program-en",
+      "filename": "kunsang-gar-wisdom-program-en.pdf",
+      "local_path": "assets/documents/public/kunsang-gar-wisdom-program-en.pdf",
+      "original_url": null,
+      "source_page": "/classes.html#brochures",
+      "content_type": "application/pdf",
+      "category": "documents",
+      "title": "Kunsang Gar Wisdom Program - English",
+      "access_level": "PUBLIC",
+      "copyright_notice": "Brochure entregado por el cliente y autorizado para descarga pública.",
+      "notes": "13 páginas; preservado sin modificaciones. No es material religioso restringido."
+    },
+    {
+      "id": "event-sadhana-todas-las-dakinis",
+      "filename": "sadhana-todas-las-dakinis.jpeg",
+      "local_path": "assets/events/sadhana-todas-las-dakinis.jpeg",
+      "original_url": null,
+      "source_page": "/classes.html",
+      "content_type": "image/jpeg",
+      "category": "events",
+      "title": "Sadhana de todas las Dakinis - flyer oficial",
+      "access_level": "PUBLIC",
+      "copyright_notice": "Asset entregado por el cliente; autorización de uso en la página de clase asumida por entrega directa.",
+      "notes": "Flyer oficial utilizado en la ficha UPCOMING de la clase del 2 y 3 de octubre de 2026."
+    },
+    {
+      "id": "event-visita-geshe-oct-nov-2026",
+      "filename": "visita-geshe-mexico-octubre-noviembre-2026.jpeg",
+      "local_path": "assets/events/visita-geshe-mexico-octubre-noviembre-2026.jpeg",
+      "original_url": null,
+      "source_page": "/events/",
+      "content_type": "image/jpeg",
+      "category": "events",
+      "title": "Visita presencial de Geshe Dangsong Namgyal a México - flyer oficial",
+      "access_level": "PUBLIC",
+      "copyright_notice": "Asset entregado por el cliente; autorización de uso en la página de visita asumida por entrega directa.",
+      "notes": "Flyer oficial utilizado para la visita UPCOMING de octubre-noviembre de 2026."
+    },
+    {
+      "id": "audio-mantra-of-all-dakinis",
+      "filename": "mantra-of-all-dakinis.mp3",
+      "local_path": "assets/audio/mantra-of-all-dakinis.mp3",
+      "original_url": null,
+      "source_page": "/classes.html",
+      "content_type": "audio/mpeg",
+      "category": "audio",
+      "title": "Mantra of All Dakinis",
+      "access_level": "UNCONFIRMED",
+      "copyright_notice": "No rights statement supplied with the local asset.",
+      "notes": "Catalogado, no publicado ni reproducido automáticamente en V1."
+    },
+    {
+      "id": "audio-tibet-house-geshe-dangsong-namgyal",
+      "filename": "tibet-house-geshe-dangsong-namgyal.mp3",
+      "local_path": "assets/audio/tibet-house-geshe-dangsong-namgyal.mp3",
+      "original_url": null,
+      "source_page": "/geshe-dangsong.html",
+      "content_type": "audio/mpeg",
+      "category": "audio",
+      "title": "Tibet House - Geshe Dangsong Namgyal",
+      "access_level": "UNCONFIRMED",
+      "copyright_notice": "No rights statement supplied with the local asset.",
+      "notes": "Catalogado, no publicado ni reproducido automáticamente en V1."
     }
   ]
 }

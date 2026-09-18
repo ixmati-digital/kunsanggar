@@ -1,18 +1,31 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-16",
-  "download_policy": "No audio was downloaded and no URL was invented.",
+  "generated_at": "2026-09-18",
+  "download_policy": "Client-provided audio was cataloged locally; no external audio was downloaded and no URL was invented.",
   "items": [
     {
-      "id": "client-mantras-and-geshe-media",
+      "id": "audio-mantra-of-all-dakinis",
       "url": null,
-      "title": null,
-      "source_page": null,
-      "context": "New mantra and Geshe media links mentioned by the client were not available in the repository or the reviewed site documentation.",
-      "possible_future_location": "External audio/media catalog",
-      "status": "PENDING_CLIENT_MEDIA",
+      "title": "Mantra of All Dakinis",
+      "source_page": "/classes.html",
+      "local_path": "assets/audio/mantra-of-all-dakinis.mp3",
+      "context": "Client-provided audio associated with the Sadhana de todas las Dakinis class.",
+      "possible_future_location": "Class resource; no public player activated in V1.",
+      "status": "AVAILABLE_NOT_PUBLISHED",
       "access_level": "UNCONFIRMED",
-      "notes": "Do not block the rest of the migration on this pending client delivery."
+      "notes": "Local file validated as MP3 container. Do not expose until access and usage are confirmed."
+    },
+    {
+      "id": "audio-tibet-house-geshe-dangsong-namgyal",
+      "url": null,
+      "title": "Tibet House - Geshe Dangsong Namgyal",
+      "source_page": "/geshe-dangsong.html",
+      "local_path": "assets/audio/tibet-house-geshe-dangsong-namgyal.mp3",
+      "context": "Client-provided Geshe media asset.",
+      "possible_future_location": "Teacher media; no public player activated in V1.",
+      "status": "AVAILABLE_NOT_PUBLISHED",
+      "access_level": "UNCONFIRMED",
+      "notes": "Local file validated as MP3 container. Do not expose until access and usage are confirmed."
     }
   ]
 }

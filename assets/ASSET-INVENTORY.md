@@ -82,8 +82,10 @@ The migrated files do not assert a portrait identity when visual review did not 
 | `events/event-november-25.jpg` | `/bardo-thodol` | Bardo Thödol, 22 November, CDMX, date year requires review |
 | `events/event-2026-01.jpg` through `event-2026-08.jpg`, `event-2026-10.jpg` | `/tradicion-bon` | Editorial image set; exact event labels/dates not encoded in filenames |
 | `events/ritual-visual-01.jpg` | `/`, `/visita-de-ss-34` | Visit/ritual programming visual; date to be confirmed |
+| `events/sadhana-todas-las-dakinis.jpeg` | `/classes.html` | Official flyer for Sadhana de todas las Dakinis, 2-3 October 2026 |
+| `events/visita-geshe-mexico-octubre-noviembre-2026.jpeg` | `/events/` | Official flyer for Geshe's Mexico visit, October-November 2026 |
 
-The old site also exposes event detail routes `/mexico-2026`, `/meditacion-vacio26`, `/tsalung26`, `/ritual-1000-ofrendas`, `/visita-de-ss-34`, and `/bardo-thodol`. Their text/date content still needs editorial migration; this pass only catalogs media.
+The old site also exposes event detail routes `/mexico-2026`, `/meditacion-vacio26`, `/tsalung26`, `/ritual-1000-ofrendas`, `/visita-de-ss-34`, and `/bardo-thodol`. Historical event data is retained in the editorial archive plan; future event details remain subject to confirmation.
 
 ## Prayers / Sacred Materials
 
@@ -95,6 +97,8 @@ The old site also exposes event detail routes `/mexico-2026`, `/meditacion-vacio
 | `documents/dharmakayaprayera1-4english-and-spanish-dOqZoa51ZlFyg0M2.pdf` | `/oraciones` | `UNCONFIRMED`; 27 pages, source page warns about protected translations |
 | `documents/purificacia3n-por-medio-del-agua-y-el-humo-versian-final-2-YX4jplJzwbhkrpwW.pdf` | `/oraciones` | `UNCONFIRMED`; 2 pages, copyright/access status needs confirmation |
 | `documents/sepi-gyalmo-tsog-ritaul-text-in-spanesh-AzGMVX6aB8t3D8Wj.pdf` | `/oraciones` | `UNCONFIRMED`; 15 pages, source page states some materials require transmission |
+| `documents/public/programa-sabiduria-kunsang-gar-es.pdf` | `/classes.html#brochures` | `PUBLIC`; client-authorized Spanish brochure, 13 pages |
+| `documents/public/kunsang-gar-wisdom-program-en.pdf` | `/classes.html#brochures` | `PUBLIC`; client-authorized English brochure, 13 pages |
 
 These files are preserved locally only. No new public access, registration gate, or practitioner permission has been implemented.
 
@@ -113,7 +117,7 @@ The old page also links to Google Books. That external link remains cataloged be
 | --- | --- | --- |
 | `certification/naljor-certification-01.jpeg` | `/oraciones` asset reference; certification use inferred from source context | Naljor / meditation visual; exact page placement needs confirmation |
 
-The certification page content, including the 75% attendance requirement, still belongs to the later editorial migration.
+The certification page now presents the Naljor structure and preserves the 75% attendance reference while leaving the current cohort calendar subject to confirmation.
 
 ## Gallery
 
@@ -160,13 +164,18 @@ The related Pexels thumbnail is also external: `https://images.pexels.com/videos
 
 ## Audio
 
-No audio URL was available in the repository or reviewed site HTML. `audio/audio-manifest.json` therefore records `PENDING_CLIENT_MEDIA`; no URL was invented.
+Two client-provided local audio files are cataloged in `audio/audio-manifest.json`. They are not embedded or autoplayed in V1 because access and publication rights are still `UNCONFIRMED`:
+
+| Archivo | Origen | Estado |
+| --- | --- | --- |
+| `audio/mantra-of-all-dakinis.mp3` | `/classes.html` | `AVAILABLE_NOT_PUBLISHED` |
+| `audio/tibet-house-geshe-dangsong-namgyal.mp3` | `/geshe-dangsong.html` | `AVAILABLE_NOT_PUBLISHED` |
 
 ## Duplicates and QA
 
 - Duplicate detection used SHA-256 over all local content files.
 - One exact duplicate was found during staging: the same source image appeared under an event staging name and the Bön landscape name. The event staging copy was removed; one canonical copy remains and its multiple source-page uses are recorded.
-- Final local catalog: 42 assets and 42 unique hashes.
+- Final local catalog: 48 manifest assets; the newly delivered flyers and audio files are preserved and have no exact hash duplicates.
 - `file` identified all images as valid PNG/JPEG/WebP files and all documents as valid PDFs.
 - `pdfinfo` opened all three PDFs successfully: 27, 2, and 15 pages.
 - No broken symlinks or empty downloaded files were found.
@@ -178,5 +187,5 @@ No audio URL was available in the repository or reviewed site HTML. `audio/audio
 - `/oraciones` contains explicit warnings about copyright, transmission, copying, distribution, and practice restrictions. Those warnings are preserved in the manifest; the files must not become public by accident.
 - The site did not expose reliable per-file copyright metadata for most images.
 - Several event and tradition images have opaque original filenames. Their local names are neutral and their exact editorial labels/dates remain to be confirmed.
-- New mantra/audio URLs were not recoverable and remain `PENDING_CLIENT_MEDIA`.
+- New external mantra/audio URLs were not supplied; the delivered local MP3 files are cataloged without inventing external URLs.
 - The source site contains stock/decorative Unsplash and Pexels media. Those were not downloaded because they are not required to preserve institutional content.
