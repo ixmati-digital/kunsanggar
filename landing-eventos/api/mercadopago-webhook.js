@@ -110,6 +110,27 @@ const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
 
 const normalizePhone = (phone) => String(phone || "").replace(/\D/g, "");
 
+const verifyWebhookSignature = (req, body) => {
+  const secret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+  const required = process.env.MERCADOPAGO_WEBHOOK_SIGNATURE_REQUIRED !== "false";
+  if (!secret) return !required;
+
+  const signature = String(req.headers["x-signature"] || "");
+  const requestId = String(req.headers["x-request-id"] || "");
+  const parts = Object.fromEntries(signature.split(",").map((part) => part.split("=", 2)).filter(([key, value]) => key && value));
+  const timestamp = parts.ts;
+  const receivedHash = parts.v1;
+  const dataId = String(req.query?.["data.id"] || body?.data?.id || body?.id || "").toLowerCase();
+
+  if (!timestamp || !receivedHash || !requestId || !dataId) return false;
+
+  const manifest = `id:${dataId};request-id:${requestId};ts:${timestamp};`;
+  const expectedHash = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
+  const received = Buffer.from(receivedHash, "hex");
+  const expected = Buffer.from(expectedHash, "hex");
+  return received.length === expected.length && crypto.timingSafeEqual(received, expected);
+};
+
 const isPlaceholderEmail = (email) => {
   const normalizedEmail = normalizeEmail(email);
   return !normalizedEmail || normalizedEmail.endsWith("@kunsanggarmexico.local");
@@ -251,6 +272,10 @@ module.exports = async function handler(req, res) {
     body = parseBody(req);
   } catch (error) {
     return sendJson(res, 400, { error: "JSON inválido." });
+  }
+
+  if (!verifyWebhookSignature(req, body)) {
+    return sendJson(res, 401, { error: "Firma de webhook inválida o no configurada." });
   }
 
   if (!isSupportedNotification(req.query, body)) {

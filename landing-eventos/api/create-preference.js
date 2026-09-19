@@ -3,7 +3,8 @@ const allowedOriginPatterns = [
   /^https:\/\/kunsanggar\.vercel\.app$/,
   /^https:\/\/(www\.)?kunsanggarmexico\.com$/,
   /^https:\/\/(www\.)?kunsanggarmexico\.org$/,
-  /^https:\/\/[a-z0-9-]+\.hostingersite\.com$/
+  /^https:\/\/[a-z0-9-]+\.hostingersite\.com$/,
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/
 ];
 
 const numberFromEnv = (name, fallback) => {
@@ -20,6 +21,11 @@ const events = {
   mil_ofrendas: {
     name: "Mil Ofrendas a Nampar Gyalwa | 26, 27 y 28 junio 2026",
     price: numberFromEnv("MIL_OFRENDAS_PRICE", 2000),
+    active: false
+  },
+  sadhana_dakinis: {
+    name: "Sadhana de todas las Dakinis | 2 y 3 octubre 2026",
+    price: numberFromEnv("SADHANA_DAKINIS_PRICE", 600),
     active: true
   }
 };
@@ -127,7 +133,15 @@ module.exports = async function handler(req, res) {
   }
 
   const eventSlug = String(body.evento || "").trim().replace(/-/g, "_");
-  const event = events[eventSlug];
+  const isDonation = eventSlug === "donacion_mx";
+  const donationAmount = Number(body.monto || body.amount);
+  const event = isDonation
+    ? {
+        name: "Donación Kunsang Gar México",
+        price: donationAmount,
+        active: Number.isInteger(donationAmount) && donationAmount >= 50 && donationAmount <= 50000
+      }
+    : events[eventSlug];
   const quantity = Number.parseInt(body.cantidad || 1, 10);
   const ticketType = String(body.tipo_ticket || body.tipoBoleto || "General").trim();
 
@@ -136,7 +150,7 @@ module.exports = async function handler(req, res) {
   }
 
   if (!event.active) {
-    return sendJson(res, 400, { error: "Este evento ya concluyó." });
+    return sendJson(res, 400, { error: isDonation ? "El monto de donación no es válido." : "Este evento ya concluyó." });
   }
 
   if (!Number.isInteger(quantity) || quantity <= 0) {
@@ -163,6 +177,7 @@ module.exports = async function handler(req, res) {
         quantity,
         unit_price: event.price,
         total_amount: totalAmount,
+        currency_code: "MXN",
         buyer_name: buyerName,
         buyer_email: buyerEmail,
         buyer_phone: buyerPhone,
@@ -184,13 +199,13 @@ module.exports = async function handler(req, res) {
       }
     ],
     back_urls: {
-      success: `${siteUrl}/success.html`,
-      failure: `${siteUrl}/failure.html`,
-      pending: `${siteUrl}/pending.html`
+      success: `${siteUrl}${process.env.PAYMENT_SUCCESS_PATH || "/payment-success.html"}`,
+      failure: `${siteUrl}${process.env.PAYMENT_FAILURE_PATH || "/payment-failure.html"}`,
+      pending: `${siteUrl}${process.env.PAYMENT_PENDING_PATH || "/payment-pending.html"}`
     },
     auto_return: "approved",
     external_reference: externalReference,
-    notification_url: `${siteUrl}/api/mercadopago-webhook`,
+    notification_url: process.env.PAYMENT_WEBHOOK_URL || `${siteUrl}${process.env.PAYMENT_WEBHOOK_PATH || "/api/mercadopago-webhook"}`,
     metadata: {
       external_reference: externalReference,
       nombre: buyerName,
