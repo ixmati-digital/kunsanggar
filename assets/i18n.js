@@ -704,7 +704,7 @@
     'indicaciones': 'guidance', 'sostiene': 'is sustained', 'acompañamiento': 'guidance', 'depende': 'depends',
     'programa': 'program', 'programas': 'programs', 'comunidad': 'community', 'contenido': 'content', 'ceremonia': 'ceremony',
     'hora': 'hour', 'horario': 'schedule', 'traducción': 'translation', 'traducciones': 'translations', 'eventos': 'events',
-    'orientación': 'guidance', 'eventual': 'eventual', 'evento': 'event', 'recuperación': 'retrieval', 'ha': 'has', 'budistas': 'Buddhist',
+    'orientación': 'guidance', 'eventual': 'eventual', 'evento': 'event', 'recuperación': 'retrieval', 'consultando': 'checking', 'ha': 'has', 'budistas': 'Buddhist',
     'tres': 'three', 'oficial': 'official', 'clase': 'class', 'observador': 'observer', 'observado': 'observed',
     'diferencia': 'difference', 'dualidad': 'duality', 'olas': 'waves', 'sean': 'are', 'grandes': 'large',
     'pequeñas': 'small', 'misma': 'same', 'océano': 'ocean', 'expresión': 'expression', 'no': 'no',
