@@ -1,7 +1,7 @@
 /* ROOT admin: real Supabase CRUD for the V1 golden path. */
 (async function () {
   const load = (src) => new Promise((resolve, reject) => { const script = document.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; document.head.appendChild(script); });
-  if (!window.KUNSANG_GAR_CONFIG) await load("/assets/platform-config.js");
+  if (!window.KUNSANG_GAR_CONFIG) await load("/assets/platform-config.js?v=22caf6a");
   if (!window.supabase) await load("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
   if (!window.KunsangGar) await load("/assets/platform.js");
   const api = window.KunsangGar;
