@@ -206,6 +206,7 @@
     'Gracias. Estamos consultando el estado de la orden registrada.': 'Thank you. We are checking the status of the recorded order.',
     'Estado: consultando': 'Status: checking',
     'Estado recibido': 'Received status',
+    'Estado:': 'Status:',
     'Estado de la orden': 'Order status',
     'Referencia': 'Reference',
     'Identificador de pago': 'Payment ID',
