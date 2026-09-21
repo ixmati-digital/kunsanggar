@@ -1,6 +1,6 @@
 # Kunsang Gar — Supabase Infrastructure Migration
 
-Status: `PLANNED / NON-DESTRUCTIVE`
+Status: `IN PROGRESS / NON-DESTRUCTIVE — DATA IMPORT COMPLETE`
 
 Checkpoint audited: `8bc1382` (`feat: close V1 Mexico payment operations`)
 
@@ -65,13 +65,20 @@ Read-only source inventory completed on 2026-09-21:
 Destination migration status as of 2026-09-21:
 
 - Product migration applied successfully.
-- Mexico payments migration applied successfully after a clean-query retry; `ticket_orders` is empty in the destination pending the source export.
+- Mexico payments migration applied successfully after a clean-query retry; `ticket_orders` contains 50 imported Kunsang rows from the read-only source export. Literal CSV `null` values were normalized to empty database values before import; no source row was edited.
 - Seven V1 tables are visible in the destination Table Editor.
 - Private bucket `protected-content` is present and shows two policies.
 - `ticket_orders_admin_read` is present and RLS is enabled.
 - Public REST checks with the publishable key returned empty arrays for the V1 tables; no public order data was exposed.
+- The source `ticket_orders` table remains unchanged with its 50 rows; no PhotoSchool project, table, bucket, object, policy, user, or configuration was modified.
 
-Required data inventory before migration:
+Data migration result:
+
+- Source export verified at 50 rows and 20 columns.
+- Destination Table Editor confirmed `Successfully imported 50 rows` and `50 records`.
+- No profiles, programs, content, enrollments, access grants, events, Auth users, or Storage objects were copied because they were not verified as required Kunsang data and/or require owner-controlled authorization.
+
+Required data inventory before any further migration:
 
 - Count and sample-safe metadata for Kunsang `profiles`, `programs`, `content_items`, `enrollments`, `access_grants`, `events`, and `ticket_orders`.
 - Identify whether current rows are real Kunsang data, seed/demo data, or unrelated tenant data.
@@ -120,9 +127,10 @@ Required outside Git:
 
 Current repository state:
 
-- `assets/platform-config.js` has empty public Supabase values and must remain secret-safe until destination values are validated.
+- `assets/platform-config.js` now contains the destination project URL and browser-safe publishable key; it contains no service-role key.
 - `assets/payment-config.js` has an empty API base and contains no secrets.
 - `landing-eventos/.env.local` contains only a redacted Vercel OIDC token reference; no production Supabase or Mercado Pago secret is available in the repository.
+- The frontend has not been deployed or cut over; the old project remains available for rollback.
 
 ## MIGRATION PLAN
 
@@ -130,7 +138,7 @@ Current repository state:
 2. Create clean Free destination project `kunsang-gar`; stop on any paid-plan prompt.
 3. Review both migrations against a clean destination and apply them in order.
 4. Verify schema, functions, triggers, RLS, policies, and private bucket.
-5. Inventory and migrate only verified Kunsang data, if needed; otherwise keep destination schema-only.
+5. Inventory and migrate only verified Kunsang data. Completed for `ticket_orders`: 50 rows imported; no ambiguous product/content/auth/storage data copied.
 6. Configure Auth and create the Kunsang administrator through the owner-controlled login/verification flow.
 7. Configure Vercel serverless environment with the new Supabase URL, anon key, service-role key, and approved Mercado Pago credentials.
 8. Update browser-safe `assets/platform-config.js` and API base configuration without committing secrets.
