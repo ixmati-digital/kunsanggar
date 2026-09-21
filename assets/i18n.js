@@ -841,10 +841,12 @@
   }
 
   function updateMeta() {
-    if (lang !== 'en' || !titles[page]) return;
-    document.title = titles[page][0];
-    const description = document.querySelector('meta[name="description"]');
-    if (description) description.setAttribute('content', titles[page][1]);
+    if (!titles[page]) return;
+    if (lang === 'en') {
+      document.title = titles[page][0];
+      const description = document.querySelector('meta[name="description"]');
+      if (description) description.setAttribute('content', titles[page][1]);
+    }
     const canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
       const link = document.createElement('link');
