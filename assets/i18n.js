@@ -565,6 +565,9 @@
     account: ['Practitioner area | Kunsang Gar Mexico', 'Access programs, resources and authorized teachings.'],
     teachings: ['Teachings | Kunsang Gar Mexico', 'Study, contemplation and practice with Kunsang Gar.'],
     library: ['Library | Kunsang Gar Mexico', 'Authorized resources for study and practice.']
+    , 'payment-success': ['Payment received | Kunsang Gar Mexico', 'Payment return status for Kunsang Gar Mexico.']
+    , 'payment-pending': ['Payment pending | Kunsang Gar Mexico', 'Pending payment status for Kunsang Gar Mexico.']
+    , 'payment-failure': ['Payment not completed | Kunsang Gar Mexico', 'Payment result for Kunsang Gar Mexico.']
   };
 
   // Longer doctrinal paragraphs are kept as explicit, conservative translations.
@@ -877,11 +880,14 @@
     });
     if (lang === 'en') {
       const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === Node.ELEMENT_NODE) translateTextNodes(node);
-        }));
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) translateTextNodes(node);
+          });
+          if (mutation.type === 'characterData') translateTextNodes(mutation.target.parentElement || document.body);
+        });
       });
-      observer.observe(document.body, { childList: true, subtree: true });
+      observer.observe(document.body, { childList: true, characterData: true, subtree: true });
       window.setTimeout(() => observer.disconnect(), 12000);
     }
   }
