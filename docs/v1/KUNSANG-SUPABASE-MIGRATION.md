@@ -20,7 +20,10 @@ Checkpoint audited: `8bc1382` (`feat: close V1 Mexico payment operations`)
 - Plan: Free only; stop if any action introduces a charge.
 - Region: choose one available reasonable for Mexico/USA during project creation and record it here before continuing.
 - Target services: Database, Auth, Storage, and RLS in the new project.
-- Destination project URL, project reference, region, and creation date: **pending human-authenticated setup**.
+- Destination organization: `Kunsang Gar FREE` (`nfhdevnhuibdnjepwkkv`).
+- Destination project: `Kunsang Gar` (`bzmqddxnpopkqhdxsngu`), region `AWS | us-east-2`, production branch `main`.
+- Destination project URL: `https://bzmqddxnpopkqhdxsngu.supabase.co`.
+- Destination created before this migration; it was verified clean before applying the migrations.
 
 ## SCHEMA
 
@@ -58,6 +61,15 @@ Read-only source inventory completed on 2026-09-21:
 - Storage shows 0 buckets in the current Kunsang project.
 - The V1 product tables (`profiles`, `programs`, `content_items`, `enrollments`, `access_grants`, `events`) were not present in the visible source table inventory.
 - `ticket_orders` has RLS enabled in the source; the dashboard showed no visible policy for that table, so the destination policy must be applied and tested explicitly.
+
+Destination migration status as of 2026-09-21:
+
+- Product migration applied successfully.
+- Mexico payments migration applied successfully after a clean-query retry; `ticket_orders` is empty in the destination pending the source export.
+- Seven V1 tables are visible in the destination Table Editor.
+- Private bucket `protected-content` is present and shows two policies.
+- `ticket_orders_admin_read` is present and RLS is enabled.
+- Public REST checks with the publishable key returned empty arrays for the V1 tables; no public order data was exposed.
 
 Required data inventory before migration:
 
