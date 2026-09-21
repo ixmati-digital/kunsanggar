@@ -13,8 +13,8 @@
     "imagen": "/mujeres-sagradas-gran-perfeccion.jpeg",
     "payment_url": "https://buy.stripe.com/6oUdR93H804FaNO6eFg7e0t",
     "registration_url": "https://docs.google.com/forms/d/e/1FAIpQLSdOD_ifV4J5vuE4DYC9gXBxWS2f3c-aOQyDzdpgb1dcMVLpkw/viewform",
-    "estado": "activo",
-    "destacado": true,
+    "estado": "finalizado",
+    "destacado": false,
     "aprendizajes": [
       "Linaje de mujeres Bön que alcanzaron la realización última",
       "Prácticas mudras",

@@ -95,8 +95,9 @@
   };
 
   const setCourseLinks = (course) => {
+    const active = course.estado === "activo";
     $$("[data-primary-cta]").forEach((link) => {
-      if (course.estado === "activo" && course.registration_url) {
+      if (active && course.registration_url) {
         link.href = course.registration_url;
         link.target = "_blank";
         link.rel = "noopener";
@@ -104,20 +105,24 @@
         link.href = `${basePath}#curso`;
         link.removeAttribute("target");
         link.removeAttribute("rel");
-        link.textContent = "Ver cursos activos";
+        link.textContent = active ? "Ver cursos activos" : "Ver registro histórico";
       }
     });
 
     $$("[data-payment-link]").forEach((link) => {
-      link.href = course.payment_url || "#";
-      link.classList.toggle("is-disabled", !course.payment_url);
-      if (!course.payment_url) link.setAttribute("aria-disabled", "true");
+      const enabled = active && course.payment_url;
+      link.href = enabled ? course.payment_url : "#";
+      link.classList.toggle("is-disabled", !enabled);
+      if (!enabled) link.setAttribute("aria-disabled", "true");
+      if (!active) link.textContent = "Donativo cerrado";
     });
 
     $$("[data-registration-link]").forEach((link) => {
-      link.href = course.registration_url || "#";
-      link.classList.toggle("is-disabled", !course.registration_url);
-      if (!course.registration_url) link.setAttribute("aria-disabled", "true");
+      const enabled = active && course.registration_url;
+      link.href = enabled ? course.registration_url : "#";
+      link.classList.toggle("is-disabled", !enabled);
+      if (!enabled) link.setAttribute("aria-disabled", "true");
+      if (!active) link.textContent = "Registro cerrado";
     });
   };
 
@@ -128,6 +133,8 @@
     setText("[data-info-title]", course.titulo);
     setText("[data-info-description]", course.descripcion);
     setText("[data-learning-title]", `Qué aprenderás en ${course.titulo}`);
+    setText(".courses-section .section-heading h2", course.estado === "activo" ? "Una sola enseñanza abierta en este momento" : "Registro histórico");
+    setText(".courses-section .section-heading p", course.estado === "activo" ? "La información publicada corresponde únicamente a la enseñanza actualmente abierta." : "La información se conserva como referencia histórica; no hay inscripción vigente.");
 
     const image = $("[data-featured-image]");
     if (image) {
