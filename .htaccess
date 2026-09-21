@@ -1,0 +1,12 @@
+Options -Indexes
+
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(books\.html|plan-12000\.html|plan-18000\.html)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^(books\.html|plan-12000\.html|plan-18000\.html)$">
+    Deny from all
+  </FilesMatch>
+</IfModule>

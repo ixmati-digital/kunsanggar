@@ -22,7 +22,7 @@
 .book-card-cover img{width:100%;height:auto;max-height:470px;object-fit:contain;display:block}
 .book-card-body{padding:24px}.book-card-body h2{font-size:clamp(1.35rem,2vw,1.8rem);margin:.35rem 0 .8rem}.book-card-body p{margin:.65rem 0;line-height:1.6}.book-meta{font-size:.9rem;color:var(--ink-soft,#666)}
 .book-purchase{display:inline-flex;align-items:center;margin-top:12px;padding:10px 14px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.04em}.book-purchase.pending{border:1px solid #c9b87c;background:#faf6e6;color:#66531d}
-.sangha-placeholder{min-height:280px;background:linear-gradient(135deg,#1b5d59,#a2c8b2);display:grid;place-items:center;color:#fff;font-family:Georgia,serif;font-size:clamp(2rem,5vw,4rem);font-style:italic}.sangha-placeholder figcaption{color:#fff}
+.sangha-visual{min-height:280px;background:linear-gradient(135deg,#1b5d59,#a2c8b2);display:grid;place-items:center;color:#fff;font-family:Georgia,serif;font-size:clamp(2rem,5vw,4rem);font-style:italic}.sangha-visual figcaption{color:#fff}
 @media(max-width:900px){.books-grid{grid-template-columns:1fr 1fr}.book-card-cover{min-height:320px}}
 @media(max-width:640px){.books-grid{grid-template-columns:1fr}.book-card-cover{min-height:0}.book-card-cover img{max-height:none}}
 .root-page-image figcaption{padding:14px 16px;color:#655e63;font-size:.86rem}

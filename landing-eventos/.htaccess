@@ -1,0 +1,11 @@
+Options -Indexes
+<IfModule mod_authz_core.c>
+  <Files "plataforma.html">
+    Require all denied
+  </Files>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <Files "plataforma.html">
+    Deny from all
+  </Files>
+</IfModule>
