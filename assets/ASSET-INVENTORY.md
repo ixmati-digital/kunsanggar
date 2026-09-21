@@ -186,11 +186,13 @@ Two client-provided audio files are cataloged in `audio/audio-manifest.json` and
 ## New client book material (2026-09-21)
 
 Three client-provided book-cover PDFs are preserved under
-`docs/client-source/books/` as source-only files. Derived public cover images
-are under `assets/books/covers/` and are listed in `assets/books/book-manifest.json`.
-The full PDFs are not linked from the public site. Purchase URLs remain
-`BUY_LINK_PENDING` because no unambiguous links were available in the supplied
-material.
+`docs/client-source/books/` as private source-only files. Public cover
+derivatives and the three public catalog fichas were removed from V1 México.
+The internal manifest is `docs/client-source/books/book-manifest.json`.
+
+The material is deferred to `PHASE_2 / STORE MODULE`; it requires Geshe
+approval and the corresponding store-module advance payment. Purchase links
+are not a V1 pending item.
 
 - Public visibility on the old site was not treated as permission to republish. Most migrated assets are `UNCONFIRMED` until the client confirms rights and intended audience.
 - `/oraciones` contains explicit warnings about copyright, transmission, copying, distribution, and practice restrictions. Those warnings are preserved in the manifest; the files must not become public by accident.

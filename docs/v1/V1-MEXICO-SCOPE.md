@@ -8,7 +8,7 @@ Cerrar una V1 concreta para Kunsang Gar México con presencia pública, contenid
 
 ## Incluido en V1
 
-- Sitio público ROOT: Inicio, Servicios, Contacto, Clases, Kunsang Gar, Geshe Dangsong, Tradición Bön, Nuevo Bön, Rimé, Libros, Certificación, Oraciones, México 2026, Eventos, Programas/Enseñanzas y Donaciones.
+- Sitio público ROOT: Inicio, Servicios, Contacto, Clases, Kunsang Gar, Geshe Dangsong, Tradición Bön, Nuevo Bön, Rimé, Certificación, Oraciones, México 2026, Eventos, Programas/Enseñanzas y Donaciones. Libros/tienda quedan reservados para Phase 2.
 - Contenido editorial migrado desde los documentos del cliente y materiales autorizados.
 - Presentación de clases y eventos México con descripción, fechas, horarios, modalidad, donativo/precio, registro y estado histórico/próximo cuando la fuente lo confirma.
 - Sadhana de todas las Dakinis y visita de Geshe octubre-noviembre 2026.
@@ -26,6 +26,7 @@ Cerrar una V1 concreta para Kunsang Gar México con presencia pública, contenid
 - LMS avanzado, progreso, métricas avanzadas y automatizaciones internacionales.
 - Biblioteca privada avanzada, permisos doctrinales avanzados y flujos complejos de solicitudes/aprobaciones.
 - Tienda/e-commerce, Email & Comunicación, infraestructura internacional adicional y video/streaming avanzado.
+- Libros y catálogo de tienda: Phase 2, sujeto a aprobación de Geshe y pago del anticipo del módulo Tienda.
 - Nuevos módulos solicitados después del cierre de V1.
 
 El código adelantado de estas áreas se conserva como referencia y backlog; no es requisito de cierre de V1.

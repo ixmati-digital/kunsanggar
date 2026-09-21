@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1",
+  "updated_at": "2026-09-21",
+  "source_folder": "~/Downloads/nuevo material kunsang gar/",
+  "publication_status": "PRIVATE_SOURCE_ONLY",
+  "module": "PHASE_2 / STORE MODULE",
+  "approval_required": "Geshe approval and store-module advance payment",
+  "buy_link_status": "DEFERRED_WITH_STORE_MODULE",
+  "books": [
+    {
+      "id": "mujeres-santas-de-gran-perfeccion",
+      "source_pdf": "docs/client-source/books/mujeres-santas-de-gran-perfeccion.pdf",
+      "title": "Mujeres Santas de Gran Perfección",
+      "author": "Geshe Dangsong Namgyal",
+      "language": "Español",
+      "isbn": "979-8-9937738-0-3",
+      "buy_link": null,
+      "status": "PHASE_2_PRIVATE_SOURCE"
+    },
+    {
+      "id": "los-doce-versos-inmutables",
+      "source_pdf": "docs/client-source/books/los-doce-versos-inmutables.pdf",
+      "title": "Los doce versos inmutables",
+      "author": "Geshe Dangsong Namgyal",
+      "language": "Español",
+      "buy_link": null,
+      "status": "PHASE_2_PRIVATE_SOURCE"
+    },
+    {
+      "id": "dzogchen-puro",
+      "source_pdf": "docs/client-source/books/dzogchen-puro.pdf",
+      "title": "Dzogchen Puro",
+      "author": "Geshe Dangsong Namgyal",
+      "language": "Español",
+      "isbn": "979-0-9996898-3-7",
+      "buy_link": null,
+      "status": "PHASE_2_PRIVATE_SOURCE"
+    }
+  ]
+}
