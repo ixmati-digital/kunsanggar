@@ -117,7 +117,7 @@
 .real-home .book-section{background:var(--paper-deep)}
 .real-home .book-feature{display:grid;grid-template-columns:220px 1fr;gap:50px;align-items:center;max-width:760px;margin-inline:auto}
 .real-home .book-cover{margin:0;border:8px solid #fff;box-shadow:0 16px 32px rgba(26,24,49,.14)}
-.real-home .book-cover img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.real-home .book-cover img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain;display:block}
 .real-home .book-feature h2{max-width:600px}
 .real-home .donations-section{padding:58px 0;background:var(--ochre);border-bottom:0}
 .real-home .donations-band{display:flex;justify-content:space-between;align-items:center;gap:34px}
