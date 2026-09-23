@@ -48,6 +48,13 @@
     window.location.replace(next || "/account/");
   }
 
+  async function register(fullName, email, password) {
+    if (!client) throw new Error("Supabase no está configurado en esta instalación.");
+    const { data, error } = await client.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+    if (error) throw error;
+    return data;
+  }
+
   function loginView() {
     const form = document.querySelector("[data-login-form]");
     if (!form) return;
@@ -58,6 +65,18 @@
       status("Iniciando sesión…");
       try { await login(form.email.value.trim(), form.password.value); }
       catch (error) { button.disabled = false; fail(error); }
+    });
+    const registerForm = document.querySelector("[data-register-form]");
+    registerForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = registerForm.querySelector("button[type=submit]");
+      const notice = document.querySelector("[data-register-status]");
+      button.disabled = true;
+      try {
+        const data = await register(registerForm.full_name.value.trim(), registerForm.email.value.trim(), registerForm.password.value);
+        if (data.session) window.location.replace("/account/");
+        else { notice.textContent = "Cuenta creada. Revisa tu correo para confirmar el acceso y después inicia sesión."; notice.hidden = false; }
+      } catch (error) { button.disabled = false; notice.textContent = error.message || "No se pudo crear la cuenta."; notice.dataset.status = "error"; notice.hidden = false; }
     });
   }
 
@@ -113,7 +132,7 @@
     } catch (error) { fail(error); }
   }
 
-  window.KunsangGar = { client, cfg, esc, slugify, fmtDate, status, fail, current, profile, guard, login, loadPrograms, bucket };
+  window.KunsangGar = { client, cfg, esc, slugify, fmtDate, status, fail, current, profile, guard, login, register, loadPrograms, bucket };
   async function boot() {
     try {
       const path = location.pathname;
