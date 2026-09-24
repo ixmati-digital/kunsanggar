@@ -49,6 +49,8 @@
     if (page === "program-editor") { const id = new URLSearchParams(location.search).get("id"); if (id) { const { data, error } = await client.from("programs").select("*").eq("id", id).single(); if (error) throw error; const form = document.querySelector("[data-program-form]"); Object.entries(data).forEach(([key, value]) => { if (form.elements[key]) form.elements[key].value = value ?? ""; }); } }
   }
   async function init() {
+    const adminAccess = await api.guard("ADMIN");
+    if (!adminAccess) return;
     app.innerHTML = shell(({ overview, programs, "program-editor": programEditor, content, students, events, orders, library: libraryAdmin, access }[page] || overview)(), page);
     document.querySelector("[data-menu]")?.addEventListener("click", () => document.querySelector(".admin-sidebar")?.classList.toggle("is-open"));
     document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client?.auth.signOut(); location.href = "/account/"; }));

@@ -26,6 +26,7 @@ This document records the final technical verification. It does not change publi
 | Practitioner registration | PASS (UI deployed) | Account page now provides controlled Supabase sign-up; the production Auth project requires email confirmation before a new session is issued. |
 | Student enrollment/admin access | PASS (UI deployed) | Admin now has Students and Access Control screens using the existing `enrollments` and `access_grants` tables. |
 | Private upload | PASS (UI deployed) | Admin content form now uploads selected files to the private `protected-content` bucket and stores `storage_path`; no client material was uploaded during QA. |
+| Admin guard | PASS (code corrected) | The admin shell now validates the ADMIN profile before rendering protected administration data. |
 
 ## CLIENT ACCEPTANCE TEST
 
@@ -43,6 +44,8 @@ The deployed API preserves the existing México/MXN flow and server-side secret 
 | Signed URL | BLOCKED | The production code path calls `createSignedUrl` for `storage_path` resources and the bucket policy exists, but there is no authorized protected V1 resource available to exercise end-to-end without inventing or publishing content. |
 
 These two items are the only runtime validations left open in this handoff. No public protected resource was created to hide an unverified result. The temporary Auth account must be removed from the Supabase dashboard before final acceptance; it has no application data or access grants.
+
+The access consistency migration `20260923000000_v1_access_consistency.sql` is committed with the product changes. It must be applied in the Kunsang destination project before final RLS acceptance. The visible Supabase session during this work only has access to the historical Ixmati project `zienhasmbmrzwcysekdh`; that project was not modified.
 
 ## CLIENT CONTENT REVIEW
 
