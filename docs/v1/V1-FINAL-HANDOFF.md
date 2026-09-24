@@ -21,9 +21,9 @@ This document records the final technical verification. It does not change publi
 | Admin orders | PASS | `/admin/orders.html` rendered in the authenticated production session. |
 | Vercel API availability | PASS | Safe production checks: webhook `GET` returned the expected ignored response; preference endpoint `OPTIONS` returned `204`; method guards returned expected `405`; payment status returned the expected validation `400` without an order reference. |
 | Supabase production | PASS | New Kunsang Gar project responded at the configured project URL; tables, migrated orders, RLS policies and private bucket were available. |
-| Program/content test-data cleanup | PASS | Earlier temporary program/content records were deleted through the Supabase SQL Editor; anonymous REST checks on 2026-09-23 returned empty results. The temporary Auth user remains and is tracked below. |
+| Program/content test-data cleanup | NOT VERIFIED IN THIS RUN | Anonymous REST checks on 2026-09-24 returned empty arrays for programs and content_items. No member-path test rows were created in this run. |
 | Public copy boundary | PASS | Source audit found no internal phase, budget, blocker, QA, infrastructure or approval copy in the public HTML. |
-| Practitioner registration UI | DEPLOYED, runtime incomplete | Account page offers Supabase sign-up. The temporary user was created, but Auth requires email confirmation and has not issued a practitioner session. |
+| Practitioner registration UI | DEPLOYED, runtime incomplete | Account page offers Supabase sign-up. The existing temporary user's email was confirmed in destination Auth, but this run did not establish a practitioner session. |
 | Student enrollment/admin access UI | DEPLOYED, unverified | Admin has Students and Access Control screens using `enrollments` and `access_grants`; no practitioner enrollment or grant has been tested end-to-end. |
 | Private upload UI | DEPLOYED, unverified | Admin content form targets the private `protected-content` bucket and stores `storage_path`; no protected test file has been uploaded or opened. |
 | Admin guard without session | PASS | In a fresh production browser session, `/admin/orders.html` redirected to `/account/?next=%2Fadmin%2Forders.html` before showing orders. |
@@ -43,17 +43,17 @@ The deployed API preserves the existing México/MXN flow and server-side secret 
 
 | Check | Status | Reason |
 | --- | --- | --- |
-| Normal user login/session/profile and RLS | BLOCKED | Password login for `v1-practitioner-20260923@kunsanggarmexico.com` returned `email_not_confirmed` on 2026-09-23. No practitioner JWT or session was issued. |
-| Admin enrollment/grant and practitioner program/content access | BLOCKED | Requires the confirmed practitioner session, temporary technical program/content records and destination dashboard access for the test and cleanup. No complete path has been exercised. |
+| Normal user login/session/profile and RLS | BLOCKED | The previous login attempt returned `email_not_confirmed`; Auth later confirmed that temporary user, but practitioner login and RLS have not been retested. |
+| Admin enrollment/grant and practitioner program/content access | BLOCKED | Requires an authenticated practitioner session and temporary technical records. The browser session became unavailable before the end-to-end test. |
 | Private upload and signed URL | BLOCKED | Requires an authorized protected test resource and practitioner session. Bucket configuration and code alone are not end-to-end proof. |
-| Access consistency migration | BLOCKED | `20260923000000_v1_access_consistency.sql` is versioned and pushed but has not been applied to the destination project. |
-| Temporary Auth user cleanup | BLOCKED | The unconfirmed test user still exists in the destination project; destination Authentication administration is not accessible in the current dashboard session. |
+| Access consistency migration | PASS | `20260923000000_v1_access_consistency.sql` was applied in the Kunsang destination SQL Editor on 2026-09-24; Supabase returned “Success. No rows returned”. |
+| Temporary Auth user cleanup | BLOCKED | The prior temporary user was confirmed, but this run could not remove it because the connected Chrome debugging session became unavailable. |
 
-No public protected resource was created to hide an unverified result. The temporary Auth account must be removed after the practitioner test; it has no application data or access grants at this checkpoint.
+No public protected resource was created to hide an unverified result. The destination Auth user was confirmed, but a fresh practitioner login and test-data cleanup remain outstanding. An additional test user was not created because Chrome automation lost its session before submitting the user form.
 
-The production practitioner login form was also exercised with the temporary account. It displayed `Email not confirmed`; this is the actual Auth response, not an inference from the schema.
+The production practitioner login form displayed `Email not confirmed` during the earlier 2026-09-23 check. The temporary account was subsequently confirmed directly in destination Auth on 2026-09-24, but login with that account has not yet been retested.
 
-The access consistency migration `20260923000000_v1_access_consistency.sql` was pushed in `b0a8ee9`. It must be applied in destination `bzmqddxnpopkqhdxsngu` before final RLS acceptance. The owner later deleted the historical Kunsang project `zienhasmbmrzwcysekdh` from Ixmati after cutover. The active Kunsang project remains `bzmqddxnpopkqhdxsngu`; the current dashboard session does not provide administrative access to that separate account. Production REST calls to the destination work with the public key.
+The access consistency migration `20260923000000_v1_access_consistency.sql` is applied in destination `bzmqddxnpopkqhdxsngu`. The owner deleted the historical Kunsang project `zienhasmbmrzwcysekdh` after cutover; the active Kunsang project remains the destination. On 2026-09-24, anonymous REST requests to `ticket_orders`, `profiles`, `programs`, `content_items`, `enrollments` and `access_grants` each returned HTTP 200 with zero visible rows. This confirms public requests did not expose rows, but does not prove practitioner or administrator RLS behavior. Chrome automation then reported `Debugger unattached` and `User unavailable`, preventing further dashboard and production-session interaction.
 
 ## CLIENT CONTENT REVIEW
 
@@ -90,7 +90,7 @@ ADMIN: PASS
 PROGRAM CRUD: PASS
 CONTENT CRUD: PASS
 PUBLIC RLS: PASS
-NORMAL USER RLS: BLOCKED — practitioner email unconfirmed
+NORMAL USER RLS: BLOCKED — no practitioner session/test was completed
 ADMIN RLS: PASS
 PRIVATE STORAGE: PASS
 SIGNED URL: BLOCKED — no authorized protected resource or practitioner session
@@ -100,7 +100,7 @@ SUPABASE: PASS
 MERCADO PAGO: CLIENT ACCEPTANCE TEST PENDING
 CLIENT CONTENT REVIEW: REQUIRED — internal, not public
 PRODUCTION: PASS for verified public/API routes; member golden path unverified
-V1 TECHNICAL STATUS: NOT CLOSED — practitioner/admin member workflow, private document and migration require live validation
+V1 TECHNICAL STATUS: NOT CLOSED — practitioner login, end-to-end enrollment/access, signed URL and temporary-user cleanup remain unverified
 ```
 
 The public site remains live. This handoff is internal; no doctrinal test content or protected client document was published.
