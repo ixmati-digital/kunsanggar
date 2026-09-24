@@ -26,7 +26,10 @@ This document records the final technical verification. It does not change publi
 | Practitioner registration UI | DEPLOYED, runtime incomplete | Account page offers Supabase sign-up. The temporary user was created, but Auth requires email confirmation and has not issued a practitioner session. |
 | Student enrollment/admin access UI | DEPLOYED, unverified | Admin has Students and Access Control screens using `enrollments` and `access_grants`; no practitioner enrollment or grant has been tested end-to-end. |
 | Private upload UI | DEPLOYED, unverified | Admin content form targets the private `protected-content` bucket and stores `storage_path`; no protected test file has been uploaded or opened. |
-| Admin guard without session | PASS | In a fresh production browser session, `/admin/orders.html` redirected to `/account/?next=%2Fadmin%2Forders.html` before showing orders. Authenticated ADMIN access was verified in the earlier QA run. |
+| Admin guard without session | PASS | In a fresh production browser session, `/admin/orders.html` redirected to `/account/?next=%2Fadmin%2Forders.html` before showing orders. |
+| Current ADMIN session and orders | PASS | On 2026-09-23 the production account page displayed role `ADMIN`; `/admin/orders.html` loaded historical `ticket_orders` rows. The admin overview showed 0 programs and 0 content items; Students showed the temporary PRACTITIONER profile with no enrollment. |
+| Admin cache correction | PASS | The admin HTML now loads `admin.js?v=6`; a fresh production navigation displayed Students and Access Control after the previous `v=5` cache obscured those screens. |
+| Public language regression | FIX DEPLOY PENDING | A live EN check found untranslated account registration labels and a repeated home callout. The non-doctrinal labels were corrected in `assets/i18n.js` and its cache version was updated; production must be rechecked after deploy. |
 
 ## CLIENT ACCEPTANCE TEST
 
@@ -47,6 +50,8 @@ The deployed API preserves the existing México/MXN flow and server-side secret 
 | Temporary Auth user cleanup | BLOCKED | The unconfirmed test user still exists in the destination project; destination Authentication administration is not accessible in the current dashboard session. |
 
 No public protected resource was created to hide an unverified result. The temporary Auth account must be removed after the practitioner test; it has no application data or access grants at this checkpoint.
+
+The production practitioner login form was also exercised with the temporary account. It displayed `Email not confirmed`; this is the actual Auth response, not an inference from the schema.
 
 The access consistency migration `20260923000000_v1_access_consistency.sql` was pushed in `b0a8ee9`. It must be applied in destination `bzmqddxnpopkqhdxsngu` before final RLS acceptance. Direct navigation to destination Authentication redirected the current Supabase dashboard session to the Ixmati organization list; its project list contains the historical Kunsang project `zienhasmbmrzwcysekdh`, Academia Ixmati and PhotoSchool. The historical project was not modified. Production REST calls to `bzmqddxnpopkqhdxsngu` work with the public key but do not provide administrative access.
 
