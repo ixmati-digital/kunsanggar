@@ -53,7 +53,7 @@ No public protected resource was created to hide an unverified result. The tempo
 
 The production practitioner login form was also exercised with the temporary account. It displayed `Email not confirmed`; this is the actual Auth response, not an inference from the schema.
 
-The access consistency migration `20260923000000_v1_access_consistency.sql` was pushed in `b0a8ee9`. It must be applied in destination `bzmqddxnpopkqhdxsngu` before final RLS acceptance. Direct navigation to destination Authentication redirected the current Supabase dashboard session to the Ixmati organization list; its project list contains the historical Kunsang project `zienhasmbmrzwcysekdh`, Academia Ixmati and PhotoSchool. The historical project was not modified. Production REST calls to `bzmqddxnpopkqhdxsngu` work with the public key but do not provide administrative access.
+The access consistency migration `20260923000000_v1_access_consistency.sql` was pushed in `b0a8ee9`. It must be applied in destination `bzmqddxnpopkqhdxsngu` before final RLS acceptance. The owner later deleted the historical Kunsang project `zienhasmbmrzwcysekdh` from Ixmati after cutover. The active Kunsang project remains `bzmqddxnpopkqhdxsngu`; the current dashboard session does not provide administrative access to that separate account. Production REST calls to the destination work with the public key.
 
 ## CLIENT CONTENT REVIEW
 

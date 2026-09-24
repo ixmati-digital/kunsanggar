@@ -1,6 +1,6 @@
 # Kunsang Gar — Supabase Infrastructure Migration
 
-Status: `IN PROGRESS / NON-DESTRUCTIVE — DATA IMPORT COMPLETE`
+Status: `SOURCE DECOMMISSIONED BY OWNER — DESTINATION IS THE ACTIVE KUNSANG PROJECT`
 
 Checkpoint audited: `8bc1382` (`feat: close V1 Mexico payment operations`)
 
@@ -9,7 +9,7 @@ Checkpoint audited: `8bc1382` (`feat: close V1 Mexico payment operations`)
 - Current source organization: `Ixmati Estudio FREE` (`gdbtsslhihnadsuldszk`).
 - Current Kunsang project: `kunsang-gar` (`zienhasmbmrzwcysekdh`), region shown as `AWS | us-east-1`, production branch `main`.
 - Separate PhotoSchool project observed in the same organization: `PhotoSchool` (`favxlanxbozcmhzvpyvb`), region `AWS | us-east-2`; it is out of scope and was not modified.
-- The source project must remain online and unchanged during this migration.
+- The source project was retained during migration and was later deleted by the owner after cutover.
 - PhotoSchool resources are explicitly out of scope. No PhotoSchool table, bucket, object, policy, user, or configuration may be changed.
 
 ## DESTINATION
@@ -70,7 +70,7 @@ Destination migration status as of 2026-09-21:
 - Private bucket `protected-content` is present and shows two policies.
 - `ticket_orders_admin_read` is present and RLS is enabled.
 - Public REST checks with the publishable key returned empty arrays for the V1 tables; no public order data was exposed.
-- The source `ticket_orders` table remains unchanged with its 50 rows; no PhotoSchool project, table, bucket, object, policy, user, or configuration was modified.
+- At migration time, the source `ticket_orders` table remained unchanged with its 50 rows. The owner later deleted the source project after the destination was established. No PhotoSchool project, table, bucket, object, policy, user, or configuration was modified.
 
 Data migration result:
 
@@ -130,7 +130,7 @@ Current repository state:
 - `assets/platform-config.js` now contains the destination project URL and browser-safe publishable key; it contains no service-role key.
 - `assets/payment-config.js` has an empty API base and contains no secrets.
 - `landing-eventos/.env.local` contains only a redacted Vercel OIDC token reference; no production Supabase or Mercado Pago secret is available in the repository.
-- The frontend has not been deployed or cut over; the old project remains available for rollback.
+- The frontend configuration points to the destination project. The old source project is no longer available for rollback because the owner deleted it after cutover.
 
 ## MIGRATION PLAN
 
@@ -145,12 +145,12 @@ Current repository state:
 9. Run non-payment QA: public site, Auth, admin role, RLS, programs/content, private storage, and `/admin/orders.html`.
 10. Prepare Mercado Pago México; do not execute a real payment until the owner explicitly approves the test.
 11. Cut over only after NEW READY, TEST, and comparison checks pass.
-12. Retain the old project as rollback; do not delete or alter it during this operation.
+12. After destination cutover and owner approval, decommission the old Kunsang project. PhotoSchool remains untouched.
 
 ## ROLLBACK PLAN
 
-- Keep the source Supabase project and current Vercel configuration unchanged until destination verification is complete.
-- If destination verification fails, leave the frontend on the current configuration and do not remove source data.
+- The historical source project has been deleted by the owner and cannot serve as rollback.
+- If destination verification fails, repair or restore the destination from its own migration/data records; do not touch PhotoSchool.
 - Revert only the Kunsang-specific configuration change to the prior known-good values; never roll back by deleting tables, buckets, or projects.
 - Disable destination test credentials if necessary, without touching PhotoSchool resources.
 - Re-run comparison and document the failure before attempting another cutover.
