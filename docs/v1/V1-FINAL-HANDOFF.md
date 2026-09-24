@@ -1,6 +1,6 @@
 # Kunsang Gar — V1 final technical handoff
 
-Date: 2026-09-21  
+Date: 2026-09-23
 Scope: V1 México, public ES/EN, Supabase production and existing Vercel API.
 
 This document records the final technical verification. It does not change public copy, translations, design, payment scope or Phase 2.
@@ -21,12 +21,12 @@ This document records the final technical verification. It does not change publi
 | Admin orders | PASS | `/admin/orders.html` rendered in the authenticated production session. |
 | Vercel API availability | PASS | Safe production checks: webhook `GET` returned the expected ignored response; preference endpoint `OPTIONS` returned `204`; method guards returned expected `405`; payment status returned the expected validation `400` without an order reference. |
 | Supabase production | PASS | New Kunsang Gar project responded at the configured project URL; tables, migrated orders, RLS policies and private bucket were available. |
-| Test-data cleanup | PASS | Temporary program/content records were deleted through the Supabase SQL Editor; public REST checks returned empty results afterward. |
+| Program/content test-data cleanup | PASS | Earlier temporary program/content records were deleted through the Supabase SQL Editor; anonymous REST checks on 2026-09-23 returned empty results. The temporary Auth user remains and is tracked below. |
 | Public copy boundary | PASS | Source audit found no internal phase, budget, blocker, QA, infrastructure or approval copy in the public HTML. |
-| Practitioner registration | PASS (UI deployed) | Account page now provides controlled Supabase sign-up; the production Auth project requires email confirmation before a new session is issued. |
-| Student enrollment/admin access | PASS (UI deployed) | Admin now has Students and Access Control screens using the existing `enrollments` and `access_grants` tables. |
-| Private upload | PASS (UI deployed) | Admin content form now uploads selected files to the private `protected-content` bucket and stores `storage_path`; no client material was uploaded during QA. |
-| Admin guard | PASS (code corrected) | The admin shell now validates the ADMIN profile before rendering protected administration data. |
+| Practitioner registration UI | DEPLOYED, runtime incomplete | Account page offers Supabase sign-up. The temporary user was created, but Auth requires email confirmation and has not issued a practitioner session. |
+| Student enrollment/admin access UI | DEPLOYED, unverified | Admin has Students and Access Control screens using `enrollments` and `access_grants`; no practitioner enrollment or grant has been tested end-to-end. |
+| Private upload UI | DEPLOYED, unverified | Admin content form targets the private `protected-content` bucket and stores `storage_path`; no protected test file has been uploaded or opened. |
+| Admin guard without session | PASS | In a fresh production browser session, `/admin/orders.html` redirected to `/account/?next=%2Fadmin%2Forders.html` before showing orders. Authenticated ADMIN access was verified in the earlier QA run. |
 
 ## CLIENT ACCEPTANCE TEST
 
@@ -40,12 +40,15 @@ The deployed API preserves the existing México/MXN flow and server-side secret 
 
 | Check | Status | Reason |
 | --- | --- | --- |
-| Normal user RLS | BLOCKED | A temporary practitioner signup was created, but Supabase email confirmation is required and no confirmation session was available during QA. The schema policy does not grant normal users access to `ticket_orders`; this remains a validation gap, not a claimed PASS. |
-| Signed URL | BLOCKED | The production code path calls `createSignedUrl` for `storage_path` resources and the bucket policy exists, but there is no authorized protected V1 resource available to exercise end-to-end without inventing or publishing content. |
+| Normal user login/session/profile and RLS | BLOCKED | Password login for `v1-practitioner-20260923@kunsanggarmexico.com` returned `email_not_confirmed` on 2026-09-23. No practitioner JWT or session was issued. |
+| Admin enrollment/grant and practitioner program/content access | BLOCKED | Requires the confirmed practitioner session, temporary technical program/content records and destination dashboard access for the test and cleanup. No complete path has been exercised. |
+| Private upload and signed URL | BLOCKED | Requires an authorized protected test resource and practitioner session. Bucket configuration and code alone are not end-to-end proof. |
+| Access consistency migration | BLOCKED | `20260923000000_v1_access_consistency.sql` is versioned and pushed but has not been applied to the destination project. |
+| Temporary Auth user cleanup | BLOCKED | The unconfirmed test user still exists in the destination project; destination Authentication administration is not accessible in the current dashboard session. |
 
-These two items are the only runtime validations left open in this handoff. No public protected resource was created to hide an unverified result. The temporary Auth account must be removed from the Supabase dashboard before final acceptance; it has no application data or access grants.
+No public protected resource was created to hide an unverified result. The temporary Auth account must be removed after the practitioner test; it has no application data or access grants at this checkpoint.
 
-The access consistency migration `20260923000000_v1_access_consistency.sql` is committed with the product changes. It must be applied in the Kunsang destination project before final RLS acceptance. The visible Supabase session during this work only has access to the historical Ixmati project `zienhasmbmrzwcysekdh`; that project was not modified.
+The access consistency migration `20260923000000_v1_access_consistency.sql` was pushed in `b0a8ee9`. It must be applied in destination `bzmqddxnpopkqhdxsngu` before final RLS acceptance. Direct navigation to destination Authentication redirected the current Supabase dashboard session to the Ixmati organization list; its project list contains the historical Kunsang project `zienhasmbmrzwcysekdh`, Academia Ixmati and PhotoSchool. The historical project was not modified. Production REST calls to `bzmqddxnpopkqhdxsngu` work with the public key but do not provide administrative access.
 
 ## CLIENT CONTENT REVIEW
 
@@ -82,17 +85,17 @@ ADMIN: PASS
 PROGRAM CRUD: PASS
 CONTENT CRUD: PASS
 PUBLIC RLS: PASS
-NORMAL USER RLS: BLOCKED — practitioner session not available
+NORMAL USER RLS: BLOCKED — practitioner email unconfirmed
 ADMIN RLS: PASS
 PRIVATE STORAGE: PASS
-SIGNED URL: BLOCKED — no authorized protected resource for end-to-end test
+SIGNED URL: BLOCKED — no authorized protected resource or practitioner session
 ADMIN ORDERS: PASS
 VERCEL API: PASS — availability/method checks; real payment not executed
 SUPABASE: PASS
 MERCADO PAGO: CLIENT ACCEPTANCE TEST PENDING
 CLIENT CONTENT REVIEW: REQUIRED — internal, not public
-PRODUCTION: PASS for the verified public/API/Supabase scope
-V1 TECHNICAL STATUS: PASS WITH EXPLICIT CLIENT ACCEPTANCE AND TWO VALIDATION BLOCKERS
+PRODUCTION: PASS for verified public/API routes; member golden path unverified
+V1 TECHNICAL STATUS: NOT CLOSED — practitioner/admin member workflow, private document and migration require live validation
 ```
 
-No new feature or design change was introduced during this final closure. The only artifact generated is this internal handoff document.
+The public site remains live. This handoff is internal; no doctrinal test content or protected client document was published.
