@@ -30,6 +30,7 @@
     'Consulta espiritual': 'Spiritual consultation',
     'Modalidades y espacios de participación': 'Formats and ways to participate',
     'Reunión de práctica en la playa con banderas de colores': 'Practice gathering on a beach with colorful flags',
+    'Geshe Dangsong Namgyal sentado con túnica amarilla': 'Geshe Dangsong Namgyal seated in a yellow robe',
     'Ilustración de meditación para la certificación Naljor': 'Meditation illustration for Naljor certification',
     'Representación de Sidpa Gyalmo': 'Representation of Sidpa Gyalmo',
     'Conoce los servicios': 'Learn about services',
@@ -716,7 +717,7 @@
   };
 
   const hrefLabels = [
-    [/events\/?$/, 'Mexico 2026'], [/services\.html$/, 'Services'], [/index\.html$|\/$/, 'Home'], [/contact\.html$/, 'Contact'],
+    [/events\/?$/, 'Mexico 2026'], [/services\.html$/, 'Services'], [/index\.html$|^\/$/, 'Home'], [/contact\.html$/, 'Contact'],
     [/donations\.html$/, 'Donations'], [/classes\.html$/, 'Classes'], [/kunsang-gar\.html$/, 'Kunsang Gar'],
     [/geshe-dangsong\.html$/, 'Geshe Dangsong'], [/tradicion-bon\.html$/, 'Bön Tradition'],
     [/nuevo-bon\.html$/, 'New Bön'], [/rime\.html$/, 'Rimé'], [/sangha\.html$/, 'Sangha'],
