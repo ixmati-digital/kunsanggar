@@ -29,7 +29,7 @@ This document records the final technical verification. It does not change publi
 | Admin guard without session | PASS | In a fresh production browser session, `/admin/orders.html` redirected to `/account/?next=%2Fadmin%2Forders.html` before showing orders. |
 | Current ADMIN session and orders | PASS | On 2026-09-23 the production account page displayed role `ADMIN`; `/admin/orders.html` loaded historical `ticket_orders` rows. The admin overview showed 0 programs and 0 content items; Students showed the temporary PRACTITIONER profile with no enrollment. |
 | Admin cache correction | PASS | The admin HTML now loads `admin.js?v=6`; a fresh production navigation displayed Students and Access Control after the previous `v=5` cache obscured those screens. |
-| Public language regression | FIX DEPLOY PENDING | A live EN check found untranslated account registration labels and a repeated home callout. The non-doctrinal labels were corrected in `assets/i18n.js` and its cache version was updated; production must be rechecked after deploy. |
+| Public language regression | PASS for corrected UI copy | A live EN check found untranslated account registration labels, a repeated home callout and a mislabeled account link. The non-doctrinal labels were corrected in `assets/i18n.js`; production browser checks after deploy showed `Create account`, `JOIN` and `Access`. |
 
 ## CLIENT ACCEPTANCE TEST
 
