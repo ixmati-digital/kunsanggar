@@ -773,6 +773,16 @@
       if (!key || !output.includes(key)) return;
       output = output.split(key).join(map[key]);
     });
+    const protectedTerms = [];
+    output = output
+      .replace(/Mercado Pago/gi, (match) => {
+        protectedTerms.push(match);
+        return `\uE000${protectedTerms.length - 1}\uE001`;
+      })
+      .replace(/\(La\)/g, (match) => {
+        protectedTerms.push(match);
+        return `\uE000${protectedTerms.length - 1}\uE001`;
+      });
     Object.keys(wordMap).sort((a, b) => b.length - a.length).forEach((key) => {
       const replacement = wordMap[key];
       const pattern = new RegExp(`\\b${key.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'giu');
@@ -781,6 +791,7 @@
         return replacement;
       });
     });
+    output = output.replace(/\uE000(\d+)\uE001/g, (_, index) => protectedTerms[Number(index)]);
     return output;
   }
 
