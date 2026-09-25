@@ -79,7 +79,6 @@
     'Secciones de Kunsang Gar': 'Kunsang Gar sections',
     'Prácticas de acompañamiento y ofrenda': 'Guidance and offering practices',
     'Prácticas de acompañamiento': 'Guidance practices',
-    'Material oficial de la visita': 'Official visit material',
     'Estudio, escritura y transmisión': 'Study, writing and transmission',
     'Comunidad, estudio y práctica': 'Community, study and practice',
     'Tradición Budista Tibetana': 'Tibetan Buddhist Tradition',
@@ -179,6 +178,9 @@
     'Brochures': 'Brochures',
     'Próxima clase': 'Next class',
     'Sadhana de todas las Dakinis': 'Sadhana of all Dakinis',
+    'Donación Kunsang Gar México': 'Kunsang Gar Mexico donation',
+    'Donativo único en MXN mediante Mercado Pago.': 'One-time donation in MXN through Mercado Pago.',
+    'Concepto de pago no disponible.': 'This payment option is unavailable.',
     'Online': 'Online',
     'Presencial': 'In person',
     'Viernes': 'Friday',
@@ -196,6 +198,7 @@
     'Programa de estudio y práctica.': 'Study and practice program.',
     'Recurso asociado a un programa publicado.': 'Resource associated with a published program.',
     'México · MXN · Mercado Pago': 'Mexico · MXN · Mercado Pago',
+    'MÉXICO · MXN · MERCADO PAGO': 'MEXICO · MXN · MERCADO PAGO',
     'Completar pago.': 'Complete payment.',
     'Flujo de pago único para actividades y donaciones de Kunsang Gar México.': 'One-time payment flow for Kunsang Gar Mexico activities and donations.',
     'Concepto': 'Description',
@@ -258,7 +261,11 @@
     'Boleto General': 'General admission',
     'Cantidad': 'Quantity',
     'Una sola enseñanza abierta en este momento': 'One teaching record is currently available',
-    'La información publicada corresponde únicamente a Mujeres Sagradas de la Gran Perfección.': 'The published information concerns only Women Saints of Great Perfection.',
+    'La información publicada corresponde únicamente a Mujeres Sagradas de la Gran Perfección.': 'The published information concerns only Sacred Women of the Great Perfection.',
+    'Mujeres Sagradas de la Gran Perfección': 'Sacred Women of the Great Perfection',
+    'Treinta Signos y significados de la Naturaleza Última en la Antigua Tradición Tibetana.': 'Thirty Signs and Meanings of Ultimate Nature in the Ancient Tibetan Tradition.',
+    '25 y 26 de julio de 2026': 'July 25 and 26, 2026',
+    'Sábado y domingo, 2:00 a.m. hora de CDMX': 'Saturday and Sunday, 2:00 a.m. Mexico City time',
     'WhatsApp': 'WhatsApp',
     'Facebook': 'Facebook',
     'Correo': 'Email',
@@ -441,18 +448,18 @@
     'events': {
       'Eventos y archivo.': 'Events and archive.',
       'Conservamos la memoria de las actividades realizadas y comunicamos las próximas visitas confirmadas.': 'We preserve the record of completed activities and share confirmed upcoming visits.',
+      'Visita octubre–noviembre': 'October–November visit',
       'Geshe Dangsong Namgyal, Director Espiritual de Kunsang Gar Internacional.': 'Geshe Dangsong Namgyal, Spiritual Director of Kunsang Gar International.',
       'Ciclo de Enseñanzas · Octubre–Noviembre 2026': 'Teaching Series · October–November 2026',
-      'Próximamente se compartirán las fechas, sedes y dinámica de registro.': 'Dates, venues and registration details will be shared soon.',
+      'PRÓXIMA VISITA': 'UPCOMING VISIT',
+      'Visita de Geshe Dangsong Namgyal': 'Visit of Geshe Dangsong Namgyal',
+      'PASADO': 'PAST',
       'Eventos pasados': 'Past events',
       'Recuperación del alma, Sadhana de longevidad y Tsok': 'Soul Retrieval, Longevity Sadhana and Tsok',
       'Esencia de la Conciencia: Vacío y luminosidad': 'Essence of Consciousness: Emptiness and luminosity',
       'Yoga del Tantra Madre y meditación Dzogchen': 'Mother Tantra Yoga and Dzogchen meditation',
       'Mil Ofrendas a Nampar Gyalwa': 'One Thousand Offerings to Nampar Gyalwa',
-      'Gran Empoderamiento de Nampar Gyalwa': 'Great Empowerment of Nampar Gyalwa',
-      'El video completo permanece catalogado como medio externo.': 'The full video remains catalogued as external media.',
-      'Registro histórico conservado; no se presenta como inscripción vigente.': 'Historical record preserved; it is not presented as current registration.',
-      'Evento histórico conservado desde el sitio anterior. La ficha pública completa y su fecha requieren revisión editorial antes de una nueva publicación.': 'Historical event preserved from the previous site. Its complete public page and date require editorial review before republication.'
+      'Gran Empoderamiento de Nampar Gyalwa': 'Great Empowerment of Nampar Gyalwa'
     },
     programs: {
       'Programas de estudio y práctica.': 'Study and practice programs.',
@@ -511,7 +518,6 @@
     'Meditación de la Mente Natural y Dzogchen Puro: identificación de la mente y su verdadera naturaleza, y desarrollo de la sabiduría innata a través de las etapas Thun-gom, Ngang-gom y Long-gom.': 'Natural Mind Meditation and Pure Dzogchen: recognizing mind and its true nature, and developing innate wisdom through the Thun-gom, Ngang-gom and Long-gom stages.',
     'La formación contempla una participación sostenida en cursos principales y secundarios, clases semanales y práctica diaria de mañana y tarde. La información operativa, calendario y requisitos de la cohorte vigente deben confirmarse con Kunsang Gar México.': 'The training includes sustained participation in main and secondary courses, weekly classes and daily morning and evening practice. Current operational information, calendar and cohort requirements must be confirmed with Kunsang Gar Mexico.',
     'La plataforma conserva la referencia de una participación mínima del 75% para optar por el certificado. No se presentan fechas antiguas como futuras.': 'A minimum participation of 75% is required to qualify for the certificate. Past dates are not presented as future dates.',
-    'El video completo permanece catalogado como medio externo.': 'The full video remains catalogued as external media.',
     'Programa sobre canales, vientos, esencias, yantra yoga, mantras y práctica no dual.': 'A program on channels, winds, essences, yantra yoga, mantras and non-dual practice.',
     'Ceremonia de Nampar Gyalwa y protectores mundanos.': 'Nampar Gyalwa and worldly protectors ceremony.',
     'Ciudad de México y online': 'Mexico City and online',
@@ -545,7 +551,7 @@
       'Un catálogo organizado de enseñanzas, textos y materiales autorizados.': 'An organized catalogue of teachings, texts and authorized materials.',
       'Brochure autorizado para conocer el programa de enseñanza de Kunsang Gar.': 'Authorized brochure introducing the Kunsang Gar teaching program.',
       'Authorized brochure with information about the Wisdom Program.': 'Authorized brochure with information about the Wisdom Program.',
-      'Las enseñanzas y recursos autorizados': 'Authorized teachings and resources',
+      'Enseñanzas y recursos autorizados': 'Authorized teachings and resources',
       'Los materiales restringidos no se publican en esta página. Requieren una cuenta, autorización y la conexión segura de la plataforma.': 'Restricted materials are not published on this page. They require an account, authorization and the platform’s secure connection.'
     }
   };
@@ -616,8 +622,8 @@
     'El Programa de Sabiduría de Kunsang Gar se divide en tres categorías: Sabiduría Fundamental, Desarrollo mental y Sabiduría por excelencia. Las enseñanzas buscan una comprensión sólida de nuestra naturaleza y una integración gradual en la práctica espiritual.': 'The Kunsang Gar Wisdom Program is divided into three areas: Fundamental Wisdom, Mental Development and Ultimate Wisdom. The teachings seek a solid understanding of our nature and a gradual integration into spiritual practice.',
     'Los materiales de práctica apoyan la tradición Yungdrung Bön bajo la guía de Geshe. Algunos son públicos y otros requieren transmisión, iniciación o autorización previa. No estudies ni recites un material si se indica que requiere transmisión.': 'Practice materials support the Yungdrung Bön tradition under Geshe’s guidance. Some are public, while others require transmission, initiation or prior authorization. Do not study or recite a material if it is marked as requiring transmission.',
     'Las traducciones y los textos conservan sus avisos de derechos de autor. Consulta los canales oficiales para recibir orientación sobre cada material.': 'Translations and texts retain their copyright notices. Consult the official channels for guidance about each material.',
-    'La actividad abordó la relación con los elementos, el alma (La), longevidad y prácticas de Tshe Wang Rigdzin. No se presentó como evento futuro.': 'The activity addressed the relationship with the elements, soul (La), longevity and Tshe Wang Rigdzin practices. It was not presented as a future event.',
-    '6 y 7 de junio de 2026 · Presencial y online · Inglés con traducción al español · Grabaciones disponibles según el anuncio original.': 'June 6 and 7, 2026 · In person and online · English with Spanish translation · Recordings available according to the original announcement.',
+    'La actividad abordó la relación con los elementos, el alma (La), longevidad y prácticas de Tshe Wang Rigdzin.': 'The activity addressed the relationship with the elements, soul (La), longevity and Tshe Wang Rigdzin practices.',
+    '6 y 7 de junio de 2026 · Presencial y online · Inglés con traducción al español.': 'June 6 and 7, 2026 · In person and online · English with Spanish translation.',
     'Es adecuado hacer una ofrenda al maestro en función de lo que puedas manejar. La generosidad es la primera de las diez paramitas, o cualidades del carácter, que se deben perfeccionar. El acto de dar abre el corazón, disminuye por un momento el egocentrismo y valora el bienestar de los demás.': 'It is appropriate to make an offering to the teacher according to your means. Generosity is the first of the ten paramitas, or qualities of character, to be perfected. Giving opens the heart, briefly loosens self-centredness and values the wellbeing of others.'
   };
 
