@@ -92,6 +92,10 @@
     document.querySelectorAll("[data-user-email]").forEach((el) => el.textContent = session.user.email || "");
     document.querySelectorAll("[data-user-name]").forEach((el) => el.textContent = me?.full_name || session.user.email || "Practicante");
     document.querySelectorAll("[data-user-role]").forEach((el) => el.textContent = me?.role || "PRACTITIONER");
+    document.querySelectorAll("[data-admin-dashboard]").forEach((el) => {
+      if (me?.role === "ADMIN") el.hidden = false;
+      else el.remove();
+    });
     document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client.auth.signOut(); window.location.replace("/account/"); }));
   }
 

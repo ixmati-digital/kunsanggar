@@ -191,6 +191,7 @@
     'Público': 'Public',
     'Enseñanzas': 'Teachings',
     'Biblioteca': 'Library',
+    'Administración · CMS': 'Administration · CMS',
     'Abrir recurso': 'Open resource',
     'Inicia sesión o solicita autorización para acceder.': 'Sign in or request authorization to access this resource.',
     'Aún no hay programas publicados.': 'No programs have been published yet.',
