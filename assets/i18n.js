@@ -777,6 +777,7 @@
     const map = dictionary();
     root.querySelectorAll?.('p,h1,h2,h3,h4,figcaption,li').forEach((element) => {
       if (element.closest('.language-switcher')) return;
+      if (element.querySelector('[data-user-name], [data-user-email], [data-user-role]')) return;
       const source = normalize(element.textContent || '');
       const exact = map[source];
       if (exact) element.textContent = exact;
