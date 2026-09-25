@@ -181,6 +181,7 @@
     'Donación Kunsang Gar México': 'Kunsang Gar Mexico donation',
     'Donativo único en MXN mediante Mercado Pago.': 'One-time donation in MXN through Mercado Pago.',
     'Concepto de pago no disponible.': 'This payment option is unavailable.',
+    'Visita presencial en México': 'In-person visit to Mexico',
     'Online': 'Online',
     'Presencial': 'In person',
     'Viernes': 'Friday',
@@ -456,10 +457,15 @@
       'PASADO': 'PAST',
       'Eventos pasados': 'Past events',
       'Recuperación del alma, Sadhana de longevidad y Tsok': 'Soul Retrieval, Longevity Sadhana and Tsok',
+      '23 y 24 de mayo de 2026 · Geshe Dangsong Namgyal · Ciudad de México y online · Inglés con traducción al español.': 'May 23 and 24, 2026 · Geshe Dangsong Namgyal · Mexico City and online · English with Spanish translation.',
       'Esencia de la Conciencia: Vacío y luminosidad': 'Essence of Consciousness: Emptiness and luminosity',
+      '6 y 7 de junio de 2026 · Presencial y online · Inglés con traducción al español.': 'June 6 and 7, 2026 · In person and online · English with Spanish translation.',
       'Yoga del Tantra Madre y meditación Dzogchen': 'Mother Tantra Yoga and Dzogchen meditation',
+      '20 y 21 de junio de 2026 · 10:00 a 18:00, hora de México · Presencial y online.': 'June 20 and 21, 2026 · 10:00 a.m.–6:00 p.m. Mexico City time · In person and online.',
       'Mil Ofrendas a Nampar Gyalwa': 'One Thousand Offerings to Nampar Gyalwa',
-      'Gran Empoderamiento de Nampar Gyalwa': 'Great Empowerment of Nampar Gyalwa'
+      '26, 27 y 28 de junio de 2026 · Ceremonia de Nampar Gyalwa y protectores mundanos.': 'June 26, 27 and 28, 2026 · Ceremony of Nampar Gyalwa and worldly protectors.',
+      'Gran Empoderamiento de Nampar Gyalwa': 'Great Empowerment of Nampar Gyalwa',
+      '29 y 30 de julio de 2025 · SS Menri Trizin 34 · Ciudad de México y online · Inglés con traducción al español.': 'July 29 and 30, 2025 · SS Menri Trizin 34 · Mexico City and online · English with Spanish translation.'
     },
     programs: {
       'Programas de estudio y práctica.': 'Study and practice programs.',
@@ -622,7 +628,7 @@
     'El Programa de Sabiduría de Kunsang Gar se divide en tres categorías: Sabiduría Fundamental, Desarrollo mental y Sabiduría por excelencia. Las enseñanzas buscan una comprensión sólida de nuestra naturaleza y una integración gradual en la práctica espiritual.': 'The Kunsang Gar Wisdom Program is divided into three areas: Fundamental Wisdom, Mental Development and Ultimate Wisdom. The teachings seek a solid understanding of our nature and a gradual integration into spiritual practice.',
     'Los materiales de práctica apoyan la tradición Yungdrung Bön bajo la guía de Geshe. Algunos son públicos y otros requieren transmisión, iniciación o autorización previa. No estudies ni recites un material si se indica que requiere transmisión.': 'Practice materials support the Yungdrung Bön tradition under Geshe’s guidance. Some are public, while others require transmission, initiation or prior authorization. Do not study or recite a material if it is marked as requiring transmission.',
     'Las traducciones y los textos conservan sus avisos de derechos de autor. Consulta los canales oficiales para recibir orientación sobre cada material.': 'Translations and texts retain their copyright notices. Consult the official channels for guidance about each material.',
-    'La actividad abordó la relación con los elementos, el alma (La), longevidad y prácticas de Tshe Wang Rigdzin.': 'The activity addressed the relationship with the elements, soul (La), longevity and Tshe Wang Rigdzin practices.',
+    'La actividad abordó la relación con los elementos, el alma (La), longevidad y prácticas de Tshe Wang Rigdzin.': 'The teaching addressed the relationship with the elements, soul (La), longevity and Tshe Wang Rigdzin practices.',
     '6 y 7 de junio de 2026 · Presencial y online · Inglés con traducción al español.': 'June 6 and 7, 2026 · In person and online · English with Spanish translation.',
     'Es adecuado hacer una ofrenda al maestro en función de lo que puedas manejar. La generosidad es la primera de las diez paramitas, o cualidades del carácter, que se deben perfeccionar. El acto de dar abre el corazón, disminuye por un momento el egocentrismo y valora el bienestar de los demás.': 'It is appropriate to make an offering to the teacher according to your means. Generosity is the first of the ten paramitas, or qualities of character, to be perfected. Giving opens the heart, briefly loosens self-centredness and values the wellbeing of others.'
   };
