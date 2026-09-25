@@ -34,7 +34,7 @@
     }
     const me = await profile(session.user.id);
     if (role === "ADMIN" && me?.role !== "ADMIN") {
-      status("Esta ruta requiere un perfil ADMINISTRATOR.", "error");
+      window.location.replace("/account/?access=admin-required");
       return null;
     }
     return { session, profile: me };
@@ -122,7 +122,7 @@
       const rows = [];
       for (const item of data || []) {
         let href = item.external_url || "";
-        if (item.storage_path && session) {
+        if (item.storage_path && (session || item.access_level === "PUBLIC")) {
           const signed = await client.storage.from(bucket).createSignedUrl(item.storage_path, 300);
           if (!signed.error) href = signed.data.signedUrl;
         }
