@@ -111,7 +111,15 @@
     'Download English ↓': 'Download English ↓',
     'Ver eventos': 'View events',
     'Ver información': 'View information',
+    'Ver programa': 'View program',
+    'Abrir documento': 'Open document',
     'Acceder': 'Access',
+    'Área de estudiantes': 'Student area',
+    'Acceso de estudiantes': 'Student access',
+    'Estudiantes': 'Students',
+    'Enseñanzas y recursos': 'Teachings and resources',
+    'Consulta tus materiales de estudio.': 'View your study materials.',
+    'Actividades, visitas y encuentros de Kunsang Gar.': 'Activities, visits and gatherings at Kunsang Gar.',
     'Iniciar sesión': 'Sign in',
     '¿Aún no tienes cuenta?': "Don't have an account yet?",
     'Crear cuenta': 'Create account',
@@ -556,10 +564,10 @@
     library: {
       'Recursos para el estudio y la práctica.': 'Resources for study and practice.',
       'Un catálogo organizado de enseñanzas, textos y materiales autorizados.': 'An organized catalogue of teachings, texts and authorized materials.',
-      'Brochure autorizado para conocer el programa de enseñanza de Kunsang Gar.': 'Authorized brochure introducing the Kunsang Gar teaching program.',
-      'Authorized brochure with information about the Wisdom Program.': 'Authorized brochure with information about the Wisdom Program.',
-      'Enseñanzas y recursos autorizados': 'Authorized teachings and resources',
-      'Los materiales restringidos no se publican en esta página. Requieren una cuenta, autorización y la conexión segura de la plataforma.': 'Restricted materials are not published on this page. They require an account, authorization and the platform’s secure connection.'
+      'Consulta el programa de enseñanza de Kunsang Gar.': 'Learn about the Kunsang Gar teaching program.',
+      'Conoce el Programa de Sabiduría de Kunsang Gar.': 'Learn about the Kunsang Gar Wisdom Program.',
+      'Enseñanzas y recursos': 'Teachings and resources',
+      'Consulta los materiales disponibles para tu cuenta.': 'View materials available to your account.'
     }
   };
 
