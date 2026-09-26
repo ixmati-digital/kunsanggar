@@ -29,12 +29,13 @@
     }
     const session = await current();
     if (!session) {
-      window.location.replace(`/account/?next=${encodeURIComponent(location.pathname + location.search)}`);
+      const loginPath = role === "ADMIN" ? "/admin/login/" : "/account/";
+      window.location.replace(`${loginPath}?next=${encodeURIComponent(location.pathname + location.search)}`);
       return null;
     }
     const me = await profile(session.user.id);
     if (role === "ADMIN" && me?.role !== "ADMIN") {
-      window.location.replace("/account/?access=admin-required");
+      window.location.replace("/admin/login/?access=admin-required");
       return null;
     }
     return { session, profile: me };
@@ -42,10 +43,19 @@
 
   async function login(email, password) {
     if (!client) throw new Error("Supabase no está configurado en esta instalación.");
-    const { error } = await client.auth.signInWithPassword({ email, password });
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    const next = new URLSearchParams(location.search).get("next");
-    window.location.replace(next || "/account/");
+    const profileData = await profile(data.user.id);
+    const expectedRole = document.body.dataset.authRole || "PRACTITIONER";
+    if (!profileData || profileData.role !== expectedRole) {
+      await client.auth.signOut();
+      throw new Error(expectedRole === "ADMIN"
+        ? "Esta cuenta no tiene privilegios administrativos. Usa una cuenta ADMIN autorizada."
+        : "Esta cuenta no es de practicante. Usa el acceso administrativo correspondiente.");
+    }
+    const requested = new URLSearchParams(location.search).get("next");
+    const safeNext = requested?.startsWith("/") && !requested.startsWith("//") ? requested : null;
+    window.location.replace(safeNext || (expectedRole === "ADMIN" ? "/admin/" : "/account/"));
   }
 
   async function register(fullName, email, password) {
@@ -87,16 +97,38 @@
     const accountBox = document.querySelector("[data-account-box]");
     if (!session) { loginBox?.removeAttribute("hidden"); accountBox?.setAttribute("hidden", ""); loginView(); return; }
     const me = await profile(session.user.id);
+    if (me?.role === "ADMIN") {
+      window.location.replace("/admin/");
+      return;
+    }
     loginBox?.setAttribute("hidden", "");
     accountBox?.removeAttribute("hidden");
     document.querySelectorAll("[data-user-email]").forEach((el) => el.textContent = session.user.email || "");
     document.querySelectorAll("[data-user-name]").forEach((el) => el.textContent = me?.full_name || session.user.email || "Practicante");
     document.querySelectorAll("[data-user-role]").forEach((el) => el.textContent = me?.role || "PRACTITIONER");
-    document.querySelectorAll("[data-admin-dashboard]").forEach((el) => {
-      if (me?.role === "ADMIN") el.hidden = false;
-      else el.remove();
-    });
     document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client.auth.signOut(); window.location.replace("/account/"); }));
+  }
+
+  async function adminLoginPage() {
+    if (!client) {
+      status("El acceso administrativo no está disponible porque falta la configuración de Supabase.", "error");
+      return;
+    }
+    const session = await current();
+    if (session) {
+      const me = await profile(session.user.id);
+      if (me?.role === "ADMIN") {
+        const requested = new URLSearchParams(location.search).get("next");
+        const safeNext = requested?.startsWith("/") && !requested.startsWith("//") ? requested : null;
+        window.location.replace(safeNext || "/admin/");
+        return;
+      }
+    }
+    const params = new URLSearchParams(location.search);
+    if (params.get("access") === "admin-required") {
+      status("La cuenta activa no tiene rol ADMIN. Inicia sesión con una cuenta administrativa autorizada.", "error");
+    }
+    loginView();
   }
 
   async function loadPrograms(target) {
@@ -140,11 +172,12 @@
   async function boot() {
     try {
       const path = location.pathname;
-      if (document.body.dataset.protected === "admin" || path.startsWith("/admin/")) {
+      if ((document.body.dataset.protected === "admin" || path.startsWith("/admin/")) && !path.startsWith("/admin/login/")) {
         const access = await guard("ADMIN");
         if (!access) return;
       }
       if (document.body.dataset.platformPage === "account" || path.startsWith("/account")) await accountPage();
+      if (document.body.dataset.platformPage === "admin-login") await adminLoginPage();
       if (document.body.dataset.platformPage === "programs" || path.startsWith("/programs")) await programsPage();
       if (document.body.dataset.platformPage === "library" || path.startsWith("/library")) await libraryPage();
     } catch (error) { fail(error); }

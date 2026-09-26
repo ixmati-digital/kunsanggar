@@ -3,7 +3,7 @@
   const load = (src) => new Promise((resolve, reject) => { const script = document.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; document.head.appendChild(script); });
   if (!window.KUNSANG_GAR_CONFIG) await load("/assets/platform-config.js?v=22caf6a");
   if (!window.supabase) await load("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
-  if (!window.KunsangGar) await load("/assets/platform.js?v=519ef10");
+  if (!window.KunsangGar) await load("/assets/platform.js?v=separate-admin-login-v1");
   const api = window.KunsangGar;
   const client = api?.client;
   const page = document.body.dataset.page || "overview";
@@ -55,7 +55,7 @@
     if (!adminAccess) return;
     app.innerHTML = shell(({ overview, programs, "program-editor": programEditor, content, students, events, orders, library: libraryAdmin, access }[page] || overview)(), page);
     document.querySelector("[data-menu]")?.addEventListener("click", () => document.querySelector(".admin-sidebar")?.classList.toggle("is-open"));
-    document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client?.auth.signOut(); location.href = "/account/"; }));
+    document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client?.auth.signOut(); location.href = "/admin/login/"; }));
     if (!client) { api.status("Supabase no está configurado. Esta ruta está bloqueada hasta cargar la configuración runtime.", "error"); return; }
     try { if (page === "program-editor") document.querySelector("[data-program-form]")?.addEventListener("submit", (e) => saveProgram(e).catch((x) => { api.fail(x); toast(x.message, true); })); await renderData(); document.addEventListener("click", (e) => { const p = e.target.closest("[data-toggle-program]"); const c = e.target.closest("[data-publish-content]"); if (p) toggle("programs", p.dataset.toggleProgram, p.dataset.status).catch((x) => toast(x.message, true)); if (c) toggle("content_items", c.dataset.publishContent, c.dataset.status).catch((x) => toast(x.message, true)); }); } catch (error) { api.fail(error); toast(error.message, true); }
   }
