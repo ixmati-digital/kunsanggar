@@ -15,7 +15,7 @@
 .root-page-list strong{display:block;margin-bottom:5px;font-family:Georgia,serif;font-size:1.35rem;font-weight:400}
 .root-page-list span{color:#655e63;font-size:.92rem}
 .root-page-image{margin:0;border:1px solid rgba(26,24,49,.14);background:#fff}
-.root-page-image img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.root-page-image img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain;display:block}
 .books-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .book-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line,#ddd);background:var(--paper,#fff);box-shadow:0 12px 28px rgba(26,24,49,.08)}
 .book-card-cover{margin:0;background:#f7f5ef;padding:18px;display:flex;align-items:center;justify-content:center;min-height:390px}

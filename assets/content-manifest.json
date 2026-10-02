@@ -498,6 +498,20 @@
       "notes": "Event/editorial image; identity and reuse rights should be confirmed."
     },
     {
+      "id": "books-dzogchen-puro-cover",
+      "filename": "dzogchen-puro-cover.jpg",
+      "local_path": "assets/books/dzogchen-puro-cover.jpg",
+      "source_pdf": "docs/client-source/books/dzogchen-puro.pdf",
+      "source_page": "/",
+      "content_type": "image/jpeg",
+      "category": "books",
+      "title": "Dzogchen Puro: La Tradición de Zhang Zhung",
+      "author": "Geshe Dangsong Namgyal",
+      "access_level": "PUBLIC_COVER_ONLY",
+      "purchase_url": "https://www.amazon.com.mx/Dzogchen-Puro-Tradici%C3%B3n-Zhang-Zhung/dp/0999689835",
+      "notes": "Front cover extracted from the client-provided PDF; original PDF remains private."
+    },
+    {
       "id": "books-mujeres-santas-related-image",
       "filename": "mujeres-santas-related-image.jpg",
       "local_path": "assets/books/mujeres-santas-related-image.jpg",

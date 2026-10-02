@@ -108,6 +108,7 @@ These files are preserved locally only. No new public access, registration gate,
 | --- | --- | --- |
 | `mujeres-sagradas-gran-perfeccion.jpeg` | Existing local platform asset | Existing promotional image for *Mujeres Santas de Gran Perfección* |
 | `books/mujeres-santas-related-image.jpg` | `/libros-kg` | Related editorial image; visual review did not confirm it as the book cover |
+| `books/dzogchen-puro-cover.jpg` | `/` | Front cover extracted from the client-provided source PDF; links to the client-provided Amazon Mexico page. The original PDF remains private. |
 
 The old page also links to Google Books. That external link remains cataloged below and was not replaced.
 
@@ -185,14 +186,11 @@ Two client-provided audio files are cataloged in `audio/audio-manifest.json` and
 
 ## New client book material (2026-09-21)
 
-Three client-provided book-cover PDFs are preserved under
-`docs/client-source/books/` as private source-only files. Public cover
-derivatives and the three public catalog fichas were removed from V1 México.
-The internal manifest is `docs/client-source/books/book-manifest.json`.
-
-The material is deferred to `PHASE_2 / STORE MODULE`; it requires Geshe
-approval and the corresponding store-module advance payment. Purchase links
-are not a V1 pending item.
+Three client-provided book PDFs are preserved under
+`docs/client-source/books/`. Only the Dzogchen Puro front-cover derivative
+and the Amazon link explicitly provided by the client are public; the other
+two books and all full PDFs remain private. See
+`docs/client-source/books/book-manifest.json` for the source inventory.
 
 - Public visibility on the old site was not treated as permission to republish. Most migrated assets are `UNCONFIRMED` until the client confirms rights and intended audience.
 - `/oraciones` contains explicit warnings about copyright, transmission, copying, distribution, and practice restrictions. Those warnings are preserved in the manifest; the files must not become public by accident.
