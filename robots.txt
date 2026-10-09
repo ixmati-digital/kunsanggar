@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /account/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /docs/
+Disallow: /checkout.html
+Disallow: /payment-success.html
+Disallow: /payment-pending.html
+Disallow: /payment-failure.html
+Disallow: /books.html
+Disallow: /plan-12000.html
+Disallow: /plan-18000.html
+
+Sitemap: https://kunsanggar.com/sitemap.xml

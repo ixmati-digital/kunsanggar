@@ -198,7 +198,7 @@ const sendMetaPurchaseEvent = async ({ req, payment, externalReference, order, u
     return { sent: false, skipped: true, reason: "missing_meta_access_token" };
   }
 
-  const siteUrl = (process.env.PUBLIC_SITE_URL || "https://kunsanggarmexico.com").replace(/\/$/, "");
+  const siteUrl = (process.env.PUBLIC_SITE_URL || "https://kunsanggar.com").replace(/\/$/, "");
   const totalAmount = Number(
     updatePayload.total_amount ||
     order?.total_amount ||

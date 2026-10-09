@@ -4,6 +4,21 @@ const sendJson = (res, statusCode, payload) => {
   res.end(JSON.stringify(payload));
 };
 
+const setCorsHeaders = (req, res) => {
+  const origin = req.headers.origin || "";
+  const allowedOrigins = new Set([
+    "https://kunsanggar.com",
+    "https://www.kunsanggar.com",
+    "https://kunsanggarmexico.com",
+    "https://www.kunsanggarmexico.com"
+  ]);
+  const allowedOrigin = allowedOrigins.has(origin) ? origin : "https://kunsanggar.com";
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Vary", "Origin");
+};
+
 const getSupabaseConfig = () => {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,6 +28,11 @@ const getSupabaseConfig = () => {
 };
 
 module.exports = async function handler(req, res) {
+  setCorsHeaders(req, res);
+  if (req.method === "OPTIONS") {
+    res.statusCode = 204;
+    return res.end();
+  }
   if (req.method !== "GET") return sendJson(res, 405, { error: "Method not allowed" });
 
   const externalReference = String(req.query?.external_reference || "").trim();

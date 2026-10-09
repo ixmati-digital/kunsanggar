@@ -1,5 +1,13 @@
 Options -Indexes
 
+# Keep kunsanggarmexico.com serving the same site during transition, then
+# canonically redirect web requests and the www alias while preserving paths
+# and query parameters. Mail routing remains controlled by DNS.
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(www\.)?kunsanggarmexico\.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www\.kunsanggar\.com$ [NC]
+RewriteRule ^ https://kunsanggar.com%{REQUEST_URI} [R=301,L,NE]
+
 <IfModule mod_authz_core.c>
   <FilesMatch "^(books\.html|plan-12000\.html|plan-18000\.html)$">
     Require all denied

@@ -3,7 +3,7 @@
   const basePath = document.body.dataset.basePath || "";
   const courseSlug = document.body.dataset.courseSlug || "";
   const dataUrl = `${basePath}data/cursos.json`;
-  const siteUrl = "https://kunsanggarmexico.com";
+  const siteUrl = "https://kunsanggar.com";
   let lastWhatsAppTrackedAt = 0;
 
   const $ = (selector) => document.querySelector(selector);

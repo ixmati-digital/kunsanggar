@@ -900,26 +900,45 @@
 
   function updateMeta() {
     if (!titles[page]) return;
+    const description = document.querySelector('meta[name="description"]');
     if (lang === 'en') {
       document.title = titles[page][0];
-      const description = document.querySelector('meta[name="description"]');
       if (description) description.setAttribute('content', titles[page][1]);
     }
+    const baseUrl = `https://kunsanggar.com${window.location.pathname}`;
+    const englishUrl = `${baseUrl}?lang=en`;
+    const canonicalUrl = lang === 'en' ? englishUrl : baseUrl;
     const canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
       const link = document.createElement('link');
       link.rel = 'canonical';
-      link.href = window.location.origin + window.location.pathname;
+      link.href = canonicalUrl;
       document.head.append(link);
+    } else {
+      canonical.href = canonicalUrl;
     }
     document.querySelectorAll('link[rel="alternate"]').forEach((link) => link.remove());
-    ['es', 'en'].forEach((code) => {
+    [['es-MX', baseUrl], ['en', englishUrl], ['x-default', baseUrl]].forEach(([code, href]) => {
       const link = document.createElement('link');
       link.rel = 'alternate';
       link.hreflang = code;
-      link.href = `${window.location.origin}${window.location.pathname}?lang=${code}`;
+      link.href = href;
       document.head.append(link);
     });
+    const socialTitle = lang === 'en' ? titles[page][0] : document.title;
+    const socialDescription = description?.content || '';
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.content = canonicalUrl;
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    if (ogLocale) ogLocale.content = lang === 'en' ? 'en_US' : 'es_MX';
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = socialTitle;
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) ogDescription.content = socialDescription;
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) twitterTitle.content = socialTitle;
+    const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDescription) twitterDescription.content = socialDescription;
   }
 
   function addStyles() {

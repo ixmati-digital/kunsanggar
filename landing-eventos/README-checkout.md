@@ -31,7 +31,7 @@ Configurar en Vercel:
 
 ```env
 MERCADOPAGO_ACCESS_TOKEN=
-PUBLIC_SITE_URL=https://kunsanggarmexico.com
+PUBLIC_SITE_URL=https://kunsanggar.com
 PAYMENT_SUCCESS_PATH=/payment-success.html
 PAYMENT_FAILURE_PATH=/payment-failure.html
 PAYMENT_PENDING_PATH=/payment-pending.html
@@ -86,7 +86,7 @@ POST /api/create-preference
 Mercado Pago notificará a:
 
 ```txt
-https://kunsanggarmexico.com/api/mercadopago-webhook
+https://kunsanggar.com/api/mercadopago-webhook
 
 El secreto de firma del webhook debe configurarse antes de producción. No
 dejar el valor en el frontend ni en el repositorio.
