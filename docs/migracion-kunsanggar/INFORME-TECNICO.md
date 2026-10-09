@@ -16,7 +16,7 @@ El sitio de producción es estático, administrado desde el repositorio GitHub `
 - CORS de la API de pagos permite el nuevo origen; los retornos usan el nuevo dominio. Webhook mantiene el endpoint server-side de Vercel.
 - Se integró la rama funcional de clases/eventos/galería; su migración Supabase debe aplicarse antes de publicarla.
 
-Estos cambios todavía no constituyen el corte productivo: Auth, Vercel y la migración de esquema requieren acceso autenticado que no estaba disponible durante esta ejecución. No activar 301 de producción hasta verificar login/registro/callbacks y endpoints con el nuevo host.
+Estos cambios todavía no constituyen el corte productivo: Auth y la migración de esquema requieren acceso al proyecto Supabase destino. Vercel identifica el proyecto `kunsanggar`, pero tanto la lectura como la edición de variables de producción devolvieron HTTP 403 por permisos insuficientes; el navegador también muestra login. No activar 301 de producción hasta verificar login/registro/callbacks y endpoints con el nuevo host.
 
 ## Datos y servicios preservados
 
@@ -38,7 +38,7 @@ Estos cambios todavía no constituyen el corte productivo: Auth, Vercel y la mig
 ## No completado
 
 - URLs permitidas y plantillas de correo de Supabase Auth.
-- Variables de Vercel de producción y verificación del webhook tras el cambio.
+- Variables de Vercel de producción: `PUBLIC_SITE_URL` y `PAYMENT_WEBHOOK_URL` no pudieron actualizarse; el usuario Vercel disponible carece de permiso de lectura/escritura de variables (403). La corrección CORS está en la rama, pendiente de deploy.
 - Migración SQL aditiva más reciente.
 - Alta de correo `@kunsanggar.com`, migración de mensajes y pruebas reales de envío/recepción.
 - Administración independiente de Roberto: Hostinger confirma que el acceso compartido a hosting expone todos los sitios del plan; un plan de email gratis no permite acceso compartido. Se requiere cuenta/servicio independiente controlado por Roberto, sin transferir ni borrar los buzones viejos.
