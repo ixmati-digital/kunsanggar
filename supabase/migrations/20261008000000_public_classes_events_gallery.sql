@@ -1,6 +1,17 @@
 -- Public classes, editable event history and site gallery management.
 -- This migration is additive: existing programs, content, events and objects remain intact.
 
+-- Never promote an existing private bucket: it may contain files that must stay private.
+do $$
+begin
+  if exists (
+    select 1 from storage.buckets
+    where id = 'site-media' and public = false
+  ) then
+    raise exception 'site-media exists as a private bucket; inspect its contents before migration';
+  end if;
+end $$;
+
 alter table public.programs
   add column if not exists title_en text,
   add column if not exists description_en text,
@@ -75,7 +86,7 @@ create policy gallery_items_admin_write on public.gallery_items
 -- Public media is for approved website images only; protected lessons stay in protected-content.
 insert into storage.buckets (id, name, public)
 values ('site-media', 'site-media', true)
-on conflict (id) do update set public = true;
+on conflict (id) do nothing;
 
 drop policy if exists site_media_admin_manage on storage.objects;
 create policy site_media_admin_manage on storage.objects
