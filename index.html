@@ -4,15 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" href="/assets/brand/kunsang-gar-site-logo.png">
   <title>Kunsang Gar México | Sabiduría, práctica y comunidad</title>
-  <meta name="description" content="Kunsang Gar México: sabiduría de Kunsang Gar, tradición Bön, Dzogchen, clases, servicios y comunidad.">
-  <meta property="og:title" content="Kunsang Gar México">
-  <meta property="og:description" content="Sabiduría de Kunsang Gar y tradiciones antiguas en la sociedad moderna.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/geshe.png">
+
+
+
+
+
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="/assets/root-pages.css">
+
+  <link rel="canonical" href="https://kunsanggarmexico.com/">
+  <meta name="description" content="Centro Bön Kunsang Gar México: enseñanzas, Dzogchen o Meditación de la Mente Natural, clases y comunidad.">
+  <meta property="og:title" content="Kunsang Gar México | Sabiduría, práctica y comunidad">
+  <meta property="og:description" content="Centro Bön Kunsang Gar México: enseñanzas, Dzogchen o Meditación de la Mente Natural, clases y comunidad.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kunsanggarmexico.com/">
+  <meta property="og:image" content="https://kunsanggarmexico.com/assets/geshe.png">
+  <meta property="og:locale" content="es_MX">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kunsang Gar México | Sabiduría, práctica y comunidad">
+  <meta name="twitter:description" content="Centro Bön Kunsang Gar México: enseñanzas, Dzogchen o Meditación de la Mente Natural, clases y comunidad.">
+  <meta name="twitter:image" content="https://kunsanggarmexico.com/assets/geshe.png">
+
+  <link rel="alternate" hreflang="es-MX" href="https://kunsanggarmexico.com/">
+  <link rel="alternate" hreflang="en" href="https://kunsanggarmexico.com/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://kunsanggarmexico.com/">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Kunsang Gar México","url":"https://kunsanggarmexico.com/","logo":"https://kunsanggarmexico.com/assets/brand/kunsang-gar-site-logo.png","description":"Centro dedicado al estudio y práctica de las enseñanzas de Kunsang Gar."}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Kunsang Gar México","url":"https://kunsanggarmexico.com/","inLanguage":["es-MX","en"]}
+  </script>
+
 </head>
-<body class="site-page real-home">
+<body class="site-page real-home" data-platform-page="home">
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
   <header class="site-header">
@@ -172,10 +198,19 @@
       </div>
     </section>
 
+    <section class="home-section classes-section" aria-labelledby="public-classes-title">
+      <div class="shell">
+        <div class="section-heading-row"><div><p class="eyebrow">Estudio y práctica</p><h2 id="public-classes-title">Clases abiertas</h2><p>Consulta las próximas clases y actividades abiertas al público.</p></div><a class="text-link" href="/classes.html">Ver todas las clases ↗</a></div>
+        <div class="root-page-cards" data-public-classes><article class="root-page-note">Consulta las clases disponibles.</article></div>
+        <div class="section-heading-row" style="margin-top:32px"><div><h2>Programas con inscripción</h2><p>Crea tu cuenta para inscribirte y acceder a los materiales del programa.</p></div></div>
+        <div class="root-page-cards" data-public-programs><article class="root-page-note">Consulta los programas disponibles.</article></div>
+      </div>
+    </section>
+
     <section class="home-section gallery-section" aria-labelledby="gallery-title">
       <div class="shell">
         <div class="section-heading-row"><div><p class="eyebrow">Kunsang Gar</p><h2 id="gallery-title">Galería</h2></div></div>
-        <div class="gallery-grid">
+        <div class="gallery-grid" data-gallery-items>
           <figure><img src="/assets/gallery/kunsang-gar-gallery-01.jpeg" alt="Encuentro de Kunsang Gar" loading="lazy"></figure>
           <figure><img src="/assets/gallery/kunsang-gar-gallery-02.jpeg" alt="Actividad de Kunsang Gar" loading="lazy"></figure>
           <figure><img src="/assets/gallery/kunsang-gar-gallery-03.jpeg" alt="Clase de Kunsang Gar" loading="lazy"></figure>
@@ -202,5 +237,7 @@
 
   <button class="back-top" type="button" aria-label="Volver al inicio">↑</button>
   <script src="assets/site.js"></script>
-<script src="/assets/i18n.js?v=19"></script></body>
+  <script src="/assets/i18n.js?v=20"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/assets/platform-config.js?v=public-classes-1"></script><script src="/assets/platform.js?v=public-classes-1"></script>
+</body>
 </html>
