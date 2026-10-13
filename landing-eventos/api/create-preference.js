@@ -1,6 +1,7 @@
 const MERCADOPAGO_PREFERENCES_URL = "https://api.mercadopago.com/checkout/preferences";
 const allowedOriginPatterns = [
   /^https:\/\/kunsanggar\.vercel\.app$/,
+  /^https:\/\/(www\.)?kunsanggar\.com$/,
   /^https:\/\/(www\.)?kunsanggarmexico\.com$/,
   /^https:\/\/(www\.)?kunsanggarmexico\.org$/,
   /^https:\/\/[a-z0-9-]+\.hostingersite\.com$/,
@@ -115,7 +116,7 @@ module.exports = async function handler(req, res) {
   }
 
   const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
-  const siteUrl = (process.env.PUBLIC_SITE_URL || "https://kunsanggarmexico.com").replace(/\/$/, "");
+  const siteUrl = (process.env.PUBLIC_SITE_URL || "https://kunsanggar.com").replace(/\/$/, "");
   const contentType = req.headers["content-type"] || "";
   const acceptsHtml = String(req.headers.accept || "").includes("text/html");
   const shouldRedirectToCheckout = contentType.includes("application/x-www-form-urlencoded") || acceptsHtml;
@@ -205,7 +206,7 @@ module.exports = async function handler(req, res) {
     },
     auto_return: "approved",
     external_reference: externalReference,
-    notification_url: process.env.PAYMENT_WEBHOOK_URL || `${siteUrl}${process.env.PAYMENT_WEBHOOK_PATH || "/api/mercadopago-webhook"}`,
+    notification_url: process.env.PAYMENT_WEBHOOK_URL || `${process.env.PAYMENT_API_URL || "https://kunsanggar.vercel.app"}${process.env.PAYMENT_WEBHOOK_PATH || "/api/mercadopago-webhook"}`,
     metadata: {
       external_reference: externalReference,
       nombre: buyerName,
