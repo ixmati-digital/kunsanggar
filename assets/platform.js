@@ -51,7 +51,8 @@
       return null;
     }
     const me = await profile(session.user.id);
-    if (role === "ADMIN" && me?.role !== "ADMIN") {
+    const allowed = role === "CMS" ? ["ADMIN", "CONTENT_MANAGER"] : role === "ADMIN" ? ["ADMIN"] : null;
+    if (allowed && !allowed.includes(me?.role)) {
       window.location.replace("/admin/login/?access=admin-required");
       return null;
     }
@@ -64,14 +65,15 @@
     if (error) throw error;
     const profileData = await profile(data.user.id);
     const expectedRole = document.body.dataset.authRole || "PRACTITIONER";
-    if (!profileData || profileData.role !== expectedRole) {
+    const allowedRoles = expectedRole === "ADMIN" ? ["ADMIN"] : expectedRole === "CMS" ? ["ADMIN", "CONTENT_MANAGER"] : [expectedRole];
+    if (!profileData || !allowedRoles.includes(profileData.role)) {
       await client.auth.signOut();
-      throw new Error(expectedRole === "ADMIN"
+      throw new Error(["ADMIN", "CMS"].includes(expectedRole)
         ? "Esta cuenta no tiene acceso al CMS. Comprueba tus datos o contacta al administrador."
         : "Esta cuenta no tiene acceso al área de estudiantes.");
     }
     const requested = new URLSearchParams(location.search).get("next");
-    window.location.replace(safeNext(requested) || (expectedRole === "ADMIN" ? "/admin/" : "/account/"));
+    window.location.replace(safeNext(requested) || (["ADMIN", "CMS"].includes(expectedRole) ? "/admin/" : "/account/"));
   }
 
   async function register(fullName, email, password) {
@@ -141,7 +143,7 @@
     const session = await current();
     if (session) {
       const me = await profile(session.user.id);
-      if (me?.role === "ADMIN") {
+      if (["ADMIN", "CONTENT_MANAGER"].includes(me?.role)) {
         const requested = new URLSearchParams(location.search).get("next");
         window.location.replace(safeNext(requested) || "/admin/");
         return;
