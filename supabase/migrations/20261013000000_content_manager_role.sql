@@ -100,6 +100,30 @@ create policy protected_content_editor_delete on storage.objects for delete to a
 drop policy if exists class_registrations_self_or_admin_read on public.class_registrations;
 create policy class_registrations_cms_read on public.class_registrations
   for select using (user_id = auth.uid() or public.is_admin() or public.is_content_manager());
+
+-- Do not expose payment evidence through PostgREST to editors or members.
+revoke select on public.class_registrations from authenticated;
+grant select (id, event_id, user_id, status, payment_status, created_at, updated_at)
+  on public.class_registrations to authenticated;
+
+create or replace function public.admin_class_registrations()
+returns table (
+  id uuid, event_id uuid, user_id uuid, event_title text, status text,
+  payment_status text, payment_method text, payment_reference text,
+  payment_verified_at timestamptz, payment_verified_by uuid,
+  created_at timestamptz, updated_at timestamptz
+)
+language sql stable security definer set search_path = public as $$
+  select r.id, r.event_id, r.user_id, e.title, r.status,
+    r.payment_status, r.payment_method, r.payment_reference,
+    r.payment_verified_at, r.payment_verified_by, r.created_at, r.updated_at
+  from public.class_registrations r
+  join public.events e on e.id = r.event_id
+  where public.is_admin()
+  order by r.created_at desc;
+$$;
+revoke all on function public.admin_class_registrations() from public;
+grant execute on function public.admin_class_registrations() to authenticated;
 drop policy if exists class_registrations_admin_update on public.class_registrations;
 create policy class_registrations_cms_update on public.class_registrations
   for update to authenticated using (public.is_admin() or public.is_content_manager())
