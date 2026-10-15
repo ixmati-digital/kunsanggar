@@ -286,10 +286,15 @@
   }
 
   async function renderPendingClassPayments() {
-    const target = document.querySelector("[data-pending-class-payments]");
-    if (!target || !client) return;
+    if (!client) return;
     const session = await current();
     if (!session) return;
+    let target = document.querySelector("[data-pending-class-payments]");
+    if (!target) {
+      target = document.createElement("div");
+      target.dataset.pendingClassPayments = "";
+      document.body.appendChild(target);
+    }
     const { data, error } = await client.from("class_registrations").select("id,status,payment_status,events(title,slug,starts_at,registration_enabled)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (error) throw error;
     const pending = (data || []).filter((row) => ["PENDING", "APPROVED"].includes(row.status) && !["CONFIRMED", "WAIVED"].includes(row.payment_status) && row.events?.registration_enabled);
@@ -301,8 +306,30 @@
       paymentUrl.searchParams.set("client_reference_id", row.id);
       return `<li><strong>${esc(title)}</strong><div class="class-payment-nudge-actions"><a href="${esc(classHref)}">${language() === "en" ? "Return to class details" : "Volver a los detalles de la clase"}</a><a class="btn small" href="${esc(paymentUrl.toString())}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue when ready ↗" : "Continuar cuando quieras ↗"}</a></div></li>`;
     }).join("");
-    target.innerHTML = `<aside class="class-payment-nudge" aria-label="${language() === "en" ? "Your pending class registration" : "Tu inscripción pendiente"}"><div class="class-payment-nudge-inner"><div><p class="eyebrow">${language() === "en" ? "Registration in progress" : "Inscripción en curso"}</p><p>${language() === "en" ? "Your class is saved. You can return to its details or continue your contribution whenever you’re ready." : "Tu clase está guardada. Puedes volver a sus detalles o continuar tu aportación cuando quieras."}</p><ul>${entries}</ul></div><a class="class-payment-nudge-account" href="/account/">${language() === "en" ? "My account" : "Mi cuenta"}</a></div></aside>`;
+    target.innerHTML = `<aside class="class-payment-nudge" role="region" aria-live="polite" aria-label="${language() === "en" ? "Your pending class registration" : "Tu inscripción pendiente"}"><div class="class-payment-nudge-inner"><div><p class="eyebrow">${language() === "en" ? "Registration in progress" : "Inscripción en curso"}</p><p>${language() === "en" ? "Your class is saved. You can return to its details or continue your contribution whenever you’re ready." : "Tu clase está guardada. Puedes volver a sus detalles o continuar tu aportación cuando quieras."}</p><ul>${entries}</ul></div><a class="class-payment-nudge-account" href="/account/">${language() === "en" ? "My account" : "Mi cuenta"}</a></div></aside>`;
     document.body.classList.add("has-pending-class-payment");
+  }
+
+  async function syncAccountNavigation() {
+    const session = await current();
+    const navLink = document.querySelector(".nav-cta");
+    if (navLink) {
+      if (!session) {
+        navLink.href = "/account/";
+        navLink.textContent = language() === "en" ? "Sign in" : "Acceso";
+      } else {
+        const me = await profile(session.user.id);
+        const admin = ["ADMIN", "CONTENT_MANAGER"].includes(me?.role);
+        navLink.href = admin ? "/admin/" : "/account/";
+        navLink.textContent = admin
+          ? (language() === "en" ? "Administration" : "Administración")
+          : (language() === "en" ? "My account" : "Mi cuenta");
+      }
+    }
+    const page = document.body.dataset.platformPage;
+    if (session && !["account", "class", "admin-login"].includes(page)) {
+      await renderPendingClassPayments();
+    }
   }
 
   async function registerForClass(eventId) {
@@ -464,7 +491,6 @@
     const testimonialsTarget = document.querySelector("[data-testimonials]");
     if (!client) return;
     const tasks = [];
-    tasks.push(renderPendingClassPayments());
     if (eventTarget) tasks.push(renderEvents(eventTarget, { type: "CLASS" }));
     if (upcomingTarget) tasks.push(renderEvents(upcomingTarget));
     pastTargets.forEach((target) => tasks.push(renderEvents(target, { past: true })));
@@ -514,12 +540,13 @@
       if (document.body.dataset.platformPage === "account" || path.startsWith("/account")) await accountPage();
       if (document.body.dataset.platformPage === "admin-login") await adminLoginPage();
       if (document.body.dataset.platformPage === "programs" || path.startsWith("/programs")) {
-        const results = await Promise.allSettled([programsPage(), renderPendingClassPayments()]);
+        const results = await Promise.allSettled([programsPage()]);
         results.filter((result) => result.status === "rejected").forEach((result) => fail(result.reason));
       }
       if (document.body.dataset.platformPage === "library" || path.startsWith("/library")) await libraryPage();
       if (path === "/class.html") await classDetailPage();
       if (["home", "classes", "events", "sangha"].includes(document.body.dataset.platformPage) || document.querySelector("[data-public-classes],[data-public-programs],[data-upcoming-events],[data-past-events],[data-gallery-items],[data-sangha-gallery]")) await publicClassesPage();
+      await syncAccountNavigation();
     } catch (error) { fail(error); }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
