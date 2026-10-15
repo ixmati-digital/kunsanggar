@@ -47,7 +47,7 @@
     }
     const session = await current();
     if (!session) {
-      const loginPath = role === "ADMIN" ? "/admin/login/" : "/account/";
+      const loginPath = ["ADMIN", "CMS"].includes(role) ? "/admin/login/" : "/account/";
       window.location.replace(`${loginPath}?next=${encodeURIComponent(location.pathname + location.search)}`);
       return null;
     }
@@ -258,7 +258,7 @@
         return date && new Date(date).getTime() >= now;
       });
       const cards = [...events.map((event) => eventCard(event)), ...programs.map(programCard)];
-      target.innerHTML = cards.length ? cards.join("") : `<div class="root-page-note">${language() === "en" ? "There are no classes available to join right now." : "No hay clases disponibles para inscribirse por el momento."}</div>`;
+      target.innerHTML = cards.length ? cards.join("") : `<div class="root-page-note">${language() === "en" ? "No class registrations are open in this catalog right now. Browse all public classes and activities." : "No hay inscripciones abiertas en este catálogo por el momento. Consulta las clases y actividades públicas."}<div class="root-page-actions"><a class="btn small" href="/classes.html#sadhana">${language() === "en" ? "Browse public classes" : "Ver clases abiertas"}</a></div></div>`;
       target.querySelectorAll("[data-enroll-program]").forEach((button) => button.addEventListener("click", () => enrollInProgram(button.dataset.enrollProgram)));
       const programId = new URLSearchParams(location.search).get("enroll");
       if (programId) await enrollInProgram(programId);
@@ -504,7 +504,7 @@
   async function boot() {
     try {
       const path = location.pathname;
-      if ((document.body.dataset.protected === "admin" || path.startsWith("/admin/")) && !path.startsWith("/admin/login/")) {
+      if (document.body.dataset.protected === "admin" && !path.startsWith("/admin/login/")) {
         const access = await guard("ADMIN");
         if (!access) return;
       }
