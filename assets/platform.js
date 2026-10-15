@@ -153,8 +153,10 @@
       } else if (isPaid(row) && row.status === "APPROVED") {
         const materialsUrl = row.events?.program_id ? `/library/?program=${encodeURIComponent(row.events.program_id)}` : "/library/";
         nextStep = `<div class="root-page-actions account-registration-actions"><a class="btn" href="${materialsUrl}">${language() === "en" ? "Open my materials" : "Acceder a mis materiales"}</a></div>`;
-      } else if (isPaid(row)) {
+      } else if (isPaid(row) && row.status === "PENDING") {
         nextStep = `<p class="account-registration-next">${language() === "en" ? "Payment verified. The team still needs to approve access to the class materials." : "Pago verificado. El equipo aún debe aprobar el acceso a los materiales de la clase."}</p>`;
+      } else if (isPaid(row)) {
+        nextStep = `<p class="account-registration-next">${language() === "en" ? "Payment verified, but this request is closed. Contact Kunsang Gar for help." : "Pago verificado, pero esta solicitud está cerrada. Contacta a Kunsang Gar para recibir ayuda."}</p>`;
       } else {
         nextStep = `<p class="account-registration-next">${language() === "en" ? "This request is closed. Contact Kunsang Gar if you need help." : "Esta solicitud está cerrada. Contacta a Kunsang Gar si necesitas ayuda."}</p>`;
       }
