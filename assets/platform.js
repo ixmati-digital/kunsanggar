@@ -127,13 +127,41 @@
     document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client.auth.signOut(); window.location.replace("/account/"); }));
     const registrationList = document.createElement("section");
     registrationList.className = "account-class-registrations";
-    registrationList.innerHTML = `<h3>${language() === "en" ? "Class registration requests" : "Solicitudes de inscripción"}<\/h3><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
+    registrationList.innerHTML = `<h3>${language() === "en" ? "My classes and registrations" : "Mis clases e inscripciones"}<\/h3><p class="account-registration-intro">${language() === "en" ? "Continue to Stripe to complete an outstanding contribution. Your access becomes available after payment verification and team approval." : "Continúa a Stripe para completar una aportación pendiente. El acceso se habilita después de verificar el pago y aprobar la inscripción."}</p><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
     accountBox.appendChild(registrationList);
-    const { data: registrations, error: registrationError } = await client.from("class_registrations").select("status,payment_status,created_at,events(title,starts_at)").eq("user_id", session.user.id).order("created_at", { ascending: false });
+    const { data: registrations, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status,created_at,events(title,starts_at,program_id,price_mxn)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (registrationError) throw registrationError;
     const list = registrationList.querySelector("[data-class-registrations]");
     const labels = { PENDING: language() === "en" ? "Awaiting review" : "Pendiente de revisión", APPROVED: language() === "en" ? "Approved" : "Aprobada", REJECTED: language() === "en" ? "Not approved" : "No aprobada", CANCELLED: language() === "en" ? "Cancelled" : "Cancelada" };
-    list.innerHTML = registrations?.length ? registrations.map((row) => `<p><strong>${esc(row.events?.title || (language() === "en" ? "Class" : "Clase"))}</strong> · ${esc(labels[row.status] || row.status)} · ${esc(row.payment_status === "CONFIRMED" ? (language() === "en" ? "Payment verified" : "Pago verificado") : (language() === "en" ? "Payment not verified" : "Pago sin verificar"))}</p>`).join("") : `<p>${language() === "en" ? "You have no class requests yet." : "Todavía no tienes solicitudes de inscripción."}</p>`;
+    const isPaid = (row) => ["CONFIRMED", "WAIVED"].includes(row.payment_status);
+    const registrationCards = (registrations || []).map((row) => {
+      const title = row.events?.title || (language() === "en" ? "Class" : "Clase");
+      const registrationStatus = labels[row.status] || row.status;
+      const paymentStatus = isPaid(row)
+        ? (language() === "en" ? (row.payment_status === "WAIVED" ? "Payment waived" : "Payment verified") : (row.payment_status === "WAIVED" ? "Pago exento" : "Pago verificado"))
+        : (language() === "en" ? "Payment pending" : "Pago pendiente");
+      const date = row.events?.starts_at ? fmtDate(row.events.starts_at) : "";
+      const active = ["PENDING", "APPROVED"].includes(row.status);
+      const paymentUrl = new URL(stripeClassPaymentLink);
+      paymentUrl.searchParams.set("client_reference_id", row.id);
+      const paymentAmount = row.events?.price_mxn != null
+        ? (language() === "en" ? `Stripe contribution: MXN $${Number(row.events.price_mxn).toLocaleString("en-US")}.` : `Aportación indicada: $${Number(row.events.price_mxn).toLocaleString("es-MX")} MXN.`)
+        : (language() === "en" ? "Use the contribution amount provided for this class." : "Ingresa en Stripe el monto de aportación indicado para esta clase.");
+      let nextStep = "";
+      if (!isPaid(row) && active) {
+        nextStep = `<p class="account-registration-next">${language() === "en" ? "Complete your contribution in Stripe. Returning here does not confirm payment; the team will review your registration." : "Completa tu aportación en Stripe. Volver a esta página no confirma el pago; el equipo revisará tu inscripción."} ${esc(paymentAmount)}</p><div class="root-page-actions account-registration-actions"><a class="btn" href="${esc(paymentUrl.toString())}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue to Stripe payment ↗" : "Continuar al pago con Stripe ↗"}</a><a class="btn secondary" href="/classes.html">${language() === "en" ? "View classes" : "Consultar clases"}</a></div>`;
+      } else if (isPaid(row) && row.status === "APPROVED") {
+        const materialsUrl = row.events?.program_id ? `/library/?program=${encodeURIComponent(row.events.program_id)}` : "/library/";
+        nextStep = `<div class="root-page-actions account-registration-actions"><a class="btn" href="${materialsUrl}">${language() === "en" ? "Open my materials" : "Acceder a mis materiales"}</a></div>`;
+      } else if (isPaid(row)) {
+        nextStep = `<p class="account-registration-next">${language() === "en" ? "Payment verified. The team still needs to approve access to the class materials." : "Pago verificado. El equipo aún debe aprobar el acceso a los materiales de la clase."}</p>`;
+      } else {
+        nextStep = `<p class="account-registration-next">${language() === "en" ? "This request is closed. Contact Kunsang Gar if you need help." : "Esta solicitud está cerrada. Contacta a Kunsang Gar si necesitas ayuda."}</p>`;
+      }
+      return `<article class="account-registration-card"><div class="account-registration-heading"><h4>${esc(title)}</h4>${date ? `<span>${esc(date)}</span>` : ""}</div><p class="account-registration-status"><span>${esc(registrationStatus)}</span><span>${esc(paymentStatus)}</span></p>${nextStep}</article>`;
+    });
+    list.className = "account-registration-list";
+    list.innerHTML = registrationCards.length ? registrationCards.join("") : `<div class="root-page-note">${language() === "en" ? "You have no class requests yet." : "Todavía no tienes solicitudes de inscripción."}<div class="root-page-actions"><a class="btn" href="/classes.html">${language() === "en" ? "Explore classes" : "Explorar clases"}</a></div></div>`;
   }
 
   async function adminLoginPage() {

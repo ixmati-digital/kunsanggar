@@ -27,6 +27,18 @@
 @media(max-width:640px){.books-grid{grid-template-columns:1fr}.book-card-cover{min-height:0}.book-card-cover img{max-height:none}}
 .root-page-image figcaption{padding:14px 16px;color:#655e63;font-size:.86rem}
 .root-page-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.root-page-grid>[data-account-box]{grid-column:1/-1;max-width:none}
+.account-class-registrations{margin-top:38px}
+.account-registration-intro{max-width:820px}
+.account-registration-list{display:grid;gap:16px;margin-top:18px}
+.account-registration-card{padding:22px 24px;background:#fff;border:1px solid rgba(26,24,49,.14);border-left:4px solid var(--ochre);box-shadow:0 8px 24px rgba(26,24,49,.05)}
+.account-registration-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.account-registration-heading h4{margin:0;color:var(--ink-deep);font-family:Georgia,serif;font-size:1.45rem;font-weight:400}
+.account-registration-heading span,.account-registration-status{color:#655e63;font-size:.94rem}
+.account-registration-status{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.account-registration-status span+span{padding-left:10px;border-left:1px solid rgba(26,24,49,.2)}
+.account-registration-next{max-width:860px;margin:12px 0;color:#514c54}
+.account-registration-actions{margin-top:16px}
 .root-page-note{padding:22px;background:var(--paper-deep);border-left:3px solid var(--coral);color:#514c54}
 .root-page-note strong{display:block;margin-bottom:6px;color:var(--coral)}
 .root-page-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
