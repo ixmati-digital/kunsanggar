@@ -7,7 +7,7 @@
   const siteMediaBucket = cfg.siteMediaBucket || "site-media";
   const stripeClassPaymentLink = "https://buy.stripe.com/6oUdR93H804FaNO6eFg7e0t";
   const language = () => document.documentElement.lang === "en" ? "en" : "es";
-  const localized = (row, key) => language() === "en" ? (row?.[`${key}_en`] || "") : (row?.[key] || "");
+  const localized = (row, key) => language() === "en" ? (row?.[`${key}_en`] || row?.[key] || "") : (row?.[key] || "");
   const safeNext = (value) => value?.startsWith("/") && !value.startsWith("//") ? value : null;
   const publicImageUrl = (path) => {
     if (!path) return "";
@@ -204,7 +204,7 @@
   async function renderProgramList(target, { selfEnrollOnly = false, emptyMessage } = {}) {
     const { data, error } = await client.from("programs").select("*").eq("status", "PUBLISHED").order("created_at", { ascending: false });
     if (error) throw error;
-    const available = language() === "en" ? (data || []).filter((program) => program.title_en) : (data || []);
+    const available = data || [];
     const rows = selfEnrollOnly ? available.filter((program) => program.allow_self_enrollment) : available;
     target.innerHTML = rows.length ? rows.map(programCard).join("") : `<div class="root-page-note">${emptyMessage || (language() === "en" ? "There are no classes available to join right now." : "No hay clases disponibles para inscribirse por el momento.")}</div>`;
     target.querySelectorAll("[data-enroll-program]").forEach((button) => button.addEventListener("click", () => enrollInProgram(button.dataset.enrollProgram)));
@@ -251,10 +251,9 @@
       ]);
       if (programResult.error) throw programResult.error;
       if (eventResult.error) throw eventResult.error;
-      const programs = (programResult.data || []).filter((program) => !program.allow_self_enrollment && (language() !== "en" || program.title_en));
+      const programs = (programResult.data || []).filter((program) => program.allow_self_enrollment);
       const now = Date.now();
       const events = (eventResult.data || []).filter((event) => {
-        if (language() === "en" && !event.title_en) return false;
         const date = event.ends_at || event.starts_at;
         return date && new Date(date).getTime() >= now;
       });
@@ -405,7 +404,6 @@
     if (error) throw error;
     const now = Date.now();
     const rows = (data || []).filter((event) => {
-      if (language() === "en" && !event.title_en) return false;
       const date = event.ends_at || event.starts_at;
       return past ? Boolean(date && new Date(date).getTime() < now) : Boolean(date && new Date(date).getTime() >= now);
     });
@@ -426,7 +424,7 @@
   async function renderSanghaAlbums(target) {
     const { data: albums, error } = await client.from("gallery_albums").select("*, events(title,starts_at,location)").eq("status", "PUBLISHED").order("sort_order", { ascending: true }).order("created_at", { ascending: true });
     if (error) throw error;
-    const visibleAlbums = (albums || []).filter((album) => language() !== "en" || album.title_en);
+    const visibleAlbums = albums || [];
     if (!visibleAlbums.length) {
       target.innerHTML = `<div class="root-page-note">${language() === "en" ? "Community activity albums will appear here." : "Aquí aparecerán los álbumes de las actividades de la comunidad."}</div>`;
       return;
@@ -487,7 +485,7 @@
       if (error) throw error;
       const session = await current();
       const rows = [];
-      const availableItems = language() === "en" ? (data || []).filter((item) => item.title_en) : (data || []);
+      const availableItems = data || [];
       for (const item of availableItems) {
         let href = item.external_url || "";
         if (item.storage_path && (session || item.access_level === "PUBLIC")) {
@@ -497,7 +495,8 @@
         const typeLabels = language() === "en" ? { VIDEO: "Video", AUDIO: "Audio", PDF: "PDF", TEXT: "Text", OTHER: "Resource" } : { VIDEO: "Video", AUDIO: "Audio", PDF: "PDF", TEXT: "Texto", OTHER: "Recurso" };
         rows.push(`<article class="root-page-card"><span class="pill">${esc(typeLabels[item.content_type] || "Recurso")}</span><h3>${esc(localized(item, "title"))}</h3>${localized(item, "description") ? `<p>${esc(localized(item, "description"))}</p>` : ""}${item.programs ? `<p class="platform-meta">${esc(localized(item.programs, "title"))}</p>` : ""}${href ? `<a class="btn small" href="${esc(href)}" target="_blank" rel="noopener">${language() === "en" ? "Open resource" : "Abrir recurso"}</a>` : `<span class="platform-locked">${language() === "en" ? "Not available right now." : "No disponible en este momento."}</span>`}</article>`);
       }
-      target.innerHTML = rows.length ? rows.join("") : `<div class="root-page-note">${language() === "en" ? "There are no resources available yet." : "Aún no hay recursos disponibles."}</div>`;
+      if (rows.length) target.innerHTML = rows.join("");
+      // Keep the curated public brochures and student access card already in the page when no CMS resource is published.
     } catch (error) { fail(error); }
   }
 
