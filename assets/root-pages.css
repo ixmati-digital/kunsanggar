@@ -23,6 +23,21 @@
 .book-card-body{padding:24px}.book-card-body h2{font-size:clamp(1.35rem,2vw,1.8rem);margin:.35rem 0 .8rem}.book-card-body p{margin:.65rem 0;line-height:1.6}.book-meta{font-size:.9rem;color:var(--ink-soft,#666)}
 .book-purchase{display:inline-flex;align-items:center;margin-top:12px;padding:10px 14px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.04em}.book-purchase.pending{border:1px solid #c9b87c;background:#faf6e6;color:#66531d}
 .sangha-visual{min-height:280px;background:linear-gradient(135deg,#1b5d59,#a2c8b2);display:grid;place-items:center;color:#fff;font-family:Georgia,serif;font-size:clamp(2rem,5vw,4rem);font-style:italic}.sangha-visual figcaption{color:#fff}
+.sangha-gallery-section{background:#fffaf2}
+.sangha-albums{display:grid;gap:28px;margin-top:28px}
+.sangha-album{display:grid;grid-template-columns:minmax(220px,.7fr) 1fr;gap:22px;padding:22px;background:#fff;border:1px solid rgba(32,37,30,.12);border-radius:18px;box-shadow:0 10px 30px rgba(30,40,25,.06)}
+.sangha-album-cover{grid-row:span 2;min-height:220px;overflow:hidden;background:#e9e1d5;border-radius:12px}
+.sangha-album-cover img{display:block;width:100%;height:100%;min-height:220px;max-height:400px;object-fit:cover}
+.sangha-album-placeholder{display:grid;min-height:220px;place-items:center;color:#43675b;font-family:Georgia,serif;font-size:2rem}
+.sangha-album-copy h3{margin:4px 0 8px;font-size:clamp(1.35rem,2.6vw,2rem)}
+.sangha-album-copy p{max-width:680px}
+.sangha-album-meta{color:#665b4f;font-size:.9rem}
+.sangha-album-photos{grid-column:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;align-content:start}
+.sangha-album-photos figure{margin:0;overflow:hidden;border-radius:10px;background:#f0ece4}
+.sangha-album-photos img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.sangha-album-photos figcaption{padding:8px 10px;font-size:.84rem;color:#4d5047}
+.sangha-album-empty{grid-column:2;color:#756c5e}
+@media(max-width:680px){.sangha-album{grid-template-columns:1fr;padding:14px}.sangha-album-cover{grid-row:auto}.sangha-album-photos,.sangha-album-empty{grid-column:1}.sangha-album-photos{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){.books-grid{grid-template-columns:1fr 1fr}.book-card-cover{min-height:320px}}
 @media(max-width:640px){.books-grid{grid-template-columns:1fr}.book-card-cover{min-height:0}.book-card-cover img{max-height:none}}
 .root-page-image figcaption{padding:14px 16px;color:#655e63;font-size:.86rem}
