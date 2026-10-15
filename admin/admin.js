@@ -3,7 +3,7 @@
   const load = (src) => new Promise((resolve, reject) => { const script = document.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; document.head.appendChild(script); });
   if (!window.KUNSANG_GAR_CONFIG) await load("/assets/platform-config.js?v=public-classes-1");
   if (!window.supabase) await load("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
-  if (!window.KunsangGar) await load("/assets/platform.js?v=student-ux-audit-20261015-5");
+  if (!window.KunsangGar) await load("/assets/platform.js?v=student-ux-audit-20261015-6");
   const api = window.KunsangGar;
   const client = api?.client;
   const page = document.body.dataset.page || "overview";

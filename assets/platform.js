@@ -206,7 +206,10 @@
     if (error) throw error;
     const available = data || [];
     const rows = selfEnrollOnly ? available.filter((program) => program.allow_self_enrollment) : available;
-    target.innerHTML = rows.length ? rows.map(programCard).join("") : `<div class="root-page-note">${emptyMessage || (language() === "en" ? "There are no classes available to join right now." : "No hay clases disponibles para inscribirse por el momento.")}</div>`;
+    const defaultEmptyMessage = selfEnrollOnly
+      ? (language() === "en" ? "No programs are open for direct enrollment. See the public classes above." : "No hay programas con inscripción directa abierta. Consulta las clases públicas que aparecen arriba.")
+      : (language() === "en" ? "No programs are available right now." : "No hay programas disponibles por el momento.");
+    target.innerHTML = rows.length ? rows.map(programCard).join("") : `<div class="root-page-note">${emptyMessage || defaultEmptyMessage}</div>`;
     target.querySelectorAll("[data-enroll-program]").forEach((button) => button.addEventListener("click", () => enrollInProgram(button.dataset.enrollProgram)));
   }
 
