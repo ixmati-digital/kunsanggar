@@ -8,9 +8,7 @@ const setCorsHeaders = (req, res) => {
   const origin = req.headers.origin || "";
   const allowedOrigins = new Set([
     "https://kunsanggar.com",
-    "https://www.kunsanggar.com",
-    "https://kunsanggarmexico.com",
-    "https://www.kunsanggarmexico.com"
+    "https://www.kunsanggar.com"
   ]);
   const allowedOrigin = allowedOrigins.has(origin) ? origin : "https://kunsanggar.com";
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
