@@ -511,7 +511,10 @@
       }
       if (document.body.dataset.platformPage === "account" || path.startsWith("/account")) await accountPage();
       if (document.body.dataset.platformPage === "admin-login") await adminLoginPage();
-      if (document.body.dataset.platformPage === "programs" || path.startsWith("/programs")) await programsPage();
+      if (document.body.dataset.platformPage === "programs" || path.startsWith("/programs")) {
+        const results = await Promise.allSettled([programsPage(), renderPendingClassPayments()]);
+        results.filter((result) => result.status === "rejected").forEach((result) => fail(result.reason));
+      }
       if (document.body.dataset.platformPage === "library" || path.startsWith("/library")) await libraryPage();
       if (path === "/class.html") await classDetailPage();
       if (["home", "classes", "events", "sangha"].includes(document.body.dataset.platformPage) || document.querySelector("[data-public-classes],[data-public-programs],[data-upcoming-events],[data-past-events],[data-gallery-items],[data-sangha-gallery]")) await publicClassesPage();
