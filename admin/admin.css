@@ -119,6 +119,17 @@ td{font-size:.9rem}
 .drawer{position:fixed;inset:0;display:none;z-index:70;background:rgba(8,6,79,.32)}
 .drawer.is-visible{display:block}
 .drawer-panel{margin-left:auto;width:min(560px,100%);height:100%;overflow:auto;background:var(--admin-ivory);padding:24px;border-left:1px solid var(--admin-line)}
+.gallery-admin-thumb{width:72px;height:54px;object-fit:cover;float:left;margin:0 12px 8px 0;border-radius:8px;background:var(--admin-soft)}
+.gallery-photo-list{margin-top:28px}
+.gallery-photo-editor{margin-top:12px}
+.gallery-photo-editor summary{cursor:pointer}
+.gallery-photo-preview{margin:14px 0;max-width:520px}
+.gallery-photo-preview img{display:block;max-width:100%;max-height:360px;object-fit:contain;border-radius:10px;background:var(--admin-soft)}
+.registration-form{display:grid;grid-template-columns:minmax(180px,1fr) minmax(170px,.8fr) auto;align-items:end;gap:12px;min-width:560px}
+.registration-form label{display:grid;gap:5px;font-size:.78rem;font-weight:800;color:var(--admin-muted)}
+.registration-form select{max-width:100%;min-height:38px}
+.registration-payment{display:grid;gap:5px;font-size:.88rem}
+.registration-payment small{font-size:.72rem;font-weight:600;color:var(--admin-muted);overflow-wrap:anywhere}
 @media(max-width:1080px){
   .admin-shell{grid-template-columns:1fr}
   .admin-sidebar{position:fixed;inset:0 auto 0 0;z-index:60;width:280px;transform:translateX(-100%);transition:transform .2s ease}
@@ -135,4 +146,5 @@ td{font-size:.9rem}
   .field.full{grid-column:auto}
   h1{font-size:2rem}
   table{min-width:720px}
+  .registration-form{grid-template-columns:1fr 1fr;min-width:560px}
 }

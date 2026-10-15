@@ -5,6 +5,7 @@
   const client = hasConfig ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey) : null;
   const bucket = cfg.storageBucket || "protected-content";
   const siteMediaBucket = cfg.siteMediaBucket || "site-media";
+  const stripeClassPaymentLink = "https://buy.stripe.com/6oUdR93H804FaNO6eFg7e0t";
   const language = () => document.documentElement.lang === "en" ? "en" : "es";
   const localized = (row, key) => language() === "en" ? (row?.[`${key}_en`] || "") : (row?.[key] || "");
   const safeNext = (value) => value?.startsWith("/") && !value.startsWith("//") ? value : null;
@@ -213,7 +214,22 @@
     if (!target) return;
     if (!client) { status("No fue posible cargar los programas. Inténtalo más tarde.", "error"); return; }
     try {
-      await loadPrograms(target);
+      const [programResult, eventResult] = await Promise.all([
+        client.from("programs").select("*").eq("status", "PUBLISHED").order("created_at", { ascending: false }),
+        client.from("events").select("*").eq("status", "PUBLISHED").eq("event_type", "CLASS").eq("registration_enabled", true).order("starts_at", { ascending: true })
+      ]);
+      if (programResult.error) throw programResult.error;
+      if (eventResult.error) throw eventResult.error;
+      const programs = (programResult.data || []).filter((program) => !program.allow_self_enrollment && (language() !== "en" || program.title_en));
+      const now = Date.now();
+      const events = (eventResult.data || []).filter((event) => {
+        if (language() === "en" && !event.title_en) return false;
+        const date = event.ends_at || event.starts_at;
+        return date && new Date(date).getTime() >= now;
+      });
+      const cards = [...events.map((event) => eventCard(event)), ...programs.map(programCard)];
+      target.innerHTML = cards.length ? cards.join("") : `<div class="root-page-note">${language() === "en" ? "There are no classes available to join right now." : "No hay clases disponibles para inscribirse por el momento."}</div>`;
+      target.querySelectorAll("[data-enroll-program]").forEach((button) => button.addEventListener("click", () => enrollInProgram(button.dataset.enrollProgram)));
       const programId = new URLSearchParams(location.search).get("enroll");
       if (programId) await enrollInProgram(programId);
     } catch (error) { fail(error); }
@@ -246,17 +262,21 @@
       window.location.href = `/account/?next=${encodeURIComponent(next)}`;
       return;
     }
-    const { data: existing, error: lookupError } = await client.from("class_registrations").select("id,status").eq("event_id", eventId).eq("user_id", session.user.id).maybeSingle();
+    const { data: existing, error: lookupError } = await client.from("class_registrations").select("id,status,payment_status").eq("event_id", eventId).eq("user_id", session.user.id).maybeSingle();
     if (lookupError) throw lookupError;
     if (existing) {
-      status(existing.status === "APPROVED" ? "Tu inscripción está aprobada." : "Tu solicitud ya está registrada y espera revisión.");
+      if (existing.payment_status === "CONFIRMED" || existing.payment_status === "WAIVED") {
+        status(existing.status === "APPROVED" ? "Pago verificado. Tu acceso está aprobado." : "Pago verificado. La solicitud espera aprobación del equipo.");
+      } else {
+        status(existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : "Tu solicitud está registrada. Completa el pago en Stripe; el acceso requiere aprobación del equipo.");
+        window.location.assign(`${stripeClassPaymentLink}?client_reference_id=${encodeURIComponent(existing.id)}`);
+      }
       return;
     }
-    const { error } = await client.from("class_registrations").insert({ event_id: eventId, user_id: session.user.id });
+    const { data: registration, error } = await client.from("class_registrations").insert({ event_id: eventId, user_id: session.user.id }).select("id").single();
     if (error) throw error;
-    status("Solicitud enviada. El pago no está confirmado; el equipo revisará tu inscripción.");
-    const button = document.querySelector("[data-register-class]");
-    if (button) { button.disabled = true; button.textContent = "Solicitud enviada"; }
+    status("Solicitud enviada. Completa el pago en Stripe; el acceso requiere aprobación del equipo.");
+    window.location.assign(`${stripeClassPaymentLink}?client_reference_id=${encodeURIComponent(registration.id)}`);
   }
 
   async function classDetailPage() {
@@ -279,8 +299,27 @@
     const end = event.ends_at ? fmtDate(event.ends_at) : "";
     const when = date && end && date !== end ? `${date} – ${end}` : date;
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
-    target.innerHTML = `${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}">` : ""}<p class="eyebrow">Clase</p><h1>${esc(title)}</h1>${when ? `<p class="platform-meta">${esc(when)}</p>` : ""}${teacher ? `<p><strong>Maestro:</strong> ${esc(teacher)}</p>` : ""}${format ? `<p><strong>Modalidad:</strong> ${esc(format)}</p>` : ""}${locationText ? `<p><strong>Lugar:</strong> ${esc(locationText)}</p>` : ""}${price ? `<p><strong>Precio:</strong> ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}<div data-platform-status class="root-page-note" hidden></div>${event.registration_enabled ? `<p>La solicitud de inscripción queda pendiente de revisión. El pago no se confirma automáticamente.</p><button class="btn" type="button" data-register-class data-event-id="${esc(event.id)}">${language() === "en" ? "Request registration" : "Solicitar inscripción"}</button>` : `<p>El registro aún no está abierto.</p>`}${event.payment_url ? `<p><a class="btn secondary" href="${esc(event.payment_url)}" target="_blank" rel="noopener">${language() === "en" ? "Open payment page" : "Abrir página de pago"}</a></p>` : `<p>${language() === "en" ? "Payment details are not configured yet." : "Los datos de pago están pendientes de configuración."}</p>`}`;
+    target.innerHTML = `${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}">` : ""}<p class="eyebrow">Clase</p><h1>${esc(title)}</h1>${when ? `<p class="platform-meta">${esc(when)}</p>` : ""}${teacher ? `<p><strong>Maestro:</strong> ${esc(teacher)}</p>` : ""}${format ? `<p><strong>Modalidad:</strong> ${esc(format)}</p>` : ""}${locationText ? `<p><strong>Lugar:</strong> ${esc(locationText)}</p>` : ""}${price ? `<p><strong>Precio:</strong> ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}<div data-platform-status class="root-page-note" hidden></div>${event.registration_enabled ? `<p>Completa el pago en Stripe. El equipo verificará la inscripción y aprobará el acceso a los materiales.</p><button class="btn" type="button" data-register-class data-event-id="${esc(event.id)}">${language() === "en" ? "Request registration" : "Solicitar inscripción y pagar con Stripe"}</button>` : `<p>El registro aún no está abierto.</p>`}`;
     document.querySelector("[data-register-class]")?.addEventListener("click", () => registerForClass(event.id).catch(fail));
+    const session = await current();
+    if (session && event.registration_enabled) {
+      const { data: registration, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status").eq("event_id", event.id).eq("user_id", session.user.id).maybeSingle();
+      if (registrationError) throw registrationError;
+      const button = document.querySelector("[data-register-class]");
+      if (registration) {
+        const paid = ["CONFIRMED", "WAIVED"].includes(registration.payment_status);
+        status(paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado; solicitud pendiente de aprobación del equipo.") : "Solicitud registrada. Completa el pago en Stripe; el acceso requiere aprobación.");
+        if (button) {
+          const statefulButton = button.cloneNode(true);
+          button.replaceWith(statefulButton);
+          statefulButton.textContent = paid ? (registration.status === "APPROVED" ? "Acceder a mis materiales" : "Esperando aprobación") : "Continuar al pago con Stripe";
+          if (paid) {
+            statefulButton.disabled = registration.status !== "APPROVED";
+            if (registration.status === "APPROVED" && event.program_id) statefulButton.addEventListener("click", () => { window.location.href = `/library/?program=${encodeURIComponent(event.program_id)}`; });
+          } else statefulButton.addEventListener("click", () => { window.location.assign(`${stripeClassPaymentLink}?client_reference_id=${encodeURIComponent(registration.id)}`); });
+        }
+      }
+    }
     if (params.get("register") === "1") await registerForClass(event.id).catch(fail);
   }
 
@@ -308,7 +347,7 @@
   }
 
   async function renderGallery(target) {
-    const { data, error } = await client.from("gallery_items").select("*").eq("status", "PUBLISHED").order("sort_order", { ascending: true }).order("created_at", { ascending: true });
+    const { data, error } = await client.from("gallery_items").select("*").eq("status", "PUBLISHED").is("album_id", null).order("sort_order", { ascending: true }).order("created_at", { ascending: true });
     if (error) throw error;
     target.innerHTML = (data || []).map((item) => {
       const title = localized(item, "title");
@@ -318,12 +357,43 @@
     }).join("");
   }
 
+  async function renderSanghaAlbums(target) {
+    const { data: albums, error } = await client.from("gallery_albums").select("*, events(title,starts_at,location)").eq("status", "PUBLISHED").order("sort_order", { ascending: true }).order("created_at", { ascending: true });
+    if (error) throw error;
+    const visibleAlbums = (albums || []).filter((album) => language() !== "en" || album.title_en);
+    if (!visibleAlbums.length) {
+      target.innerHTML = `<div class="root-page-note">${language() === "en" ? "Community activity albums will appear here." : "Aquí aparecerán los álbumes de las actividades de la comunidad."}</div>`;
+      return;
+    }
+    const groups = await Promise.all(visibleAlbums.map(async (album) => {
+      const { data: photos, error: photosError } = await client.from("gallery_items").select("title,title_en,description,description_en,alt_text,alt_text_en,image_path,sort_order").eq("album_id", album.id).eq("status", "PUBLISHED").order("sort_order", { ascending: true }).order("created_at", { ascending: true });
+      if (photosError) throw photosError;
+      const event = album.events;
+      const coverPath = album.cover_image_path || photos?.[0]?.image_path;
+      const cover = publicImageUrl(coverPath);
+      const remainingPhotos = (photos || []).filter((photo) => photo.image_path !== coverPath);
+      const context = [event?.title, event?.starts_at ? fmtDate(event.starts_at) : "", event?.location].filter(Boolean).join(" · ");
+      const photoMarkup = remainingPhotos.map((photo) => {
+        const title = localized(photo, "title") || photo.title || "";
+        const description = localized(photo, "description") || photo.description || "";
+        const alt = localized(photo, "alt_text") || photo.alt_text || title;
+        const url = publicImageUrl(photo.image_path);
+        return url ? `<figure><img src="${esc(url)}" alt="${esc(alt)}" loading="lazy">${description ? `<figcaption>${esc(description)}</figcaption>` : ""}</figure>` : "";
+      }).join("");
+      const description = localized(album, "description") || album.description || "";
+      const title = localized(album, "title") || album.title;
+      return `<article class="sangha-album"><div class="sangha-album-cover">${cover ? `<img src="${esc(cover)}" alt="${esc(title)}" loading="lazy">` : `<div class="sangha-album-placeholder" aria-hidden="true">Kunsang Gar</div>`}</div><div class="sangha-album-copy"><p class="eyebrow">${language() === "en" ? "Community activity" : "Actividad de la comunidad"}</p><h3>${esc(title)}</h3>${context ? `<p class="sangha-album-meta">${esc(context)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}</div>${photoMarkup ? `<div class="sangha-album-photos">${photoMarkup}</div>` : `<p class="sangha-album-empty">${language() === "en" ? "More photographs will be added soon." : "Pronto se agregarán más fotografías."}</p>`}</article>`;
+    }));
+    target.innerHTML = groups.join("");
+  }
+
   async function publicClassesPage() {
     const eventTarget = document.querySelector("[data-public-classes]");
     const programTarget = document.querySelector("[data-public-programs]");
     const upcomingTarget = document.querySelector("[data-upcoming-events]");
     const pastTargets = document.querySelectorAll("[data-past-events]");
     const galleryTarget = document.querySelector("[data-gallery-items]");
+    const sanghaGalleryTarget = document.querySelector("[data-sangha-gallery]");
     const testimonialsTarget = document.querySelector("[data-testimonials]");
     if (!client) return;
     const tasks = [];
@@ -332,6 +402,7 @@
     pastTargets.forEach((target) => tasks.push(renderEvents(target, { past: true })));
     if (programTarget) tasks.push(renderProgramList(programTarget, { selfEnrollOnly: true }));
     if (galleryTarget) tasks.push(renderGallery(galleryTarget));
+    if (sanghaGalleryTarget) tasks.push(renderSanghaAlbums(sanghaGalleryTarget));
     if (testimonialsTarget) tasks.push(renderTestimonials(testimonialsTarget));
     const results = await Promise.allSettled(tasks);
     results.filter((result) => result.status === "rejected").forEach((result) => fail(result.reason));
@@ -376,7 +447,7 @@
       if (document.body.dataset.platformPage === "programs" || path.startsWith("/programs")) await programsPage();
       if (document.body.dataset.platformPage === "library" || path.startsWith("/library")) await libraryPage();
       if (path === "/class.html") await classDetailPage();
-      if (["home", "classes", "events", "sangha"].includes(document.body.dataset.platformPage) || document.querySelector("[data-public-classes],[data-public-programs],[data-upcoming-events],[data-past-events],[data-gallery-items]")) await publicClassesPage();
+      if (["home", "classes", "events", "sangha"].includes(document.body.dataset.platformPage) || document.querySelector("[data-public-classes],[data-public-programs],[data-upcoming-events],[data-past-events],[data-gallery-items],[data-sangha-gallery]")) await publicClassesPage();
     } catch (error) { fail(error); }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
