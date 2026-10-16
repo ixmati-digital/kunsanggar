@@ -110,16 +110,28 @@
   }
 
   async function accountPage() {
-    if (!client) { loginView(); return; }
+    const loading = document.querySelector("[data-account-loading]");
     const session = await current();
     const loginBox = document.querySelector("[data-login-box]");
     const accountBox = document.querySelector("[data-account-box]");
-    if (!session) { loginBox?.removeAttribute("hidden"); accountBox?.setAttribute("hidden", ""); loginView(); return; }
+    const showLogin = () => {
+      if (loading) loading.hidden = true;
+      loginBox?.removeAttribute("hidden");
+      accountBox?.setAttribute("hidden", "");
+      loginView();
+    };
+    if (!client) {
+      showLogin();
+      status("El acceso no está disponible en este momento. Inténtalo más tarde.", "error");
+      return;
+    }
+    if (!session) { showLogin(); return; }
     const me = await profile(session.user.id);
     if (me?.role === "ADMIN") {
       window.location.replace("/admin/");
       return;
     }
+    if (loading) loading.hidden = true;
     loginBox?.setAttribute("hidden", "");
     accountBox?.removeAttribute("hidden");
     document.querySelectorAll("[data-user-email]").forEach((el) => el.textContent = session.user.email || "");
@@ -547,7 +559,15 @@
       if (path === "/class.html") await classDetailPage();
       if (["home", "classes", "events", "sangha"].includes(document.body.dataset.platformPage) || document.querySelector("[data-public-classes],[data-public-programs],[data-upcoming-events],[data-past-events],[data-gallery-items],[data-sangha-gallery]")) await publicClassesPage();
       await syncAccountNavigation();
-    } catch (error) { fail(error); }
+    } catch (error) {
+      const loading = document.querySelector("[data-account-loading]");
+      if (loading && !loading.hidden) {
+        loading.hidden = true;
+        document.querySelector("[data-login-box]")?.removeAttribute("hidden");
+        loginView();
+      }
+      fail(error);
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 })();

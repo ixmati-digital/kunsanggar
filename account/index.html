@@ -33,7 +33,7 @@
     <section class="root-page-hero"><div class="shell"><p class="eyebrow">Área del practicante</p><h1>Continúa tu camino.</h1><p>Accede a tus programas, recursos, enseñanzas y actualizaciones de la comunidad.</p></div></section>
     <section class="root-page-section">
       <div class="shell root-page-grid">
-        <div class="root-page-copy" data-login-box>
+        <div class="root-page-copy" data-login-box hidden>
           <p class="eyebrow">Acceso</p>
           <h2>Un espacio para estudiantes.</h2>
           <p>Inicia sesión para consultar programas y contenido autorizado.</p>
@@ -59,7 +59,9 @@
           <h2>Bienvenido, <span data-user-name>practicante</span>.</h2>
           <p>Correo: <span data-user-email></span></p>
           <div class="root-page-actions"><a class="btn" href="/programs/">Ver programas</a><a class="btn secondary" href="/classes.html">Consultar clases</a><button class="btn secondary" type="button" data-logout>Cerrar sesión</button></div>
+          <div data-platform-status class="root-page-note" hidden></div>
         </div>
+        <p class="root-page-note" data-account-loading role="status" aria-live="polite">Comprobando tu sesión…</p>
       </div>
     </section>
   </main>
@@ -67,6 +69,6 @@
   <script src="/assets/site.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/platform-config.js?v=public-classes-1"></script>
-  <script src="/assets/platform.js?v=student-payment-navigation-20261015-8"></script>
-<script src="/assets/i18n.js?v=student-ux-audit-20261015-5"></script></body>
+  <script src="/assets/platform.js?v=account-session-loading-20261016-1"></script>
+<script src="/assets/i18n.js?v=account-session-loading-20261016-1"></script></body>
 </html>

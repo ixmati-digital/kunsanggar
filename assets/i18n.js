@@ -94,6 +94,7 @@
     'México 2026': 'Mexico 2026',
     'Acceso': 'Access',
     'Acceso del practicante': 'Practitioner access',
+    'Comprobando tu sesión…': 'Checking your session…',
     'Maestro y fundador': 'Teacher and founder',
     'Acceso ·': 'Access ·',
     'Redes': 'Social',
