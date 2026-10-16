@@ -79,7 +79,10 @@
 
   async function register(fullName, email, password) {
     if (!client) throw new Error("El registro no está disponible en este momento.");
-    const { data, error } = await client.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+    const requested = safeNext(new URLSearchParams(location.search).get("next"));
+    const emailRedirectTo = new URL("/account/", location.origin);
+    if (requested) emailRedirectTo.searchParams.set("next", requested);
+    const { data, error } = await client.auth.signUp({ email, password, options: { data: { full_name: fullName }, emailRedirectTo: emailRedirectTo.toString() } });
     if (error) throw error;
     return data;
   }
@@ -104,7 +107,13 @@
       try {
         const data = await register(registerForm.full_name.value.trim(), registerForm.email.value.trim(), registerForm.password.value);
         if (data.session) window.location.replace(safeNext(new URLSearchParams(location.search).get("next")) || "/account/");
-        else { notice.textContent = "Cuenta creada. Revisa tu correo para confirmar el acceso y después inicia sesión."; notice.hidden = false; }
+        else {
+          const hasNext = Boolean(safeNext(new URLSearchParams(location.search).get("next")));
+          notice.textContent = language() === "en"
+            ? (hasNext ? "Account created. Confirm your email; the link will return you to the registration you started." : "Account created. Check your email to confirm access, then sign in.")
+            : (hasNext ? "Cuenta creada. Confirma tu correo; el enlace te devolverá a la inscripción que comenzaste." : "Cuenta creada. Revisa tu correo para confirmar el acceso y después inicia sesión.");
+          notice.hidden = false;
+        }
       } catch (error) { button.disabled = false; notice.textContent = authError(error, "register"); notice.dataset.status = "error"; notice.hidden = false; }
     });
   }
@@ -129,6 +138,11 @@
     const me = await profile(session.user.id);
     if (me?.role === "ADMIN") {
       window.location.replace("/admin/");
+      return;
+    }
+    const requested = safeNext(new URLSearchParams(location.search).get("next"));
+    if (requested && !requested.startsWith("/account/")) {
+      window.location.replace(requested);
       return;
     }
     if (loading) loading.hidden = true;
