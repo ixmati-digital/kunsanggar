@@ -174,10 +174,16 @@
       const { data: profiles, error: profileError } = userIds.length ? await client.from("profiles").select("id,full_name").in("id", userIds) : { data: [], error: null }; if (profileError) throw profileError;
       const rows = (data || []).map((r) => {
         const isPaid = r.payment_status === "CONFIRMED";
+        const hasAccessPayment = ["CONFIRMED", "WAIVED"].includes(r.payment_status);
         const paymentControl = state.isAdmin
           ? `<div class="registration-payment"><strong>Pago: ${isPaid ? "Confirmado por Stripe" : esc(displayValue(r.payment_status))}</strong>${isPaid ? `<small>Verificado ${api.fmtDate(r.payment_verified_at)} · ${esc(r.stripe_checkout_session_id || r.payment_reference || "Sesión Stripe")}</small>` : `<label>Pago<select name="payment_status"><option value="UNVERIFIED" ${r.payment_status !== "WAIVED" ? "selected" : ""}>Pendiente de Stripe</option><option value="WAIVED" ${r.payment_status === "WAIVED" ? "selected" : ""}>Exento</option></select></label>`}</div>`
           : `<p>Pago: ${esc(displayValue(r.payment_status))} · Inscripción: ${esc(displayValue(r.status))}</p>`;
-        return `<tr><td><strong>${esc(profiles.find((p) => p.id === r.user_id)?.full_name || "Estudiante")}</strong></td><td>${esc(r.event_title || r.events?.title || "Clase")}</td><td>${api.fmtDate(r.created_at)}</td><td><form data-class-registration data-id="${esc(r.id)}" class="registration-form">${paymentControl}<label>Acceso<select name="status"><option value="PENDING" ${r.status === "PENDING" ? "selected" : ""}>Pendiente</option>${state.isAdmin ? `<option value="APPROVED" ${r.status === "APPROVED" ? "selected" : ""}>Aprobar acceso</option>` : ""}<option value="REJECTED" ${r.status === "REJECTED" ? "selected" : ""}>Rechazar</option><option value="CANCELLED" ${r.status === "CANCELLED" ? "selected" : ""}>Revocar</option></select></label><button class="btn secondary small" type="submit">Guardar</button></form></td></tr>`;
+        const approvalOption = state.isAdmin
+          ? hasAccessPayment
+            ? `<option value="APPROVED" ${r.status === "APPROVED" ? "selected" : ""}>Aprobar acceso</option>`
+            : `<option value="APPROVED" disabled ${r.status === "APPROVED" ? "selected" : ""}>Aprobar acceso · requiere pago verificado o exención</option>`
+          : "";
+        return `<tr><td><strong>${esc(profiles.find((p) => p.id === r.user_id)?.full_name || "Estudiante")}</strong></td><td>${esc(r.event_title || r.events?.title || "Clase")}</td><td>${api.fmtDate(r.created_at)}</td><td><form data-class-registration data-id="${esc(r.id)}" class="registration-form">${paymentControl}<label>Acceso<select name="status"><option value="PENDING" ${r.status === "PENDING" ? "selected" : ""}>Pendiente</option>${approvalOption}<option value="REJECTED" ${r.status === "REJECTED" ? "selected" : ""}>Rechazar</option><option value="CANCELLED" ${r.status === "CANCELLED" ? "selected" : ""}>Revocar</option></select></label><button class="btn secondary small" type="submit">Guardar</button></form></td></tr>`;
       });
       document.getElementById("registration-table").innerHTML = rows.length ? table(["Estudiante", "Clase", "Solicitada", "Revisión manual"], rows) : `<div class="card card-pad">No hay solicitudes.</div>`;
       document.querySelectorAll("[data-class-registration]").forEach((form) => form.addEventListener("submit", (e) => saveClassRegistration(e).catch((x) => { api.fail(x); toast("No se pudo actualizar la solicitud.", true); })));
