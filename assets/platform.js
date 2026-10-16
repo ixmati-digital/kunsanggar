@@ -504,7 +504,18 @@
     if (error) throw error;
     const visibleAlbums = albums || [];
     if (!visibleAlbums.length) {
-      target.innerHTML = `<div class="root-page-note">${language() === "en" ? "Community activity albums will appear here." : "Aquí aparecerán los álbumes de las actividades de la comunidad."}</div>`;
+      const { data: photos, error: photosError } = await client.from("gallery_items").select("title,title_en,description,description_en,alt_text,alt_text_en,image_path").eq("status", "PUBLISHED").is("album_id", null).order("sort_order", { ascending: true }).order("created_at", { ascending: true });
+      if (photosError) throw photosError;
+      const photoMarkup = (photos || []).map((photo) => {
+        const title = localized(photo, "title") || photo.title || "";
+        const description = localized(photo, "description") || photo.description || "";
+        const alt = localized(photo, "alt_text") || photo.alt_text || title;
+        const url = publicImageUrl(photo.image_path);
+        return url ? `<figure><img src="${esc(url)}" alt="${esc(alt)}" loading="lazy">${description ? `<figcaption>${esc(description)}</figcaption>` : ""}</figure>` : "";
+      }).join("");
+      target.innerHTML = photoMarkup
+        ? `<div class="sangha-album-photos">${photoMarkup}</div>`
+        : `<div class="root-page-note">${language() === "en" ? "Community activity albums will appear here." : "Aquí aparecerán los álbumes de las actividades de la comunidad."}</div>`;
       return;
     }
     const groups = await Promise.all(visibleAlbums.map(async (album) => {
