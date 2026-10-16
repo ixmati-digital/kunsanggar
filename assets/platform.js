@@ -200,14 +200,16 @@
     loginView();
   }
 
-  function programCard(program) {
+  function programCard(program, { enrolled = false } = {}) {
     const title = localized(program, "title");
     const description = localized(program, "description");
     const levels = language() === "en"
       ? { Beginner: "Beginner", Intermediate: "Intermediate", Advanced: "Advanced" }
       : { Beginner: "Inicial", Intermediate: "Intermedio", Advanced: "Avanzado" };
     const meta = [levels[program.level] || program.level, program.teacher].filter(Boolean).join(" · ");
-    const action = program.allow_self_enrollment
+    const action = enrolled
+      ? `<a class="btn small" href="/library/?program=${encodeURIComponent(program.id)}">${language() === "en" ? "Continue studying" : "Continuar estudiando"}</a>`
+      : program.allow_self_enrollment
       ? `<button class="btn small" type="button" data-enroll-program="${esc(program.id)}">${language() === "en" ? "Join class" : "Inscribirme"}</button>`
       : `<a class="btn small" href="/library/?program=${encodeURIComponent(program.id)}">${language() === "en" ? "View materials" : "Ver materiales"}</a>`;
     return `<article class="root-page-card"><h3>${esc(title)}</h3>${description ? `<p>${esc(description)}</p>` : ""}${meta ? `<p class="platform-meta">${esc(meta)}</p>` : ""}<div class="root-page-actions">${action}</div></article>`;
@@ -266,14 +268,31 @@
       ]);
       if (programResult.error) throw programResult.error;
       if (eventResult.error) throw eventResult.error;
-      const programs = (programResult.data || []).filter((program) => program.allow_self_enrollment);
+      const publishedPrograms = programResult.data || [];
+      const session = await current();
+      let activeProgramIds = new Set();
+      let pendingProgramIds = new Set();
+      if (session) {
+        const { data: enrollments, error: enrollmentError } = await client.from("enrollments").select("program_id,status").eq("user_id", session.user.id).in("status", ["ACTIVE", "PENDING"]);
+        if (enrollmentError) throw enrollmentError;
+        activeProgramIds = new Set((enrollments || []).filter((row) => row.status === "ACTIVE").map((row) => row.program_id));
+        pendingProgramIds = new Set((enrollments || []).filter((row) => row.status === "PENDING").map((row) => row.program_id));
+      }
+      const enrolledPrograms = publishedPrograms.filter((program) => activeProgramIds.has(program.id));
+      const pendingPrograms = publishedPrograms.filter((program) => pendingProgramIds.has(program.id));
+      const programs = publishedPrograms.filter((program) => program.allow_self_enrollment && !activeProgramIds.has(program.id) && !pendingProgramIds.has(program.id));
       const now = Date.now();
       const events = (eventResult.data || []).filter((event) => {
         const date = event.ends_at || event.starts_at;
         return date && new Date(date).getTime() >= now;
       });
-      const cards = [...events.map((event) => eventCard(event)), ...programs.map(programCard)];
-      target.innerHTML = cards.length ? cards.join("") : `<div class="root-page-note">${language() === "en" ? "No class registrations are open in this catalog right now. Browse all public classes and activities." : "No hay inscripciones abiertas en este catálogo por el momento. Consulta las clases y actividades públicas."}<div class="root-page-actions"><a class="btn small" href="/classes.html#sadhana">${language() === "en" ? "Browse public classes" : "Ver clases abiertas"}</a></div></div>`;
+      const sections = [];
+      if (enrolledPrograms.length) sections.push(`<section class="programs-student-section" aria-labelledby="my-programs-heading"><h2 id="my-programs-heading">${language() === "en" ? "My programs" : "Mis programas"}</h2><div class="root-page-cards">${enrolledPrograms.map((program) => programCard(program, { enrolled: true })).join("")}</div></section>`);
+      if (pendingPrograms.length) sections.push(`<section class="programs-student-section" aria-labelledby="pending-programs-heading"><h2 id="pending-programs-heading">${language() === "en" ? "Requests awaiting review" : "Solicitudes en revisión"}</h2><div class="root-page-cards">${pendingPrograms.map((program) => `<article class="root-page-card"><h3>${esc(localized(program, "title"))}</h3><p>${language() === "en" ? "Your request is saved. The team will review it before enabling access." : "Tu solicitud está registrada. El equipo la revisará antes de habilitar el acceso."}</p><div class="root-page-actions"><a class="btn small secondary" href="/account/">${language() === "en" ? "View my account" : "Ver mi cuenta"}</a></div></article>`).join("")}</div></section>`);
+      const publicCards = [...events.map((event) => eventCard(event)), ...programs.map((program) => programCard(program))];
+      if (publicCards.length) sections.push(`<section aria-labelledby="open-classes-heading"><h2 id="open-classes-heading">${language() === "en" ? "Open classes and programs" : "Clases y programas abiertos"}</h2><div class="root-page-cards">${publicCards.join("")}</div></section>`);
+      if (!sections.length) sections.push(`<div class="root-page-note">${language() === "en" ? "No class registrations are open in this catalog right now. Browse all public classes and activities." : "No hay inscripciones abiertas en este catálogo por el momento. Consulta las clases y actividades públicas."}<div class="root-page-actions"><a class="btn small" href="/classes.html#sadhana">${language() === "en" ? "Browse public classes" : "Ver clases abiertas"}</a></div></div>`);
+      target.innerHTML = sections.join("");
       target.querySelectorAll("[data-enroll-program]").forEach((button) => button.addEventListener("click", () => enrollInProgram(button.dataset.enrollProgram)));
       const programId = new URLSearchParams(location.search).get("enroll");
       if (programId) await enrollInProgram(programId);
@@ -537,6 +556,10 @@
         rows.push(`<article class="root-page-card"><span class="pill">${esc(typeLabels[item.content_type] || "Recurso")}</span><h3>${esc(localized(item, "title"))}</h3>${localized(item, "description") ? `<p>${esc(localized(item, "description"))}</p>` : ""}${item.programs ? `<p class="platform-meta">${esc(localized(item.programs, "title"))}</p>` : ""}${href ? `<a class="btn small" href="${esc(href)}" target="_blank" rel="noopener">${language() === "en" ? "Open resource" : "Abrir recurso"}</a>` : `<span class="platform-locked">${language() === "en" ? "Not available right now." : "No disponible en este momento."}</span>`}</article>`);
       }
       if (rows.length) target.innerHTML = rows.join("");
+      else if (params.get("program")) target.innerHTML = `<div class="root-page-note">${session
+        ? (language() === "en" ? "There are no materials published for this program yet. If your enrollment is active, the team may still be preparing its study materials." : "Aún no hay materiales publicados para este programa. Si tu inscripción está activa, el equipo puede estar preparando los recursos de estudio.")
+        : (language() === "en" ? "Sign in to check materials for this program. Access is available after the team approves your enrollment." : "Inicia sesión para consultar los materiales de este programa. El acceso se habilita cuando el equipo aprueba tu inscripción.")}
+        <div class="root-page-actions"><a class="btn small" href="/account/">${language() === "en" ? "My account and requests" : "Mi cuenta e inscripciones"}</a><a class="btn small secondary" href="/programs/">${language() === "en" ? "Back to my programs" : "Volver a mis programas"}</a></div></div>`;
       // Keep the curated public brochures and student access card already in the page when no CMS resource is published.
     } catch (error) { fail(error); }
   }
