@@ -48,6 +48,8 @@
     'Clases': 'Classes',
     'Clases abiertas': 'Open classes',
     'Programas con inscripción': 'Programs open for enrollment',
+    'Cargando clases y programas…': 'Loading classes and programs…',
+    'Ver clases públicas': 'Browse public classes',
     'Próximas actividades': 'Upcoming activities',
     'Consulta las próximas clases y actividades abiertas al público.': 'Explore upcoming classes and activities open to the public.',
     'Crea tu cuenta para inscribirte y acceder a los materiales del programa.': 'Create an account to enroll and access program materials.',

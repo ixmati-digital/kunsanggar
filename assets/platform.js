@@ -274,7 +274,10 @@
   async function programsPage() {
     const target = document.querySelector("[data-program-catalog]");
     if (!target) return;
-    if (!client) { status("No fue posible cargar los programas. Inténtalo más tarde.", "error"); return; }
+    const showCatalogError = () => {
+      target.innerHTML = `<div class="root-page-note" role="alert">${language() === "en" ? "Classes and programs could not be loaded." : "No se pudieron cargar las clases y los programas."}<div class="root-page-actions"><a class="btn small" href="/classes.html">${language() === "en" ? "Browse public classes" : "Ver clases públicas"}</a><a class="btn small secondary" href="${esc(location.pathname)}">${language() === "en" ? "Try again" : "Intentar de nuevo"}</a></div></div>`;
+    };
+    if (!client) { showCatalogError(); status("No fue posible cargar los programas. Inténtalo más tarde.", "error"); return; }
     try {
       const [programResult, eventResult] = await Promise.all([
         client.from("programs").select("*").eq("status", "PUBLISHED").order("created_at", { ascending: false }),
@@ -310,7 +313,7 @@
       target.querySelectorAll("[data-enroll-program]").forEach((button) => button.addEventListener("click", () => enrollInProgram(button.dataset.enrollProgram)));
       const programId = new URLSearchParams(location.search).get("enroll");
       if (programId) await enrollInProgram(programId);
-    } catch (error) { fail(error); }
+    } catch (error) { showCatalogError(); fail(error); }
   }
 
   function eventCard(event, past = false) {
