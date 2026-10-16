@@ -9,3 +9,4 @@
 @media(max-width:640px){.live-screenshot-mobile img{object-position:top center}}
 @media(max-width:640px){.hero h1{font-size:clamp(42px,12vw,64px)}.top-actions>a:first-child{display:none}.top-actions{gap:0}}
 @media(max-width:640px){body{overflow-x:hidden}.hero{grid-template-columns:minmax(0,1fr)}.hero-copy{min-width:0}.hero-art{width:min(calc(100vw - 54px),360px);max-width:100%;justify-self:start;margin-left:5px}.hero-lede{max-width:100%}}
+.review-gate[hidden],.review-form[hidden]{display:none!important}
