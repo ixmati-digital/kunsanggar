@@ -544,6 +544,12 @@
       const { data, error } = await query;
       if (error) throw error;
       const session = await current();
+      let hasActiveProgramEnrollment = false;
+      if (session && params.get("program")) {
+        const { data: enrollment, error: enrollmentError } = await client.from("enrollments").select("id").eq("user_id", session.user.id).eq("program_id", params.get("program")).eq("status", "ACTIVE").maybeSingle();
+        if (enrollmentError) throw enrollmentError;
+        hasActiveProgramEnrollment = Boolean(enrollment);
+      }
       const rows = [];
       const availableItems = data || [];
       for (const item of availableItems) {
@@ -557,7 +563,9 @@
       }
       if (rows.length) target.innerHTML = rows.join("");
       else if (params.get("program")) target.innerHTML = `<div class="root-page-note">${session
-        ? (language() === "en" ? "There are no materials published for this program yet. If your enrollment is active, the team may still be preparing its study materials." : "Aún no hay materiales publicados para este programa. Si tu inscripción está activa, el equipo puede estar preparando los recursos de estudio.")
+        ? (hasActiveProgramEnrollment
+          ? (language() === "en" ? "Your enrollment is active, but no study materials have been published for this program yet." : "Tu inscripción está activa, pero aún no hay materiales de estudio publicados para este programa.")
+          : (language() === "en" ? "You do not have access to this program's materials yet. Check your registration in your account; access opens after payment verification and team approval." : "Aún no tienes acceso a los materiales de este programa. Consulta tu inscripción en tu cuenta; el acceso se habilita después de verificar el pago y recibir la aprobación del equipo."))
         : (language() === "en" ? "Sign in to check materials for this program. Access is available after the team approves your enrollment." : "Inicia sesión para consultar los materiales de este programa. El acceso se habilita cuando el equipo aprueba tu inscripción.")}
         <div class="root-page-actions"><a class="btn small" href="/account/">${language() === "en" ? "My account and requests" : "Mi cuenta e inscripciones"}</a><a class="btn small secondary" href="/programs/">${language() === "en" ? "Back to my programs" : "Volver a mis programas"}</a></div></div>`;
       // Keep the curated public brochures and student access card already in the page when no CMS resource is published.
