@@ -6,6 +6,12 @@
   const bucket = cfg.storageBucket || "protected-content";
   const siteMediaBucket = cfg.siteMediaBucket || "site-media";
   const stripeClassPaymentLink = "https://buy.stripe.com/6oUdR93H804FaNO6eFg7e0t";
+  const stripeClassPaymentUrl = (registrationId, email) => {
+    const url = new URL(stripeClassPaymentLink);
+    url.searchParams.set("client_reference_id", registrationId);
+    if (email) url.searchParams.set("prefilled_email", email);
+    return url.toString();
+  };
   const language = () => document.documentElement.lang === "en" ? "en" : "es";
   const localized = (row, key) => language() === "en" ? (row?.[`${key}_en`] || row?.[key] || "") : (row?.[key] || "");
   const safeNext = (value) => value?.startsWith("/") && !value.startsWith("//") ? value : null;
@@ -153,7 +159,7 @@
     document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client.auth.signOut(); window.location.replace("/account/"); }));
     const registrationList = document.createElement("section");
     registrationList.className = "account-class-registrations";
-    registrationList.innerHTML = `<h3>${language() === "en" ? "My classes and registrations" : "Mis clases e inscripciones"}<\/h3><p class="account-registration-intro">${language() === "en" ? "Continue to Stripe to complete an outstanding contribution. Your access becomes available after payment verification and team approval." : "Continúa a Stripe para completar una aportación pendiente. El acceso se habilita después de verificar el pago y aprobar la inscripción."}</p><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
+    registrationList.innerHTML = `<h3>${language() === "en" ? "My classes and registrations" : "Mis clases e inscripciones"}<\/h3><p class="account-registration-intro">${language() === "en" ? "Continue to Stripe to complete an outstanding contribution. Access activates automatically only when the class amount is configured and Stripe confirms that exact amount." : "Continúa a Stripe para completar una aportación pendiente. El acceso se activa automáticamente solo cuando la clase tiene un importe configurado y Stripe confirma exactamente ese importe."}</p><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
     accountBox.appendChild(registrationList);
     const { data: registrations, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status,created_at,events(title,slug,starts_at,program_id,price_mxn)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (registrationError) throw registrationError;
@@ -169,19 +175,18 @@
       const date = row.events?.starts_at ? fmtDate(row.events.starts_at) : "";
       const active = ["PENDING", "APPROVED"].includes(row.status);
       const classHref = row.events?.slug ? `/class.html?slug=${encodeURIComponent(row.events.slug)}` : "/classes.html";
-      const paymentUrl = new URL(stripeClassPaymentLink);
-      paymentUrl.searchParams.set("client_reference_id", row.id);
+      const paymentUrl = stripeClassPaymentUrl(row.id, session.user.email);
       const paymentAmount = row.events?.price_mxn != null
         ? (language() === "en" ? `Stripe contribution: MXN $${Number(row.events.price_mxn).toLocaleString("en-US")}.` : `Aportación indicada: $${Number(row.events.price_mxn).toLocaleString("es-MX")} MXN.`)
         : (language() === "en" ? "Choose your variable contribution amount in MXN on Stripe." : "Elige en Stripe el monto de tu aportación variable en MXN.");
       let nextStep = "";
       if (!isPaid(row) && active) {
-        nextStep = `<p class="account-registration-next">${language() === "en" ? "When you’re ready, continue your contribution in Stripe. Returning here does not confirm payment; the team will review your registration." : "Cuando estés listo, continúa tu aportación en Stripe. Volver a esta página no confirma el pago; el equipo revisará tu inscripción."} ${esc(paymentAmount)}</p><div class="root-page-actions account-registration-actions"><a class="btn" href="${esc(paymentUrl.toString())}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue to Stripe payment ↗" : "Continuar al pago con Stripe ↗"}</a><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "Return to this class" : "Volver a esta clase"}</a></div>`;
+        nextStep = `<p class="account-registration-next">${language() === "en" ? "When you’re ready, continue your contribution in Stripe. This class has no amount configured yet, so the team must verify payment before granting access. Returning here does not confirm payment." : "Cuando estés listo, continúa tu aportación en Stripe. Esta clase aún no tiene un importe configurado, así que el equipo debe verificar el pago antes de habilitar el acceso. Volver aquí no confirma el pago."} ${esc(paymentAmount)}</p><div class="root-page-actions account-registration-actions"><a class="btn" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue to Stripe payment ↗" : "Continuar al pago con Stripe ↗"}</a><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "Return to this class" : "Volver a esta clase"}</a></div>`;
       } else if (isPaid(row) && row.status === "APPROVED") {
         const materialsUrl = row.events?.program_id ? `/library/?program=${encodeURIComponent(row.events.program_id)}` : "/library/";
         nextStep = `<div class="root-page-actions account-registration-actions"><a class="btn" href="${materialsUrl}">${language() === "en" ? "Open my materials" : "Acceder a mis materiales"}</a><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "View this class" : "Ver esta clase"}</a></div>`;
       } else if (isPaid(row) && row.status === "PENDING") {
-        nextStep = `<p class="account-registration-next">${language() === "en" ? "Payment verified. The team still needs to approve access to the class materials." : "Pago verificado. El equipo aún debe aprobar el acceso a los materiales de la clase."}</p><div class="root-page-actions account-registration-actions"><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "View this class" : "Ver esta clase"}</a></div>`;
+        nextStep = `<p class="account-registration-next">${language() === "en" ? "Payment verified. Access is being synchronized; refresh this page shortly if your materials are not visible yet." : "Pago verificado. El acceso se está sincronizando; actualiza esta página en un momento si todavía no aparecen tus materiales."}</p><div class="root-page-actions account-registration-actions"><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "View this class" : "Ver esta clase"}</a></div>`;
       } else if (isPaid(row)) {
         nextStep = `<p class="account-registration-next">${language() === "en" ? "Payment verified, but this request is closed. Contact Kunsang Gar for help." : "Pago verificado, pero esta solicitud está cerrada. Contacta a Kunsang Gar para recibir ayuda."}</p><div class="root-page-actions account-registration-actions"><a class="btn secondary" href="/contact.html">${language() === "en" ? "Contact the team" : "Contactar al equipo"}</a></div>`;
       } else {
@@ -337,6 +342,8 @@
     if (!client) return;
     const session = await current();
     if (!session) return;
+    const dismissedKey = `kg-class-payment-reminder-dismissed:${session.user.id}`;
+    if (sessionStorage.getItem(dismissedKey) === "1") return;
     let target = document.querySelector("[data-pending-class-payments]");
     if (!target) {
       target = document.createElement("div");
@@ -350,11 +357,15 @@
     const entries = pending.map((row) => {
       const title = row.events?.title || (language() === "en" ? "Your class" : "Tu clase");
       const classHref = row.events?.slug ? `/class.html?slug=${encodeURIComponent(row.events.slug)}` : "/account/";
-      const paymentUrl = new URL(stripeClassPaymentLink);
-      paymentUrl.searchParams.set("client_reference_id", row.id);
-      return `<li><strong>${esc(title)}</strong><div class="class-payment-nudge-actions"><a href="${esc(classHref)}">${language() === "en" ? "Return to class details" : "Volver a los detalles de la clase"}</a><a class="btn small" href="${esc(paymentUrl.toString())}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue when ready ↗" : "Continuar cuando quieras ↗"}</a></div></li>`;
+      const paymentUrl = stripeClassPaymentUrl(row.id, session.user.email);
+      return `<li><strong>${esc(title)}</strong><div class="class-payment-nudge-actions"><a href="${esc(classHref)}">${language() === "en" ? "Return to class details" : "Volver a los detalles de la clase"}</a><a class="btn small" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue when ready ↗" : "Continuar cuando quieras ↗"}</a></div></li>`;
     }).join("");
-    target.innerHTML = `<aside class="class-payment-nudge" role="region" aria-live="polite" aria-label="${language() === "en" ? "Your pending class registration" : "Tu inscripción pendiente"}"><div class="class-payment-nudge-inner"><div><p class="eyebrow">${language() === "en" ? "Registration in progress" : "Inscripción en curso"}</p><p>${language() === "en" ? "Your class is saved. You can return to its details or continue your contribution whenever you’re ready." : "Tu clase está guardada. Puedes volver a sus detalles o continuar tu aportación cuando quieras."}</p><ul>${entries}</ul></div><a class="class-payment-nudge-account" href="/account/">${language() === "en" ? "My account" : "Mi cuenta"}</a></div></aside>`;
+    target.innerHTML = `<aside class="class-payment-nudge" role="region" aria-live="polite" aria-label="${language() === "en" ? "Your pending class registration" : "Tu inscripción pendiente"}"><button class="class-payment-nudge-close" type="button" aria-label="${language() === "en" ? "Dismiss payment reminder for this session" : "Cerrar recordatorio durante esta sesión"}" title="${language() === "en" ? "Dismiss for this session" : "Cerrar por esta sesión"}">×</button><div class="class-payment-nudge-inner"><div><p class="eyebrow">${language() === "en" ? "Registration in progress" : "Inscripción en curso"}</p><p>${language() === "en" ? "Your class is saved. You can return to its details or continue your contribution whenever you’re ready." : "Tu clase está guardada. Puedes volver a sus detalles o continuar tu aportación cuando quieras."}</p><ul>${entries}</ul></div><a class="class-payment-nudge-account" href="/account/">${language() === "en" ? "My account" : "Mi cuenta"}</a></div></aside>`;
+    target.querySelector(".class-payment-nudge-close")?.addEventListener("click", () => {
+      sessionStorage.setItem(dismissedKey, "1");
+      target.remove();
+      document.body.classList.remove("has-pending-class-payment");
+    });
     document.body.classList.add("has-pending-class-payment");
   }
 
@@ -394,17 +405,17 @@
     if (lookupError) throw lookupError;
     if (existing) {
       if (existing.payment_status === "CONFIRMED" || existing.payment_status === "WAIVED") {
-        status(existing.status === "APPROVED" ? "Pago verificado. Tu acceso está aprobado." : "Pago verificado. La solicitud espera aprobación del equipo.");
+        status(existing.status === "APPROVED" ? "Pago verificado. Tu acceso está aprobado." : "Pago verificado. El acceso se está sincronizando.");
       } else {
-        status(existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : "Tu solicitud está registrada. Completa el pago en Stripe; el acceso requiere aprobación del equipo.");
-        window.location.assign(`${stripeClassPaymentLink}?client_reference_id=${encodeURIComponent(existing.id)}`);
+        status(existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : "Tu solicitud está registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
+        window.location.assign(stripeClassPaymentUrl(existing.id, session.user.email));
       }
       return;
     }
     const { data: registration, error } = await client.from("class_registrations").insert({ event_id: eventId, user_id: session.user.id }).select("id").single();
     if (error) throw error;
-    status("Solicitud enviada. Completa el pago en Stripe; el acceso requiere aprobación del equipo.");
-    window.location.assign(`${stripeClassPaymentLink}?client_reference_id=${encodeURIComponent(registration.id)}`);
+    status("Solicitud enviada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
+    window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email));
   }
 
   async function classDetailPage() {
@@ -427,7 +438,7 @@
     const end = event.ends_at ? fmtDate(event.ends_at) : "";
     const when = date && end && date !== end ? `${date} – ${end}` : date;
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
-    target.innerHTML = `${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}">` : ""}<p class="eyebrow">Clase</p><h1>${esc(title)}</h1>${when ? `<p class="platform-meta">${esc(when)}</p>` : ""}${teacher ? `<p><strong>Maestro:</strong> ${esc(teacher)}</p>` : ""}${format ? `<p><strong>Modalidad:</strong> ${esc(format)}</p>` : ""}${locationText ? `<p><strong>Lugar:</strong> ${esc(locationText)}</p>` : ""}${price ? `<p><strong>Precio:</strong> ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}<div data-platform-status class="root-page-note" hidden role="status" aria-live="polite"></div>${event.registration_enabled ? `<p>${language() === "en" ? "Choose your variable contribution in MXN on Stripe. The team verifies payment before approving access; returning here does not confirm it automatically." : "Elige en Stripe el monto de tu aportación variable en MXN. El equipo verificará el pago antes de aprobar el acceso; volver aquí no confirma el pago automáticamente."}</p><button class="btn" type="button" data-register-class data-event-id="${esc(event.id)}">${language() === "en" ? "Request registration" : "Solicitar inscripción y pagar con Stripe"}</button><p><a href="/account/">${language() === "en" ? "View my account and registrations" : "Ver mi cuenta e inscripciones"}</a></p>` : `<p>El registro aún no está abierto.</p>`}`;
+    target.innerHTML = `${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}">` : ""}<p class="eyebrow">Clase</p><h1>${esc(title)}</h1>${when ? `<p class="platform-meta">${esc(when)}</p>` : ""}${teacher ? `<p><strong>Maestro:</strong> ${esc(teacher)}</p>` : ""}${format ? `<p><strong>Modalidad:</strong> ${esc(format)}</p>` : ""}${locationText ? `<p><strong>Lugar:</strong> ${esc(locationText)}</p>` : ""}${price ? `<p><strong>Precio:</strong> ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}<div data-platform-status class="root-page-note" hidden role="status" aria-live="polite"></div>${event.registration_enabled ? `<p>${language() === "en" ? (event.price_mxn != null ? "Continue to Stripe in MXN. Access activates automatically only when Stripe confirms this exact configured amount; returning here does not confirm payment." : "Continue to Stripe in MXN. This class has no amount configured yet, so the team must verify payment before granting access.") : (event.price_mxn != null ? "Continúa a Stripe para pagar en MXN. El acceso se activa automáticamente solo cuando Stripe confirma exactamente este importe configurado; volver aquí no confirma el pago." : "Continúa a Stripe para pagar en MXN. Esta clase aún no tiene un importe configurado; el equipo debe verificar el pago antes de habilitar el acceso.")}</p><button class="btn" type="button" data-register-class data-event-id="${esc(event.id)}">${language() === "en" ? "Request registration" : "Solicitar inscripción y pagar con Stripe"}</button><p><a href="/account/">${language() === "en" ? "View my account and registrations" : "Ver mi cuenta e inscripciones"}</a></p>` : `<p>El registro aún no está abierto.</p>`}`;
     document.querySelector("[data-register-class]")?.addEventListener("click", async (clickEvent) => {
       const button = clickEvent.currentTarget;
       button.disabled = true;
@@ -444,11 +455,11 @@
         const closed = ["REJECTED", "CANCELLED"].includes(registration.status);
         status(closed
           ? "Esta solicitud está cerrada. Contacta al equipo si necesitas ayuda."
-          : paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado; solicitud pendiente de aprobación del equipo.") : "Solicitud registrada. Completa el pago en Stripe; el acceso requiere aprobación.");
+          : paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado. El acceso se está sincronizando.") : "Solicitud registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
         if (button) {
           const statefulButton = button.cloneNode(true);
           button.replaceWith(statefulButton);
-          statefulButton.textContent = closed ? "Solicitud cerrada" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Acceder a mis materiales" : "Ver mi inscripción") : "Esperando aprobación") : "Continuar al pago con Stripe";
+          statefulButton.textContent = closed ? "Solicitud cerrada" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Acceder a mis materiales" : "Ver mi inscripción") : "Sincronizando acceso") : "Continuar al pago con Stripe";
           if (closed) {
             statefulButton.disabled = true;
             const contactLink = document.createElement("a");
@@ -459,7 +470,7 @@
           } else if (paid) {
             statefulButton.disabled = registration.status !== "APPROVED";
             if (registration.status === "APPROVED") statefulButton.addEventListener("click", () => { window.location.href = event.program_id ? `/library/?program=${encodeURIComponent(event.program_id)}` : "/account/"; });
-          } else statefulButton.addEventListener("click", () => { window.location.assign(`${stripeClassPaymentLink}?client_reference_id=${encodeURIComponent(registration.id)}`); });
+          } else statefulButton.addEventListener("click", () => { window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email)); });
         }
       }
     }
@@ -593,8 +604,8 @@
       else if (params.get("program")) target.innerHTML = `<div class="root-page-note">${session
         ? (hasActiveProgramEnrollment
           ? (language() === "en" ? "Your enrollment is active, but no study materials have been published for this program yet." : "Tu inscripción está activa, pero aún no hay materiales de estudio publicados para este programa.")
-          : (language() === "en" ? "You do not have access to this program's materials yet. Check your registration in your account; access opens after payment verification and team approval." : "Aún no tienes acceso a los materiales de este programa. Consulta tu inscripción en tu cuenta; el acceso se habilita después de verificar el pago y recibir la aprobación del equipo."))
-        : (language() === "en" ? "Sign in to check materials for this program. Access is available after the team approves your enrollment." : "Inicia sesión para consultar los materiales de este programa. El acceso se habilita cuando el equipo aprueba tu inscripción.")}
+          : (language() === "en" ? "You do not have access to this program's materials yet. Check your registration in your account; access opens after Stripe confirms the configured class amount." : "Aún no tienes acceso a los materiales de este programa. Consulta tu inscripción en tu cuenta; el acceso se activa cuando Stripe confirma el importe configurado de la clase."))
+        : (language() === "en" ? "Sign in to check materials for this program. Access is available after Stripe confirms the class amount or the team records an authorized waiver." : "Inicia sesión para consultar los materiales de este programa. El acceso se activa cuando Stripe confirma el importe de la clase o el equipo registra una exención autorizada.")}
         <div class="root-page-actions"><a class="btn small" href="/account/">${language() === "en" ? "My account and requests" : "Mi cuenta e inscripciones"}</a><a class="btn small secondary" href="/programs/">${language() === "en" ? "Back to my programs" : "Volver a mis programas"}</a></div></div>`;
       // Keep the curated public brochures and student access card already in the page when no CMS resource is published.
     } catch (error) { fail(error); }
