@@ -37,7 +37,7 @@
     if (spanish !== english && !adminSpanishTranslations[english]) adminSpanishTranslations[english] = spanish;
   }
   Object.assign(adminSpanishTranslations, {
-    "Teacher (English)":"Maestro (inglés)","Format (English)":"Formato (inglés)","Location (English)":"Lugar (inglés)","Testimonial (English, optional)":"Testimonio (inglés, opcional)","Alt text (English)":"Texto alternativo (inglés)","Album title (English)":"Nombre del álbum (inglés)","Start":"Fecha de inicio"
+    "Teacher (English)":"Maestro (inglés)","Format (English)":"Formato (inglés)","Location (English)":"Lugar (inglés)","Testimonial (English, optional)":"Testimonio (inglés, opcional)","Alt text (English)":"Texto alternativo (inglés)","Album title (English)":"Nombre del álbum (inglés)","Start":"Fecha de inicio","Unverified":"Sin verificar","Reported":"Reportado","Confirmed":"Confirmado","Waived":"Exento","Pending":"Pendiente","Paid":"Pagado","Pago: UNVERIFIED":"Pago: Sin verificar","Pago: WAIVED":"Pago: Exento"
   });
   const originalText = new WeakMap();
   const originalAttrs = new WeakMap();
@@ -54,10 +54,11 @@
       let translated = english ? (adminTranslations[key] || key) : (adminSpanishTranslations[key] || key);
       if (english && key.startsWith("Intentos históricos conservados (")) translated = `Historical attempts retained ${key.slice("Intentos históricos conservados".length)}`;
       if (english && key.startsWith("Sin actividad asociada · ")) translated = `No associated activity · ${key.slice("Sin actividad asociada · ".length)}`;
-      if (english && !adminTranslations[key] && key.startsWith("Pago: ")) { const value = key.slice("Pago: ".length); translated = `Payment: ${adminTranslations[value] || value}`; }
+      if (english && !adminTranslations[key] && key.startsWith("Pago: ")) { const value = key.slice("Pago: ".length); const mapped = adminTranslations[value]; translated = mapped?.startsWith("Payment") ? mapped : `Payment: ${mapped || value}`; }
       if (!english && key.startsWith("No associated activity · ")) translated = `Sin actividad asociada · ${key.slice("No associated activity · ".length)}`;
       if (!english && key.startsWith("Historical attempts retained (")) translated = `Intentos históricos conservados ${key.slice("Historical attempts retained".length)}`;
       if (!english && !adminSpanishTranslations[key] && key.startsWith("Payment: ")) { const value = key.slice("Payment: ".length); translated = `Pago: ${adminSpanishTranslations[value] || value}`; }
+      if (!english && !adminSpanishTranslations[key] && key.startsWith("Pago: ")) { const value = key.slice("Pago: ".length); translated = `Pago: ${adminSpanishTranslations[value] || value}`; }
       if (english && !adminTranslations[key] && key.startsWith("Exención registrada · ")) { const parts = key.split(" · "); translated = `Waiver recorded · ${parts[1] || ""}${parts[2] ? ` · ${adminTranslations[parts.slice(2).join(" · ")] || parts.slice(2).join(" · ")}` : ""}`; }
       if (!english && !adminSpanishTranslations[key] && key.startsWith("Waiver recorded · ")) { const parts = key.split(" · "); translated = `Exención registrada · ${parts[1] || ""}${parts[2] ? ` · ${adminSpanishTranslations[parts.slice(2).join(" · ")] || parts.slice(2).join(" · ")}` : ""}`; }
       node.nodeValue = original.replace(key, translated);
