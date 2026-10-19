@@ -114,3 +114,6 @@ body.has-pending-class-payment{padding-bottom:150px}
 .class-detail { max-width: 850px; margin: 0 auto; }
 .class-detail .event-card-image { width: 100%; max-height: 620px; object-fit: contain; background: #132336; margin-bottom: 1.5rem; }
 .registration-form { display: grid; gap: .6rem; min-width: 250px; }
+
+/* Temporary Kunsang Gar symbol crop: the official mark includes the local Mexico wordmark. */
+.brand>img,.footer-brand>img{display:none!important}.brand::before,.footer-brand::before{content:"";display:block;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--gold);border-radius:50%;background:#fff url('/assets/brand/kunsang-gar-site-logo.png') center/235% 197% no-repeat}
