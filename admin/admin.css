@@ -32,6 +32,12 @@ button{cursor:pointer}
 .side-link{display:flex;align-items:center;justify-content:center;min-height:38px;padding:0 10px;border:1px solid rgba(255,255,255,.2);border-radius:var(--admin-radius);color:#fff;font-weight:900;font-size:.82rem}
 .admin-main{min-width:0}
 .admin-topbar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:14px;align-items:center;min-height:72px;padding:14px 28px;background:rgba(251,246,234,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--admin-line)}
+.admin-language{display:flex;align-items:center;gap:5px;white-space:nowrap;color:var(--admin-muted);font-size:.83rem;font-weight:900}
+.admin-language button{border:1px solid transparent;border-radius:6px;background:transparent;color:var(--admin-navy);padding:7px 8px;font:inherit;cursor:pointer}
+.admin-language button:hover,.admin-language button.is-active{border-color:var(--admin-line);background:#fff;color:var(--admin-burgundy)}
+.payment-history{margin-top:18px}
+.payment-history summary{cursor:pointer;font-weight:900;color:var(--admin-navy)}
+.payment-history p{margin:10px 0}
 .mobile-menu{display:none}
 .search{position:relative}
 .search input{width:100%;height:44px;border:1px solid var(--admin-line);border-radius:var(--admin-radius);background:#fff;padding:0 14px 0 38px;color:var(--admin-ink)}
@@ -140,7 +146,7 @@ td{font-size:.9rem}
   .kpi-grid,.three-grid,.two-grid,.editor-layout,.upload-steps{grid-template-columns:1fr}
 }
 @media(max-width:680px){
-  .admin-topbar{grid-template-columns:auto 1fr auto}.profile span{display:none}
+  .admin-topbar{grid-template-columns:auto minmax(0,1fr) auto auto;padding-inline:12px}.admin-runtime{font-size:.83rem}.admin-language{font-size:.72rem;gap:1px}.admin-language button{padding:6px 3px}.profile span{display:none}
   .page-head{display:grid}
   .kpi-grid,.form-grid,.choice-grid,.pecha-editor{grid-template-columns:1fr}
   .field.full{grid-column:auto}

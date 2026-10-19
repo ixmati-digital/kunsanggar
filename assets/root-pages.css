@@ -79,7 +79,9 @@
 .editorial-toc a{padding:9px 12px;border:1px solid rgba(26,24,49,.18);color:var(--coral);font-size:.82rem;font-weight:800;text-decoration:none;background:#fff}
 .editorial-toc a:hover{border-color:var(--ochre);color:var(--ink-deep)}
 .class-payment-nudge{position:fixed;z-index:30;right:20px;bottom:20px;left:20px;max-width:1120px;max-height:28vh;overflow:auto;margin:0 auto;padding:16px 20px;background:#fffaf2;border:1px solid rgba(26,24,49,.16);border-left:4px solid var(--ochre);box-shadow:0 12px 34px rgba(15,13,52,.18)}
-.class-payment-nudge-inner{display:flex;align-items:center;justify-content:space-between;gap:22px}
+.class-payment-nudge-close{position:absolute;top:6px;right:8px;display:grid;place-items:center;width:36px;height:36px;border:1px solid rgba(26,24,49,.2);border-radius:50%;background:#fff;color:var(--ink-deep);font-size:1.45rem;line-height:1;cursor:pointer}
+.class-payment-nudge-close:hover,.class-payment-nudge-close:focus-visible{background:var(--ink-deep);color:#fff;outline:3px solid rgba(212,154,60,.45);outline-offset:2px}
+.class-payment-nudge-inner{display:flex;align-items:center;justify-content:space-between;gap:22px;padding-right:40px}
 .class-payment-nudge .eyebrow{margin:0 0 4px;color:var(--coral);font-size:.75rem}
 .class-payment-nudge p{margin:0;color:var(--ink-deep)}
 .class-payment-nudge ul{display:flex;flex-wrap:wrap;gap:12px 26px;margin:10px 0 0;padding:0;list-style:none}

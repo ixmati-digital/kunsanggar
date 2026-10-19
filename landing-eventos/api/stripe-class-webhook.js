@@ -48,11 +48,36 @@ const supabaseConfig = () => {
 
 const updateRegistration = async (registrationId, session) => {
   const { url, key } = supabaseConfig();
+  const registrationResponse = await fetch(
+    `${url}/rest/v1/class_registrations?id=eq.${encodeURIComponent(registrationId)}&select=id,user_id,event_id,status,payment_status,stripe_checkout_session_id,events(price_mxn,registration_enabled)`,
+    { headers: { apikey: key, Authorization: `Bearer ${key}` } }
+  );
+  const registrations = await registrationResponse.json().catch(() => []);
+  if (!registrationResponse.ok) throw new Error("Could not load the related class registration.");
+  const registration = registrations[0];
+  if (!registration) return 0;
+  if (registration.payment_status === "CONFIRMED") return registration.stripe_checkout_session_id === session.id ? 1 : 0;
+  if (!["PENDING", "APPROVED"].includes(registration.status)
+    || !["UNVERIFIED", "REPORTED"].includes(registration.payment_status)
+    || !registration.events?.registration_enabled
+    || !Number.isFinite(Number(registration.events?.price_mxn))
+    || Number(registration.events.price_mxn) <= 0
+    || !Number.isInteger(session.amount_total)
+    || session.amount_total !== Math.round(Number(registration.events.price_mxn) * 100)) return 0;
+
+  const userResponse = await fetch(`${url}/auth/v1/admin/users/${encodeURIComponent(registration.user_id)}`, {
+    headers: { apikey: key, Authorization: `Bearer ${key}` }
+  });
+  const authUser = await userResponse.json().catch(() => null);
+  const registeredEmail = String(authUser?.user?.email || authUser?.email || "").trim().toLowerCase();
+  const paidEmail = String(session.customer_details?.email || session.customer_email || "").trim().toLowerCase();
+  if (!userResponse.ok || !registeredEmail || !paidEmail || registeredEmail !== paidEmail) return 0;
+
   const paymentIntent = typeof session.payment_intent === "string"
     ? session.payment_intent
     : session.payment_intent?.id || null;
   const response = await fetch(
-    `${url}/rest/v1/class_registrations?id=eq.${encodeURIComponent(registrationId)}&status=in.(PENDING,APPROVED)&payment_status=in.(UNVERIFIED,REPORTED)`,
+    `${url}/rest/v1/class_registrations?id=eq.${encodeURIComponent(registrationId)}&user_id=eq.${encodeURIComponent(registration.user_id)}&event_id=eq.${encodeURIComponent(registration.event_id)}&status=in.(PENDING,APPROVED)&payment_status=in.(UNVERIFIED,REPORTED)`,
     {
       method: "PATCH",
       headers: {
@@ -62,6 +87,7 @@ const updateRegistration = async (registrationId, session) => {
         Prefer: "return=representation"
       },
       body: JSON.stringify({
+        status: "APPROVED",
         payment_status: "CONFIRMED",
         payment_method: "STRIPE",
         payment_reference: session.id,
@@ -118,6 +144,7 @@ module.exports = async function stripeClassWebhook(req, res) {
 
   try {
     const updated = await updateRegistration(reference, session);
+    if (!updated) console.info("Stripe class payment did not match an open registration, exact configured amount, and student email.");
     return sendJson(res, 200, { received: true, matched: updated === 1 });
   } catch (error) {
     console.error("Stripe class webhook reconciliation failed:", error.message);
