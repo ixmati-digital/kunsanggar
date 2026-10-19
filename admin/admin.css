@@ -154,3 +154,5 @@ td{font-size:.9rem}
   table{min-width:720px}
   .registration-form{grid-template-columns:1fr 1fr;min-width:560px}
 }
+/* Isolate the official Tibetan symbol from the local Mexico wordmark. */
+.admin-brand{text-transform:none}.admin-brand img{display:none!important}.admin-brand::before{content:"";display:block;flex:0 0 42px;width:42px;height:42px;border:1px solid var(--admin-gold);border-radius:50%;background:var(--admin-ivory) url('/assets/brand/kunsang-gar-site-logo.png') center/235% 197% no-repeat}
