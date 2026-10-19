@@ -11,7 +11,8 @@
     .admin-login-wrap{min-height:100svh;display:grid;place-items:center;padding:24px}
     .admin-login-card{width:min(100%,480px);padding:clamp(22px,5vw,38px);background:var(--admin-panel);border:1px solid var(--admin-line);border-radius:12px;box-shadow:var(--admin-shadow)}
     .admin-login-brand{display:flex;align-items:center;gap:12px;margin-bottom:26px;font-weight:900;color:var(--admin-navy)}
-    .admin-login-brand img{width:48px;height:48px;object-fit:cover;border-radius:50%}
+    .admin-login-brand img{display:none}
+    .admin-login-brand::before{content:"";display:block;flex:0 0 48px;width:48px;height:48px;border:1px solid #d49a3c;border-radius:50%;background:#fff url('/assets/brand/kunsang-gar-site-logo.png') center/235% 197% no-repeat}
     .admin-login-card h1{margin:0 0 10px;font-size:clamp(2rem,7vw,2.8rem)}
     .admin-login-card>p{margin-bottom:22px}
     .admin-login-form{display:grid;gap:15px}
