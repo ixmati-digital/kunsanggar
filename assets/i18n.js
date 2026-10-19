@@ -43,14 +43,68 @@
     'Participa': 'Join',
     'Enseñanzas y práctica': 'Teachings and practice',
     'Sabiduría antigua para la sociedad moderna': 'Ancient wisdom for modern society',
-    'Kunsang Gar México': 'Kunsang Gar Mexico',
+    'Kunsang Gar': 'Kunsang Gar',
     'Inicio': 'Home',
     'Clases': 'Classes',
-    'Clases abiertas': 'Open classes',
+    'Clases sabatinas': 'Saturday classes',
+    'Cargando clases y programas…': 'Loading classes and programs…',
+    'Ver clases públicas': 'Browse public classes',
+    'Ver clases sabatinas': 'View Saturday classes',
+    'Visita octubre–noviembre': 'October–November visit',
+    'Drenpa Namkha': 'Drenpa Namkha',
+    'Shakyamuni': 'Shakyamuni',
+    'Libros y enseñanzas de Kunsang Gar': 'Kunsang Gar books and teachings',
+    'Programa de Sabiduría de Kunsang Gar': 'Kunsang Gar Wisdom Program',
+    'Descargar Español ↓': 'Download Spanish ↓',
+    'Download English ↓': 'Download English ↓',
+    'SipeGyalmo Mantra': 'SipeGyalmo Mantra',
+    'Purificación por medio del agua y el humo': 'Purification through water and smoke',
+    'Mantra of All Dakinis': 'Mantra of All Dakinis',
+    'Canto y práctica': 'Chanting and practice',
+    'Clases abiertas': 'Saturday classes',
     'Programas con inscripción': 'Programs open for enrollment',
     'Cargando clases y programas…': 'Loading classes and programs…',
     'Ver clases públicas': 'Browse public classes',
     'Próximas actividades': 'Upcoming activities',
+    'Comprobando tu sesión…': 'Checking your session…',
+    'Horario de prácticas diarias': 'Daily practice schedule',
+    'Consulta el calendario de prácticas diarias y las clases sabatinas abiertas al público.': 'See the daily practice schedule and Saturday classes open to the public.',
+    'Consulta las prácticas semanales de la comunidad.': 'See the community’s weekly practices.',
+    'Horario semanal': 'Weekly schedule',
+    'Día': 'Day',
+    'Práctica matutina · 7:00 a. m.': 'Morning practice · 7:00 a.m.',
+    'Práctica vespertina · 8:30 p. m.': 'Evening practice · 8:30 p.m.',
+    'Lunes': 'Monday',
+    'Martes': 'Tuesday',
+    'Miércoles': 'Wednesday',
+    'Jueves': 'Thursday',
+    'Viernes': 'Friday',
+    'Luna llena': 'Full moon',
+    '3 mantras esenciales de Nampar Gyalwa · Giselle': 'Three essential Nampar Gyalwa mantras · Giselle',
+    'Garuda nueva · Inés': 'New Garuda · Inés',
+    'Práctica de Rushens · Roberto': 'Rushen practice · Roberto',
+    'Sangwa Langchen · Martha': 'Sangwa Langchen · Martha',
+    'Práctica de Rushens · Paulina': 'Rushen practice · Paulina',
+    'Tsa Lung, plegaria y mantra de la luminosidad · Lena': 'Tsa Lung, prayer and mantra of luminosity · Lena',
+    'Nagas · Rodolfo': 'Nagas · Rodolfo',
+    'Monte Kailash nueva · Roberto': 'New Mount Kailash · Roberto',
+    'DG y Dzambhala · Zulema': 'DG and Dzambhala · Zulema',
+    'Plegaria del Dharmakaya · 8:30 p. m.': 'Dharmakaya prayer · 8:30 p.m.',
+    'Cartel del horario de prácticas diarias.': 'Daily practice schedule poster.',
+    'Materiales de libre descarga': 'Free downloadable materials',
+    'Estos documentos son de acceso público y se pueden descargar sin registro.': 'These public documents can be downloaded without registering.',
+    'Descargar PDF': 'Download PDF',
+    'Sepi Gyalmo Tsog (texto en español)': 'Sepi Gyalmo Tsog (Spanish text)',
+    'Dharmakaya Prayer (inglés y español)': 'Dharmakaya Prayer (English and Spanish)',
+    'Oraciones para la práctica': 'Prayers for practice',
+    'Ma-Tri, el gran mantra': 'Ma-Tri, the Great Mantra',
+    'Canto y práctica': 'Chanting and practice',
+    'Interpretado por Tshering Yangki, con dirección de Geshe Dangsong Namgyal.': 'Performed by Tshering Yangki, directed by Geshe Dangsong Namgyal.',
+    'Conversación': 'Conversation',
+    'Enseñanzas de Geshe Dangsong Namgyal': 'Teachings by Geshe Dangsong Namgyal',
+    'Conversación con Geshe Dangsong Namgyal publicada por Tibet House US.': 'Conversation with Geshe Dangsong Namgyal, published by Tibet House US.',
+    'Visitas y actividades.': 'Visits and activities.',
+    'Consulta las próximas visitas confirmadas y actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
     'Consulta las próximas clases y actividades abiertas al público.': 'Explore upcoming classes and activities open to the public.',
     'Crea tu cuenta para inscribirte y acceder a los materiales del programa.': 'Create an account to enroll and access program materials.',
     'Consulta las clases abiertas al público y sus opciones de inscripción.': 'Browse classes open to the public and review their registration options.',
@@ -70,14 +124,6 @@
     'Ciclo de enseñanza octubre - noviembre 2026': 'Teaching series, October–November 2026',
     'Ciclo de Enseñanza Octubre - Noviembre 2026': 'Teaching series, October–November 2026',
     'Proxima visita presencial, disponible tambien online.': 'Upcoming in-person visit, also available online.',
-    'Yoga del Tantra Madre y meditación Dzogchen': 'Mother Tantra Yoga and Dzogchen meditation',
-    'Esencia de la Conciencia: Vacío y luminosidad': 'Essence of Consciousness: Emptiness and luminosity',
-    'Recuperación del alma, Sadhana de longevidad y Tsok': 'Soul Retrieval, Longevity Sadhana and Tsok',
-    'Gran Empoderamiento de Nampar Gyalwa': 'Great Empowerment of Nampar Gyalwa',
-    'Álbumes de actividades': 'Activity albums',
-    'Fotografías de las enseñanzas y encuentros de la Sangha.': 'Photographs of Sangha teachings and gatherings.',
-    'Archivo de actividades': 'Activity archive',
-    'Cargando álbumes…': 'Loading albums…',
     'Aquí aparecerán los álbumes de las actividades de la comunidad.': 'Community activity albums will appear here.',
     'Pronto se agregarán más fotografías.': 'More photographs will be added soon.',
     'No hay clases abiertas publicadas por el momento.': 'There are no open classes at the moment.',
@@ -85,6 +131,11 @@
     'Encuentros pasados': 'Past gatherings',
     'Memoria compartida': 'Shared memories',
     'Consulta el archivo de actividades realizadas.': 'Browse the archive of past activities.',
+    'Álbumes de actividades': 'Activity albums',
+    'Fotografías de las enseñanzas y encuentros de la Sangha.': 'Photographs of Sangha teachings and gatherings.',
+    'Archivo de actividades': 'Activity archive',
+    'Cargando álbumes…': 'Loading albums…',
+    'No hay álbumes publicados por el momento.': 'There are no published albums at the moment.',
     'Kunsang Gar': 'Kunsang Gar',
     'Geshe Dangsong': 'Geshe Dangsong',
     'Tradición Bön': 'Bön Tradition',
@@ -111,7 +162,7 @@
     'Clase de Kunsang Gar': 'Kunsang Gar class',
     'Enseñanza de Kunsang Gar': 'Kunsang Gar teaching',
     'Actividad comunitaria de Kunsang Gar': 'Kunsang Gar community activity',
-    'Copyright 2026 Kunsang Gar México.': 'Copyright 2026 Kunsang Gar Mexico.',
+    'Copyright 2026 Kunsang Gar.': 'Copyright 2026 Kunsang Gar.',
     'Sabiduría, práctica y comunidad.': 'Wisdom, practice and community.',
     'Pago único en México.': 'One-time payment in Mexico.',
     'Escribir por correo': 'Email us',
@@ -185,7 +236,7 @@
     'Solicitar instrucciones por WhatsApp ↗': 'Request instructions via WhatsApp ↗',
     'Escribir por correo': 'Email us',
     'Consulta la información vigente antes de inscribirte.': 'Check current information before registering.',
-    'Conoce las formas de apoyar a Kunsang Gar México.': 'Learn how to support Kunsang Gar Mexico.',
+    'Conoce las formas de apoyar a Kunsang Gar.': 'Learn how to support Kunsang Gar.',
     'Conoce la certificación ↗': 'Learn about certification ↗',
     'Conoce las clases': 'Learn about classes',
     'Conoce los servicios ↗': 'Learn about services ↗',
@@ -232,7 +283,7 @@
     'Trabajo internacional': 'International work',
     'Una visión amplia': 'A broad view',
     'Ejemplo ritual': 'Ritual example',
-    'Introducción a la nueva oración': 'Introduction to the new prayer',
+    'Introducción a la nueva tradición': 'Introduction to the new tradition',
     'Material de presentación': 'Presentation material',
     'Brochures': 'Brochures',
     'Próxima clase': 'Next class',
@@ -241,7 +292,7 @@
     'En Stripe, ingresa $600 MXN como importe.': 'On Stripe, enter MXN $600 as the amount.',
     'Donar con Stripe ↗': 'Donate with Stripe ↗',
     'Ingresa el importe de tu aportación en pesos mexicanos en Stripe.': 'Enter your contribution amount in Mexican pesos on Stripe.',
-    'Donación Kunsang Gar México': 'Kunsang Gar Mexico donation',
+    'Donación Kunsang Gar': 'Kunsang Gar donation',
     'Donativo único en MXN mediante Mercado Pago.': 'One-time donation in MXN through Mercado Pago.',
     'Concepto de pago no disponible.': 'This payment option is unavailable.',
     'Visita presencial en México': 'In-person visit to Mexico',
@@ -265,7 +316,7 @@
     'México · MXN · Mercado Pago': 'Mexico · MXN · Mercado Pago',
     'MÉXICO · MXN · MERCADO PAGO': 'MEXICO · MXN · MERCADO PAGO',
     'Completar pago.': 'Complete payment.',
-    'Flujo de pago único para actividades y donaciones de Kunsang Gar México.': 'One-time payment flow for Kunsang Gar Mexico activities and donations.',
+    'Flujo de pago único para actividades y donaciones de Kunsang Gar.': 'One-time payment flow for Kunsang Gar activities and donations.',
     'Concepto': 'Description',
     'Total': 'Total',
     'Monto': 'Amount',
@@ -340,7 +391,7 @@
 
   const pageMaps = {
     home: {
-      'Centro Budista Kunsang Gar México': 'Kunsang Gar Mexico Buddhist Center',
+      'Centro Budista Kunsang Gar': 'Kunsang Gar Buddhist Center',
       'Sabiduría antigua para la sociedad moderna.': 'Ancient wisdom for modern society.',
       'Promover la Sabiduría de Kunsang Gar y llevar las tradiciones antiguas a la sociedad moderna para nutrir mentes más pacíficas, promover la curación física y ambiental y encontrar la máxima realización de la verdadera naturaleza.': 'To promote Kunsang Gar Wisdom and bring ancient traditions into modern society, nurturing more peaceful minds, supporting physical and environmental healing, and realizing the true nature.',
       'Nuestro principal estudio y práctica es Dzogchen o Meditación de la Mente Natural.': 'Our main study and practice is Dzogchen, or Natural Mind Meditation.',
@@ -501,7 +552,7 @@
     },
     prayers: {
       'Oraciones y recursos.': 'Prayers and resources.',
-      'Recursos de práctica de Kunsang Gar México.': 'Practice resources from Kunsang Gar Mexico.',
+      'Recursos de práctica de Kunsang Gar.': 'Practice resources from Kunsang Gar.',
       'Acceso responsable': 'Responsible access',
       'El material se comparte según las indicaciones correspondientes.': 'Materials are shared according to the corresponding guidance.',
       'Los materiales de práctica apoyan la tradición Yungdrung Bön bajo la guía de Geshe. Algunos son públicos y otros requieren transmisión, iniciación o autorización previa.': 'Practice materials support the Yungdrung Bön tradition under Geshe’s guidance. Some are public, while others require transmission, initiation or prior authorization.',
@@ -511,15 +562,13 @@
       'Solicita indicaciones de acceso por los canales oficiales.': 'Request access guidance through the official channels.'
     },
     'events': {
-      'Eventos y archivo.': 'Events and archive.',
-      'Conservamos la memoria de las actividades realizadas y comunicamos las próximas visitas confirmadas.': 'We preserve the record of completed activities and share confirmed upcoming visits.',
+      'Visitas y actividades.': 'Visits and activities.',
+      'Consulta las próximas visitas confirmadas y actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
       'Visita octubre–noviembre': 'October–November visit',
       'Geshe Dangsong Namgyal, Director Espiritual de Kunsang Gar Internacional.': 'Geshe Dangsong Namgyal, Spiritual Director of Kunsang Gar International.',
       'Ciclo de Enseñanzas · Octubre–Noviembre 2026': 'Teaching Series · October–November 2026',
       'PRÓXIMA VISITA': 'UPCOMING VISIT',
       'Visita de Geshe Dangsong Namgyal': 'Visit of Geshe Dangsong Namgyal',
-      'PASADO': 'PAST',
-      'Eventos pasados': 'Past events',
       'Recuperación del alma, Sadhana de longevidad y Tsok': 'Soul Retrieval, Longevity Sadhana and Tsok',
       '23 y 24 de mayo de 2026 · Geshe Dangsong Namgyal · Ciudad de México y online · Inglés con traducción al español.': 'May 23 and 24, 2026 · Geshe Dangsong Namgyal · Mexico City and online · English with Spanish translation.',
       'Esencia de la Conciencia: Vacío y luminosidad': 'Essence of Consciousness: Emptiness and luminosity',
@@ -550,7 +599,7 @@
     },
     donations: {
       'Donaciones.': 'Donations.',
-      'Tu apoyo ayuda a sostener el estudio, la práctica, las actividades y la comunidad de Kunsang Gar México.': 'Your support sustains the study, practice, activities and community of Kunsang Gar Mexico.',
+      'Tu apoyo ayuda a sostener el estudio, la práctica, las actividades y la comunidad de Kunsang Gar.': 'Your support sustains the study, practice, activities and community of Kunsang Gar.',
       'Apoyar también es participar.': 'Supporting is also participating.',
     'Es adecuado hacer una ofrenda al maestro en función de lo que puedas manejar. La generosidad es la primera de las diez paramitas, o cualidades del carácter, que se deben perfeccionar. El acto de dar abre el corazón, disminuye por un momento el egocentrismo y valora el bienestar de los demás.': 'It is appropriate to make an offering to the teacher according to your means. Generosity is the first of the ten paramitas, or qualities of character, to be perfected. Giving opens the heart, briefly loosens self-centredness and values the wellbeing of others.',
     'Me gustaría compartir con ustedes mi historia sobre cómo entré en el camino del Dzogchen Puro. Comencé mis estudios desde muy joven con mi padre, maestro ritual del Karshod en la región Kham del Tíbet; está en la zona de la colina, muy verde con flores naturales en verano, pero con nieve y frío en invierno.': 'I would like to share my story of how I entered the path of Pure Dzogchen. I began studying very young with my father, a ritual master of Karshod in the Kham region of Tibet. The area is green and full of natural flowers in summer, but snowy and cold in winter.',
@@ -584,7 +633,7 @@
     'Comprensión del mundo, de los seres humanos y de la existencia; las cuatro nobles verdades, prácticas preliminares externas e internas, entrenamiento mental, los doce eslabones del origen interdependiente y la naturaleza del samsara y el nirvana.': 'Understanding the world, human beings and existence; the four noble truths, outer and inner preliminary practices, mind training, the twelve links of dependent origination, and the nature of samsara and nirvana.',
     'Compasión, intención de liberar a todos los seres del sufrimiento, vacuidad, Prajnaparamita, Gran Madre de la Esfera, Madhyamaka, Mahamudra, visión tántrica, samadhis y los Seis Yogas del Tantra.': 'Compassion, the intention to free all beings from suffering, emptiness, Prajnaparamita, Great Mother of the Sphere, Madhyamaka, Mahamudra, tantric view, samadhis and the Six Yogas of Tantra.',
     'Meditación de la Mente Natural y Dzogchen Puro: identificación de la mente y su verdadera naturaleza, y desarrollo de la sabiduría innata a través de las etapas Thun-gom, Ngang-gom y Long-gom.': 'Natural Mind Meditation and Pure Dzogchen: recognizing mind and its true nature, and developing innate wisdom through the Thun-gom, Ngang-gom and Long-gom stages.',
-    'La formación contempla una participación sostenida en cursos principales y secundarios, clases semanales y práctica diaria de mañana y tarde. La información operativa, calendario y requisitos de la cohorte vigente deben confirmarse con Kunsang Gar México.': 'The training includes sustained participation in main and secondary courses, weekly classes and daily morning and evening practice. Current operational information, calendar and cohort requirements must be confirmed with Kunsang Gar Mexico.',
+    'La formación contempla una participación sostenida en cursos principales y secundarios, clases semanales y práctica diaria de mañana y tarde. La información operativa, calendario y requisitos de la cohorte vigente deben confirmarse con Kunsang Gar.': 'The training includes sustained participation in main and secondary courses, weekly classes and daily morning and evening practice. Current operational information, calendar and cohort requirements must be confirmed with Kunsang Gar.',
     'La plataforma conserva la referencia de una participación mínima del 75% para optar por el certificado. No se presentan fechas antiguas como futuras.': 'A minimum participation of 75% is required to qualify for the certificate. Past dates are not presented as future dates.',
     'Programa sobre canales, vientos, esencias, yantra yoga, mantras y práctica no dual.': 'A program on channels, winds, essences, yantra yoga, mantras and non-dual practice.',
     'Ciudad de México y online': 'Mexico City and online',
@@ -624,27 +673,27 @@
   };
 
   const titles = {
-    home: ['Kunsang Gar Mexico | Wisdom, practice and community', 'Kunsang Gar Mexico: wisdom, Bön tradition, Dzogchen, classes, services and community.'],
-    services: ['Services | Kunsang Gar Mexico', 'Spiritual guidance, ceremonies, prayers and practice with Kunsang Gar Mexico.'],
-    contact: ['Contact | Kunsang Gar Mexico', 'Contact Kunsang Gar Mexico about classes, activities, services and donations.'],
-    classes: ['Classes | Kunsang Gar Mexico', 'Study, meditation and practice with the Kunsang Gar Wisdom Program.'],
-    'kunsang-gar': ['Kunsang Gar | Kunsang Gar Mexico', 'The vision, meaning and practice of Kunsang Gar.'],
-    'geshe-dangsong': ['Geshe Dangsong | Kunsang Gar Mexico', 'The life, study and teachings of Geshe Dangsong Namgyal.'],
-    'tradicion-bon': ['Bön Tradition | Kunsang Gar Mexico', 'The spiritual culture, history and practices of Bön.'],
-    'nuevo-bon': ['New Bön | Kunsang Gar Mexico', 'New Bön, a non-sectarian tradition inseparable from Bön and Indian Buddhism.'],
-    rime: ['Rimé | Kunsang Gar Mexico', 'A broad, non-sectarian vision of wisdom and practice.'],
-    certification: ['Certification | Kunsang Gar Mexico', 'Naljor Certification and the Kunsang Gar Wisdom Program.'],
-    prayers: ['Prayers | Kunsang Gar Mexico', 'Practice resources shared according to the appropriate guidance.'],
-    events: ['Mexico 2026 | Kunsang Gar Mexico', 'Public activities, upcoming visits and historical events.'],
-    programs: ['Programs | Kunsang Gar Mexico', 'Kunsang Gar study and practice programs.'],
-    sangha: ['Sangha | Kunsang Gar Mexico', 'Study, practice and community with Kunsang Gar.'],
-    donations: ['Donations | Kunsang Gar Mexico', 'Support Kunsang Gar Mexico through a one-time donation in MXN.'],
-    account: ['Practitioner area | Kunsang Gar Mexico', 'Access programs, resources and authorized teachings.'],
-    teachings: ['Teachings | Kunsang Gar Mexico', 'Study, contemplation and practice with Kunsang Gar.'],
-    library: ['Library | Kunsang Gar Mexico', 'Authorized resources for study and practice.']
-    , 'payment-success': ['Payment received | Kunsang Gar Mexico', 'Payment return status for Kunsang Gar Mexico.']
-    , 'payment-pending': ['Payment pending | Kunsang Gar Mexico', 'Pending payment status for Kunsang Gar Mexico.']
-    , 'payment-failure': ['Payment not completed | Kunsang Gar Mexico', 'Payment result for Kunsang Gar Mexico.']
+    home: ['Kunsang Gar | Wisdom, practice and community', 'Kunsang Gar: wisdom, Bön tradition, Dzogchen, classes, services and community.'],
+    services: ['Services | Kunsang Gar', 'Spiritual guidance, ceremonies, prayers and practice with Kunsang Gar.'],
+    contact: ['Contact | Kunsang Gar', 'Contact Kunsang Gar about classes, activities, services and donations.'],
+    classes: ['Classes | Kunsang Gar', 'Study, meditation and practice with the Kunsang Gar Wisdom Program.'],
+    'kunsang-gar': ['Kunsang Gar | Kunsang Gar', 'The vision, meaning and practice of Kunsang Gar.'],
+    'geshe-dangsong': ['Geshe Dangsong | Kunsang Gar', 'The life, study and teachings of Geshe Dangsong Namgyal.'],
+    'tradicion-bon': ['Bön Tradition | Kunsang Gar', 'The spiritual culture, history and practices of Bön.'],
+    'nuevo-bon': ['New Bön | Kunsang Gar', 'New Bön, a non-sectarian tradition inseparable from Bön and Indian Buddhism.'],
+    rime: ['Rimé | Kunsang Gar', 'A broad, non-sectarian vision of wisdom and practice.'],
+    certification: ['Certification | Kunsang Gar', 'Naljor Certification and the Kunsang Gar Wisdom Program.'],
+    prayers: ['Prayers | Kunsang Gar', 'Practice resources shared according to the appropriate guidance.'],
+    events: ['Mexico 2026 | Kunsang Gar', 'Public activities, upcoming visits and historical events.'],
+    programs: ['Programs | Kunsang Gar', 'Kunsang Gar study and practice programs.'],
+    sangha: ['Sangha | Kunsang Gar', 'Study, practice and community with Kunsang Gar.'],
+    donations: ['Donations | Kunsang Gar', 'Support Kunsang Gar through a one-time donation in MXN.'],
+    account: ['Practitioner area | Kunsang Gar', 'Access programs, resources and authorized teachings.'],
+    teachings: ['Teachings | Kunsang Gar', 'Study, contemplation and practice with Kunsang Gar.'],
+    library: ['Library | Kunsang Gar', 'Authorized resources for study and practice.']
+    , 'payment-success': ['Payment received | Kunsang Gar', 'Payment return status for Kunsang Gar.']
+    , 'payment-pending': ['Payment pending | Kunsang Gar', 'Pending payment status for Kunsang Gar.']
+    , 'payment-failure': ['Payment not completed | Kunsang Gar', 'Payment result for Kunsang Gar.']
   };
 
   // Longer doctrinal paragraphs are kept as explicit, conservative translations.
@@ -930,26 +979,42 @@
 
   function updateMeta() {
     if (!titles[page]) return;
+    const baseUrl = window.location.origin + window.location.pathname;
+    const englishUrl = new URL(baseUrl);
+    englishUrl.searchParams.set('lang', 'en');
+    const description = document.querySelector('meta[name="description"]');
     if (lang === 'en') {
       document.title = titles[page][0];
-      const description = document.querySelector('meta[name="description"]');
       if (description) description.setAttribute('content', titles[page][1]);
     }
-    const canonical = document.querySelector('link[rel="canonical"]');
+    const canonicalUrl = lang === 'en' ? englishUrl.toString() : baseUrl;
+    let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
-      const link = document.createElement('link');
-      link.rel = 'canonical';
-      link.href = window.location.origin + window.location.pathname;
-      document.head.append(link);
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.append(canonical);
     }
+    canonical.href = canonicalUrl;
     document.querySelectorAll('link[rel="alternate"]').forEach((link) => link.remove());
-    ['es', 'en'].forEach((code) => {
+    [['es-MX', baseUrl], ['en', englishUrl.toString()], ['x-default', baseUrl]].forEach(([code, href]) => {
       const link = document.createElement('link');
       link.rel = 'alternate';
       link.hreflang = code;
-      link.href = `${window.location.origin}${window.location.pathname}?lang=${code}`;
+      link.href = href;
       document.head.append(link);
     });
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.content = canonicalUrl;
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    if (ogLocale) ogLocale.content = lang === 'en' ? 'en_US' : 'es_MX';
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle && lang === 'en') twitterTitle.content = titles[page][0];
+    const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDescription && lang === 'en' && description) twitterDescription.content = description.content;
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && lang === 'en') ogTitle.content = titles[page][0];
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription && lang === 'en' && description) ogDescription.content = description.content;
   }
 
   function addStyles() {
