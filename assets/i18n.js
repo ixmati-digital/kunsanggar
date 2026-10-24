@@ -711,6 +711,7 @@
   };
 
   const titles = {
+    'admin-login': ['CMS sign in | Kunsang Gar', 'Sign in to the Kunsang Gar content management system.'],
     home: ['Kunsang Gar | Wisdom, practice and community', 'Kunsang Gar: wisdom, Bön tradition, Dzogchen, classes, services and community.'],
     services: ['Services | Kunsang Gar', 'Spiritual guidance, ceremonies, prayers and practice with Kunsang Gar.'],
     contact: ['Contact | Kunsang Gar', 'Contact Kunsang Gar about classes, activities, services and donations.'],
