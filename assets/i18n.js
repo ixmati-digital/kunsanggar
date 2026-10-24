@@ -937,8 +937,12 @@
       });
     Object.keys(wordMap).sort((a, b) => b.length - a.length).forEach((key) => {
       const replacement = wordMap[key];
-      const pattern = new RegExp(`\\b${key.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'giu');
-      output = output.replace(pattern, (match) => {
+      const pattern = new RegExp(key.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'), 'giu');
+      output = output.replace(pattern, (match, offset, source) => {
+        const before = Array.from(source.slice(0, offset)).pop();
+        const after = Array.from(source.slice(offset + match.length))[0];
+        const isWordCharacter = (character) => Boolean(character && /[\p{L}\p{N}_]/u.test(character));
+        if (isWordCharacter(before) || isWordCharacter(after)) return match;
         if (match[0] === match[0].toUpperCase()) return replacement.charAt(0).toUpperCase() + replacement.slice(1);
         return replacement;
       });

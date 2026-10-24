@@ -455,7 +455,7 @@
     const session = await current();
     const event = await client.from("events").select("slug,title").eq("id", eventId).eq("status", "PUBLISHED").maybeSingle();
     if (event.error) throw event.error;
-    if (!event.data) throw new Error("La clase ya no está disponible.");
+    if (!event.data) throw new Error(language() === "en" ? "This class is no longer available." : "La clase ya no está disponible.");
     if (!session) {
       const next = `/class.html?slug=${encodeURIComponent(event.data.slug)}&register=1`;
       window.location.href = `/account/?next=${encodeURIComponent(next)}`;
@@ -465,16 +465,16 @@
     if (lookupError) throw lookupError;
     if (existing) {
       if (existing.payment_status === "CONFIRMED" || existing.payment_status === "WAIVED") {
-        status(existing.status === "APPROVED" ? "Pago verificado. Tu acceso está aprobado." : "Pago verificado. El acceso se está sincronizando.");
+        status(language() === "en" ? (existing.status === "APPROVED" ? "Payment verified. Your access is approved." : "Payment verified. Access is syncing.") : (existing.status === "APPROVED" ? "Pago verificado. Tu acceso está aprobado." : "Pago verificado. El acceso se está sincronizando."));
       } else {
-        status(existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : "Tu solicitud está registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
+        status(language() === "en" ? (existing.status === "APPROVED" ? "Your request is approved; payment confirmation is still required." : "Your request is saved. Continue to Stripe; access opens only after the configured amount is confirmed.") : (existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : "Tu solicitud está registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado."));
         window.location.assign(stripeClassPaymentUrl(existing.id, session.user.email));
       }
       return;
     }
     const { data: registration, error } = await client.from("class_registrations").insert({ event_id: eventId, user_id: session.user.id }).select("id").single();
     if (error) throw error;
-    status("Solicitud enviada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
+    status(language() === "en" ? "Request saved. Continue to Stripe; access opens only after the configured amount is confirmed." : "Solicitud enviada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
     window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email));
   }
 
@@ -483,12 +483,12 @@
     if (!target || !client) return;
     const params = new URLSearchParams(location.search);
     const slug = params.get("slug");
-    if (!slug) { target.textContent = "No se encontró esta clase."; return; }
+    if (!slug) { target.textContent = language() === "en" ? "This class could not be found." : "No se encontró esta clase."; return; }
     const { data: event, error } = await client.from("events").select("*").eq("slug", slug).eq("status", "PUBLISHED").maybeSingle();
     if (error) throw error;
-    if (!event) { target.textContent = "Esta clase no está disponible."; return; }
+    if (!event) { target.textContent = language() === "en" ? "This class is unavailable." : "Esta clase no está disponible."; return; }
     const title = localized(event, "title");
-    document.title = `${title} | Kunsang Gar México`;
+    document.title = `${title} | Kunsang Gar`;
     const description = localized(event, "description");
     const format = localized(event, "format");
     const locationText = localized(event, "location");
@@ -513,19 +513,19 @@
       if (registration) {
         const paid = ["CONFIRMED", "WAIVED"].includes(registration.payment_status);
         const closed = ["REJECTED", "CANCELLED"].includes(registration.status);
-        status(closed
-          ? "Esta solicitud está cerrada. Contacta al equipo si necesitas ayuda."
-          : paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado. El acceso se está sincronizando.") : "Solicitud registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
+        status(language() === "en"
+          ? (closed ? "This request is closed. Contact the team if you need help." : paid ? (registration.status === "APPROVED" ? "Payment verified and access approved." : "Payment verified. Access is syncing.") : "Your request is saved. Continue to Stripe; access opens only after the configured amount is confirmed.")
+          : (closed ? "Esta solicitud está cerrada. Contacta al equipo si necesitas ayuda." : paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado. El acceso se está sincronizando.") : "Solicitud registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado."));
         if (button) {
           const statefulButton = button.cloneNode(true);
           button.replaceWith(statefulButton);
-          statefulButton.textContent = closed ? "Solicitud cerrada" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Acceder a mis materiales" : "Ver mi inscripción") : "Sincronizando acceso") : "Continuar al pago con Stripe";
+          statefulButton.textContent = language() === "en" ? (closed ? "Request closed" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Open my materials" : "View my registration") : "Syncing access") : "Continue to Stripe payment") : (closed ? "Solicitud cerrada" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Acceder a mis materiales" : "Ver mi inscripción") : "Sincronizando acceso") : "Continuar al pago con Stripe");
           if (closed) {
             statefulButton.disabled = true;
             const contactLink = document.createElement("a");
             contactLink.className = "btn secondary";
             contactLink.href = "/contact.html";
-            contactLink.textContent = "Contactar al equipo";
+            contactLink.textContent = language() === "en" ? "Contact the team" : "Contactar al equipo";
             statefulButton.after(contactLink);
           } else if (paid) {
             statefulButton.disabled = registration.status !== "APPROVED";
