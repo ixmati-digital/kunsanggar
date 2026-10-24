@@ -1,40 +1,41 @@
 # Entrega final — Kunsang Gar
 
-Fecha: 24 de octubre de 2026 · Sitio: https://kunsanggar.com/
+Fecha de corte: 24 de octubre de 2026 · Sitio: https://kunsanggar.com/
 
 ## Estado
 
-El sitio público, sus páginas de clases, eventos, galería, Library y oraciones están publicados y accesibles. La versión observada en producción muestra el ciclo de seis actividades, el álbum “Sangha Kunsang Gar · octubre 2026” con siete fotos, testimonios publicados y seis PDF públicos. Los eventos pasados se conservan en la base y no aparecen en la lista pública de próximas actividades.
+**Terminado con dependencias externas.** El sitio público y las secciones solicitadas están publicadas. El acceso automático tras pagos Stripe no se declara operativo: la configuración real del endpoint/secretos no se pudo comprobar y las seis actividades del ciclo no tienen precios autorizados.
 
-El CMS en `https://kunsanggar.com/admin/` contiene gestión de programas, contenidos, eventos, inscripciones, testimonios, Sangha, alumnos, pagos y biblioteca. El selector español/inglés, permisos de Lena CONTENT_MANAGER y el rol ADMIN de Roberto están presentes en el esquema/código; el perfil de Roberto quedó corregido en Supabase. La autenticación y operaciones de carga/edición no se ejecutaron con sesiones reales en esta verificación.
+## Publicado y comprobado
 
-## Cambios del cierre
+- Clases, eventos y fichas públicas en español e inglés; las descripciones largas inglesas del ciclo se muestran sin alterar fechas, precios ni URLs.
+- Clases públicas: el alumno con sesión existente pudo volver desde su cuenta a la clase pendiente y ver la continuación al Payment Link. No se abrió el enlace ni se pagó.
+- Sangha: el álbum de octubre muestra siete fotos únicas; la portada no se duplica. Los siete objetos de Storage responden correctamente. La tarjeta de prácticas diarias tiene inglés completo y no muestra el aviso de álbum vacío.
+- Library, seis PDF de oraciones, dos videos de YouTube y testimonios visibles en producción.
+- Cinco imágenes recibidas de Lena coinciden visualmente con sus originales y el SHA-256 de lo servido coincide con los assets publicados.
+- CMS: pantalla de acceso revisada visualmente en español e inglés. Los perfiles conservan los roles ADMIN de Roberto y CONTENT_MANAGER de Lena.
+- Supabase se verificó mediante la conexión de Kunsang Gar. Se conservaron RLS, pagos e inscripciones; no se tocaron datos reales ni se realizaron cargos.
+- El antiguo dominio redirige al oficial; la documentación interna `/docs/` responde 403.
+- No se trabajó en la propuesta internacional ni en sus precios.
 
-- Se incorporó recuperación de contraseña para estudiante y CMS, con solicitud por email, retorno a `/account/?reset=1` y formulario para establecer clave. La entrega real del correo y la whitelist de redirecciones requieren verificación autenticada.
-- Se ocultaron álbumes vacíos en la galería pública sin borrar su contenido en CMS.
-- Se añadió el segundo video de YouTube compartido por Lena.
-- Se amplió la traducción de títulos y frases de Classes y se filtraron los enlaces de inscripción que apuntan a un dominio Netlify antiguo.
-- Se protegió `/docs/` para que los documentos internos de cierre no queden públicos.
+## Pruebas no realizadas
 
-Los cambios están publicados en `main` y verificados en Hostinger. El login del CMS muestra selector ES/EN y cambia correctamente ambos idiomas; los enlaces de recuperación siguen pendientes de prueba con correo real.
+- No había sesiones autenticadas autorizadas de Roberto o Lena para probar inicio/cierre en CMS, permisos efectivos, carga múltiple, publicación o exención. No se alteraron inscripciones reales.
+- No se envió/recibió correo real de recuperación y no se cambió ninguna contraseña.
+- No se envió evento Stripe firmado de test mode ni se realizó un cargo. GET a `https://kunsanggar.vercel.app/api/stripe-class-webhook` responde 405, consistente con una ruta POST; esto no prueba el registro del webhook en Stripe ni las variables de Vercel.
+- No se pudo ejecutar la carpeta adicional de Google Drive desde el enlace compartido; quedan siete fotos conocidas publicadas.
+- Las reglas CSS incluyen adaptación móvil, pero no se probó un viewport real de teléfono en este cierre.
+- No se cambió el horario recurrente de Monte Kailash por la discrepancia entre martes y viernes.
 
-## Pruebas
+## Dependencias externas
 
-Verificadas en producción con navegador: home, Clases en español e inglés, fichas/eventos, Library, Sangha, `/prayers.html?lang=en`, los seis PDF, los dos enlaces de video, pantallas de acceso de estudiante y CMS, cambio ES/EN del login CMS y acceso bloqueado a `/docs/`. Inspección de Supabase: migraciones, roles, RLS, buckets, álbum, fotos y testimonios. Se verificó por HTTP el redireccionamiento del dominio antiguo y los enlaces de correo actualizados.
-
-Pruebas no ejecutadas: inicio de sesión autenticado, envío/recepción de recuperación, carga múltiple autenticada, operaciones CMS con cuenta de Roberto o Lena, inscripción nueva, confirmación de pago y webhook firmado de Stripe. No se hicieron pagos ni se modificaron inscripciones.
-
-## Bloqueos
-
-- Variables y configuración real del webhook de Vercel no verificables: la API de variables devolvió 403 y no existe CLI disponible.
-- No hay importes configurados para las actividades; no se puede afirmar pago automatizado ni activar cobros correctos.
-- Falta confirmar el cambio de horario de Monte Kailash y acceder a la carpeta Drive de fotos posterior.
-- El email de contacto público es `contacto@kunsanggar.com`; los enlaces visibles se actualizaron. Las descripciones extensas en inglés de varios eventos aún requieren traducción/revisión editorial.
+- Sesión autorizada de Roberto y Lena para confirmar las operaciones autenticadas del CMS.
+- Acceso/configuración de Supabase Auth para verificar la entrega real del correo y la URL de retorno.
+- Configuración de Stripe/Vercel verificable y precios aprobados para cada actividad antes de afirmar o activar el cobro automático.
+- Confirmación del horario de Monte Kailash y acceso a la carpeta de Drive para cotejar si Lena envió fotografías adicionales.
 
 ## Git y despliegue
 
-Los cambios se publicaron en `main` mediante fast-forward; Hostinger actualizó el sitio automáticamente. Commit final: `bb902ca6ce788c7bf8c8fbe7f7d93c6fc190c204` (`fix: use official Kunsang Gar contact email`). No se utilizó Hostinger File Manager, no se cambió DNS y no se modificó la propuesta internacional.
+Repositorio: `ixmati-digital/kunsanggar`, rama `main`. Los commits históricos `bb902ca` y `75b27ac` están integrados. El último commit de código de este cierre es `7fcec97b77fa3cc68bedc408aff2e55fe2e9b87d`; la documentación se actualiza en un commit posterior. Hostinger desplegó automáticamente los archivos publicados y se compararon los assets cache-busted descargados en producción con el código local. El último commit del cierre documental debe consultarse como HEAD de `origin/main`.
 
-## Trabajo preservado
-
-Los cambios locales ajenos a este cierre se respaldaron en `/private/tmp/KunsangGar-preserve-20261024`; no se restablecieron ni se eliminaron. La propuesta internacional y sus precios no se modificaron.
+Los cambios locales ajenos permanecen respaldados en `/private/tmp/KunsangGar-preserve-20261024`; no se ejecutó reset destructivo. No se usó Hostinger File Manager, no se cambió DNS ni se modificó la propuesta internacional.
