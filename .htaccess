@@ -1,6 +1,7 @@
 Options -Indexes
 
 RewriteEngine On
+RewriteRule ^docs(?:/|$) - [F,L,NC]
 RewriteRule ^adicionales-por-aprobar/propuesta-(?:roberto|equipo-internacional)(?:/.*)?$ https://kunsanggar.com/propuesta-internacional/ [R=301,L,NE]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?kunsanggarmexico\.com$ [NC]
 RewriteRule ^ https://kunsanggar.com%{REQUEST_URI} [R=301,L,NE]

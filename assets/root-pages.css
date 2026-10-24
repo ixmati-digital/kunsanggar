@@ -119,3 +119,5 @@ body.has-pending-class-payment{padding-bottom:150px}
 .brand>img,.footer-brand>img{display:none!important}.brand::before,.footer-brand::before{content:"";display:block;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--gold);border-radius:50%;background:#fff url('/assets/brand/kunsang-gar-site-logo.png') center/235% 197% no-repeat}
 
 .brand,.footer-brand{text-transform:none}
+.text-button{margin:12px 0;padding:4px 0;border:0;background:transparent;color:#8a342e;font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.text-button:focus-visible{outline:3px solid #dba63d;outline-offset:4px;border-radius:2px}

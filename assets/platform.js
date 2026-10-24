@@ -122,6 +122,64 @@
         }
       } catch (error) { button.disabled = false; notice.textContent = authError(error, "register"); notice.dataset.status = "error"; notice.hidden = false; }
     });
+    bindPasswordRecovery();
+  }
+
+  function bindPasswordRecovery() {
+    const requestForm = document.querySelector("[data-password-reset-request]");
+    const completeForm = document.querySelector("[data-password-reset-complete]");
+    const loginForm = document.querySelector("[data-login-form]");
+    const toggle = document.querySelector("[data-show-password-reset]");
+    const resetMode = new URLSearchParams(location.search).get("reset") === "1";
+    if (!requestForm || requestForm.dataset.bound) return;
+    requestForm.dataset.bound = "true";
+    if (resetMode) {
+      if (loginForm) loginForm.hidden = true;
+      if (toggle) toggle.hidden = true;
+      requestForm.hidden = true;
+      completeForm.hidden = false;
+    }
+    toggle?.addEventListener("click", () => {
+      const opening = requestForm.hidden;
+      requestForm.hidden = !opening;
+      if (loginForm) loginForm.hidden = opening;
+      if (opening) requestForm.querySelector("input")?.focus();
+    });
+    requestForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = requestForm.querySelector("button[type=submit]");
+      button.disabled = true;
+      const email = requestForm.elements.email.value.trim();
+      const redirectTo = new URL("/account/", location.origin);
+      redirectTo.searchParams.set("reset", "1");
+      try {
+        const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: redirectTo.toString() });
+        if (error) throw error;
+        status(language() === "en" ? "If that email is registered, a password reset link will arrive shortly." : "Si el correo está registrado, recibirás un enlace para restablecer la contraseña.");
+      } catch (error) {
+        status(language() === "en" ? "Could not send the reset email. Check the address and try again." : "No se pudo enviar el correo de recuperación. Revisa la dirección e inténtalo de nuevo.", "error");
+        button.disabled = false;
+      }
+    });
+    completeForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = completeForm.querySelector("button[type=submit]");
+      button.disabled = true;
+      try {
+        const { error } = await client.auth.updateUser({ password: completeForm.elements.password.value });
+        if (error) throw error;
+        status(language() === "en" ? "Password updated. Sign in with your new password." : "Contraseña actualizada. Inicia sesión con tu nueva contraseña.");
+        await client.auth.signOut();
+        completeForm.reset();
+        completeForm.hidden = true;
+        if (loginForm) loginForm.hidden = false;
+        if (toggle) toggle.hidden = false;
+        history.replaceState(null, "", location.pathname);
+      } catch (error) {
+        status(language() === "en" ? "Could not update the password. Reopen the link from your email and try again." : "No se pudo actualizar la contraseña. Abre de nuevo el enlace del correo e inténtalo otra vez.", "error");
+        button.disabled = false;
+      }
+    });
   }
 
   async function accountPage() {
@@ -140,6 +198,7 @@
       status("El acceso no está disponible en este momento. Inténtalo más tarde.", "error");
       return;
     }
+    if (new URLSearchParams(location.search).get("reset") === "1") { showLogin(); return; }
     if (!session) { showLogin(); return; }
     const me = await profile(session.user.id);
     if (me?.role === "ADMIN") {
@@ -331,7 +390,8 @@
     const endDate = event.ends_at ? formatter.format(new Date(event.ends_at)) : "";
     const when = date && endDate && date !== endDate ? `${date} – ${endDate}` : date;
     const image = publicImageUrl(event.image_path);
-    const registration = !past && event.registration_enabled ? `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>` : (!past && event.registration_url ? `<a class="btn small" href="${esc(event.registration_url)}" target="_blank" rel="noopener">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>` : "");
+    const externalRegistration = event.registration_url && !/\.netlify\.app(?:\/|$)/i.test(new URL(event.registration_url, location.origin).hostname) ? event.registration_url : null;
+    const registration = !past && event.registration_enabled ? `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>` : (!past && externalRegistration ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>` : "");
     const typeLabel = event.event_type === "CLASS" ? (language() === "en" ? "Class" : "Clase") : event.event_type === "COMMUNITY" ? "Sangha" : (language() === "en" ? "Event" : "Evento");
     const teacher = localized(event, "teacher");
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
@@ -517,6 +577,7 @@
     if (!visibleAlbums.length) {
       const { data: photos, error: photosError } = await client.from("gallery_items").select("title,title_en,description,description_en,alt_text,alt_text_en,image_path").eq("status", "PUBLISHED").is("album_id", null).order("sort_order", { ascending: true }).order("created_at", { ascending: true });
       if (photosError) throw photosError;
+      if (!photos?.length && !album.cover_image_path) return null;
       const photoMarkup = (photos || []).map((photo) => {
         const title = localized(photo, "title") || photo.title || "";
         const description = localized(photo, "description") || photo.description || "";
@@ -548,7 +609,7 @@
       const title = localized(album, "title") || album.title;
       return `<article class="sangha-album"><div class="sangha-album-cover">${cover ? `<img src="${esc(cover)}" alt="${esc(title)}" loading="lazy">` : `<div class="sangha-album-placeholder" aria-hidden="true">Kunsang Gar</div>`}</div><div class="sangha-album-copy"><p class="eyebrow">${language() === "en" ? "Community activity" : "Actividad de la comunidad"}</p><h3>${esc(title)}</h3>${context ? `<p class="sangha-album-meta">${esc(context)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}</div>${photoMarkup ? `<div class="sangha-album-photos">${photoMarkup}</div>` : `<p class="sangha-album-empty">${language() === "en" ? "More photographs will be added soon." : "Pronto se agregarán más fotografías."}</p>`}</article>`;
     }));
-    target.innerHTML = groups.join("");
+    target.innerHTML = groups.filter(Boolean).join("") || `<div class="root-page-note">${language() === "en" ? "There are no published albums at the moment." : "No hay álbumes publicados por el momento."}</div>`;
   }
 
   async function publicClassesPage() {

@@ -8,7 +8,7 @@
   <meta name="description" content="Acceso al área del practicante de Kunsang Gar.">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/home.css">
-  <link rel="stylesheet" href="/assets/root-pages.css?v=dbc571a-global">
+  <link rel="stylesheet" href="/assets/root-pages.css?v=password-recovery-20261024-1">
 </head>
 <body class="site-page real-home root-page" data-platform-page="account">
   <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -42,6 +42,15 @@
             <label for="account-password">Contraseña<input id="account-password" name="password" type="password" autocomplete="current-password" required></label>
             <button class="btn" type="submit">Iniciar sesión</button>
           </form>
+          <button class="text-button" type="button" data-show-password-reset>¿Olvidaste tu contraseña?</button>
+          <form class="root-page-form" data-password-reset-request hidden>
+            <label for="account-reset-email">Correo electrónico<input id="account-reset-email" name="email" type="email" autocomplete="email" required></label>
+            <button class="btn secondary" type="submit">Enviar enlace para restablecer</button>
+          </form>
+          <form class="root-page-form" data-password-reset-complete hidden>
+            <label for="account-new-password">Nueva contraseña<input id="account-new-password" name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+            <button class="btn" type="submit">Guardar nueva contraseña</button>
+          </form>
           <div class="account-register" data-register-box>
             <p><strong>¿Aún no tienes cuenta?</strong></p>
             <form class="root-page-form" data-register-form>
@@ -69,6 +78,6 @@
   <script src="/assets/site.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/platform-config.js?v=public-classes-1"></script>
-  <script src="/assets/platform.js?v=cms-ops-20261019-1"></script>
-<script src="/assets/i18n.js?v=909969c-brand"></script></body>
+  <script src="/assets/platform.js?v=password-recovery-20261024-1"></script>
+  <script src="/assets/i18n.js?v=password-recovery-20261024-1"></script></body>
 </html>
