@@ -607,7 +607,7 @@
       }).join("");
       const description = localized(album, "description") || album.description || "";
       const title = localized(album, "title") || album.title;
-      return `<article class="sangha-album"><div class="sangha-album-cover">${cover ? `<img src="${esc(cover)}" alt="${esc(title)}" loading="lazy">` : `<div class="sangha-album-placeholder" aria-hidden="true">Kunsang Gar</div>`}</div><div class="sangha-album-copy"><p class="eyebrow">${language() === "en" ? "Community activity" : "Actividad de la comunidad"}</p><h3>${esc(title)}</h3>${context ? `<p class="sangha-album-meta">${esc(context)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}</div>${photoMarkup ? `<div class="sangha-album-photos">${photoMarkup}</div>` : `<p class="sangha-album-empty">${language() === "en" ? "More photographs will be added soon." : "Pronto se agregarán más fotografías."}</p>`}</article>`;
+      return `<article class="sangha-album${cover ? "" : " sangha-album-text-only"}">${cover ? `<div class="sangha-album-cover"><img src="${esc(cover)}" alt="${esc(title)}" loading="lazy"></div>` : ""}<div class="sangha-album-copy"><p class="eyebrow">${language() === "en" ? "Community activity" : "Actividad de la comunidad"}</p><h3>${esc(title)}</h3>${context ? `<p class="sangha-album-meta">${esc(context)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}</div>${photoMarkup ? `<div class="sangha-album-photos">${photoMarkup}</div>` : ""}</article>`;
     }));
     target.innerHTML = groups.filter(Boolean).join("") || `<div class="root-page-note">${language() === "en" ? "There are no published albums at the moment." : "No hay álbumes publicados por el momento."}</div>`;
   }
