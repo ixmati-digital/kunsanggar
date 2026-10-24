@@ -125,6 +125,7 @@
     'Conversación con Geshe Dangsong Namgyal publicada por Tibet House US.': 'Conversation with Geshe Dangsong Namgyal, published by Tibet House US.',
     'Visitas y actividades.': 'Visits and activities.',
     'Consulta las próximas visitas confirmadas y actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
+    'Consulta las próximas visitas confirmadas y las actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
     'Consulta las próximas clases y actividades abiertas al público.': 'Explore upcoming classes and activities open to the public.',
     'Crea tu cuenta para inscribirte y acceder a los materiales del programa.': 'Create an account to enroll and access program materials.',
     'Consulta las clases abiertas al público y sus opciones de inscripción.': 'Browse classes open to the public and review their registration options.',
@@ -602,6 +603,7 @@
     'events': {
       'Visitas y actividades.': 'Visits and activities.',
       'Consulta las próximas visitas confirmadas y actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
+      'Consulta las próximas visitas confirmadas y las actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
       'Visita octubre–noviembre': 'October–November visit',
       'Geshe Dangsong Namgyal, Director Espiritual de Kunsang Gar Internacional.': 'Geshe Dangsong Namgyal, Spiritual Director of Kunsang Gar International.',
       'Ciclo de Enseñanzas · Octubre–Noviembre 2026': 'Teaching Series · October–November 2026',
@@ -716,6 +718,7 @@
     services: ['Services | Kunsang Gar', 'Spiritual guidance, ceremonies, prayers and practice with Kunsang Gar.'],
     contact: ['Contact | Kunsang Gar', 'Contact Kunsang Gar about classes, activities, services and donations.'],
     classes: ['Classes | Kunsang Gar', 'Study, meditation and practice with the Kunsang Gar Wisdom Program.'],
+    class: ['Class | Kunsang Gar', 'Class details, registration and access information from Kunsang Gar.'],
     'kunsang-gar': ['Kunsang Gar | Kunsang Gar', 'The vision, meaning and practice of Kunsang Gar.'],
     'geshe-dangsong': ['Geshe Dangsong | Kunsang Gar', 'The life, study and teachings of Geshe Dangsong Namgyal.'],
     'tradicion-bon': ['Bön Tradition | Kunsang Gar', 'The spiritual culture, history and practices of Bön.'],

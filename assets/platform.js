@@ -37,7 +37,7 @@
     return mode === "register" ? "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo." : "No se pudo iniciar sesión. Revisa tus datos e inténtalo de nuevo.";
   };
   const slugify = (text) => String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
-  const fmtDate = (value) => value ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(value)) : "";
+  const fmtDate = (value) => value ? new Intl.DateTimeFormat(language() === "en" ? "en-US" : "es-MX", { dateStyle: "medium" }).format(new Date(value)) : "";
   const current = () => client?.auth.getSession().then(({ data }) => data.session) || Promise.resolve(null);
   const profile = async (userId) => {
     if (!client || !userId) return null;
@@ -220,13 +220,13 @@
     registrationList.className = "account-class-registrations";
     registrationList.innerHTML = `<h3>${language() === "en" ? "My classes and registrations" : "Mis clases e inscripciones"}<\/h3><p class="account-registration-intro">${language() === "en" ? "Continue to Stripe to complete an outstanding contribution. Access activates automatically only when the class amount is configured and Stripe confirms that exact amount." : "Continúa a Stripe para completar una aportación pendiente. El acceso se activa automáticamente solo cuando la clase tiene un importe configurado y Stripe confirma exactamente ese importe."}</p><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
     accountBox.appendChild(registrationList);
-    const { data: registrations, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status,created_at,events(title,slug,starts_at,program_id,price_mxn)").eq("user_id", session.user.id).order("created_at", { ascending: false });
+    const { data: registrations, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status,created_at,events(title,title_en,slug,starts_at,program_id,price_mxn)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (registrationError) throw registrationError;
     const list = registrationList.querySelector("[data-class-registrations]");
     const labels = { PENDING: language() === "en" ? "Awaiting review" : "Pendiente de revisión", APPROVED: language() === "en" ? "Approved" : "Aprobada", REJECTED: language() === "en" ? "Not approved" : "No aprobada", CANCELLED: language() === "en" ? "Cancelled" : "Cancelada" };
     const isPaid = (row) => ["CONFIRMED", "WAIVED"].includes(row.payment_status);
     const registrationCards = (registrations || []).map((row) => {
-      const title = row.events?.title || (language() === "en" ? "Class" : "Clase");
+      const title = localized(row.events, "title") || (language() === "en" ? "Class" : "Clase");
       const registrationStatus = labels[row.status] || row.status;
       const paymentStatus = isPaid(row)
         ? (language() === "en" ? (row.payment_status === "WAIVED" ? "Payment waived" : "Payment verified") : (row.payment_status === "WAIVED" ? "Pago exento" : "Pago verificado"))
@@ -410,12 +410,12 @@
       target.dataset.pendingClassPayments = "";
       document.body.appendChild(target);
     }
-    const { data, error } = await client.from("class_registrations").select("id,status,payment_status,events(title,slug,starts_at,registration_enabled)").eq("user_id", session.user.id).order("created_at", { ascending: false });
+    const { data, error } = await client.from("class_registrations").select("id,status,payment_status,events(title,title_en,slug,starts_at,registration_enabled)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (error) throw error;
     const pending = (data || []).filter((row) => ["PENDING", "APPROVED"].includes(row.status) && !["CONFIRMED", "WAIVED"].includes(row.payment_status) && row.events?.registration_enabled);
     if (!pending.length) return;
     const entries = pending.map((row) => {
-      const title = row.events?.title || (language() === "en" ? "Your class" : "Tu clase");
+      const title = localized(row.events, "title") || (language() === "en" ? "Your class" : "Tu clase");
       const classHref = row.events?.slug ? `/class.html?slug=${encodeURIComponent(row.events.slug)}` : "/account/";
       const paymentUrl = stripeClassPaymentUrl(row.id, session.user.email);
       return `<li><strong>${esc(title)}</strong><div class="class-payment-nudge-actions"><a href="${esc(classHref)}">${language() === "en" ? "Return to class details" : "Volver a los detalles de la clase"}</a><a class="btn small" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue when ready ↗" : "Continuar cuando quieras ↗"}</a></div></li>`;
