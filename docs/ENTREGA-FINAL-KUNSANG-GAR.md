@@ -11,25 +11,29 @@ El CMS en `https://kunsanggar.com/admin/` contiene gestión de programas, conten
 ## Cambios del cierre
 
 - Se incorporó recuperación de contraseña para estudiante y CMS, con solicitud por email, retorno a `/account/?reset=1` y formulario para establecer clave. La entrega real del correo y la whitelist de redirecciones requieren verificación autenticada.
-- Se ocultarán álbumes vacíos en la galería pública sin borrar su contenido en CMS.
-- Se añadirá el segundo video de YouTube compartido por Lena.
-- Se amplió la traducción de títulos/frases de Classes y se filtrarán enlaces de inscripción que aún apuntan a un dominio Netlify antiguo.
-- Se protegerá `/docs/` para que los documentos internos de cierre no queden públicos.
+- Se ocultaron álbumes vacíos en la galería pública sin borrar su contenido en CMS.
+- Se añadió el segundo video de YouTube compartido por Lena.
+- Se amplió la traducción de títulos y frases de Classes y se filtraron los enlaces de inscripción que apuntan a un dominio Netlify antiguo.
+- Se protegió `/docs/` para que los documentos internos de cierre no queden públicos.
 
-Estos cambios esperan el push final y el despliegue automático; no se declaran publicados hasta verificar la versión de producción.
+Los cambios están publicados en `main` y verificados en Hostinger. El login del CMS muestra selector ES/EN y cambia correctamente ambos idiomas; los enlaces de recuperación siguen pendientes de prueba con correo real.
 
 ## Pruebas
 
-Verificadas en producción con navegador: home, Clases en español e inglés, fichas/eventos, Library, Sangha, `/prayers.html?lang=en`, los seis PDF, el primer video de YouTube, login de estudiante y pantalla de login CMS. Inspección de Supabase: migraciones, roles, RLS, buckets, álbum, fotos y testimonios.
+Verificadas en producción con navegador: home, Clases en español e inglés, fichas/eventos, Library, Sangha, `/prayers.html?lang=en`, los seis PDF, los dos enlaces de video, pantallas de acceso de estudiante y CMS, cambio ES/EN del login CMS y acceso bloqueado a `/docs/`. Inspección de Supabase: migraciones, roles, RLS, buckets, álbum, fotos y testimonios. Se verificó por HTTP el redireccionamiento del dominio antiguo y los enlaces de correo actualizados.
 
-Pruebas no ejecutadas: inicio de sesión con credenciales, recuperación y recepción real de correo, carga múltiple autenticada, operaciones CMS, inscripción nueva, confirmación de pago, webhook firmado de Stripe. No se hicieron pagos ni se modificaron inscripciones.
+Pruebas no ejecutadas: inicio de sesión autenticado, envío/recepción de recuperación, carga múltiple autenticada, operaciones CMS con cuenta de Roberto o Lena, inscripción nueva, confirmación de pago y webhook firmado de Stripe. No se hicieron pagos ni se modificaron inscripciones.
 
 ## Bloqueos
 
 - Variables y configuración real del webhook de Vercel no verificables: la API de variables devolvió 403 y no existe CLI disponible.
 - No hay importes configurados para las actividades; no se puede afirmar pago automatizado ni activar cobros correctos.
 - Falta confirmar el cambio de horario de Monte Kailash y acceder a la carpeta Drive de fotos posterior.
-- Las descripciones extensas en inglés de varios eventos aún requieren traducción/revisión editorial.
+- El email de contacto público es `contacto@kunsanggar.com`; los enlaces visibles se actualizaron. Las descripciones extensas en inglés de varios eventos aún requieren traducción/revisión editorial.
+
+## Git y despliegue
+
+Los cambios se publicaron en `main` mediante fast-forward; Hostinger actualizó el sitio automáticamente. Commit final: `bb902ca6ce788c7bf8c8fbe7f7d93c6fc190c204` (`fix: use official Kunsang Gar contact email`). No se utilizó Hostinger File Manager, no se cambió DNS y no se modificó la propuesta internacional.
 
 ## Trabajo preservado
 
