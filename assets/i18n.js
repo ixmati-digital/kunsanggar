@@ -604,6 +604,7 @@
       'Kunsang Gar Internacional · México 2026': 'Kunsang Gar International · Mexico 2026',
       'Visita internacional': 'International visit',
       'Visita de Geshe Dangsong Namgyal.': 'Visit of Geshe Dangsong Namgyal.',
+      'Visita a México.': 'Visit to Mexico.',
       'Kunsang Gar Internacional': 'Kunsang Gar International',
       'Visita presencial en México · Geshe Dangsong Namgyal, Director Espiritual.': 'In-person visit to Mexico · Geshe Dangsong Namgyal, Spiritual Director.',
       'Enseñanzas · Noviembre–diciembre 2026': 'Teachings · November–December 2026',
