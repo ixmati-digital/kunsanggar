@@ -392,7 +392,7 @@
     const image = publicImageUrl(event.image_path);
     const externalRegistration = event.registration_url && !/\.netlify\.app(?:\/|$)/i.test(new URL(event.registration_url, location.origin).hostname) ? event.registration_url : null;
     const registration = !past && event.registration_enabled ? (campaignRegistration
-      ? `<a class="btn small" href="https://kunsanggarmexico.netlify.app/" target="_blank" rel="noopener">${language() === "en" ? "Single registration for the visit" : "Inscripción única para la visita"} ↗</a>`
+      ? `<a class="btn small" href="#visit-registration" data-visit-event="${esc(event.id)}">${language() === "en" ? "Register for this teaching" : "Inscribirme a esta enseñanza"}</a>`
       : `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>`)
       : (!past && externalRegistration ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>` : "");
     const typeLabel = event.event_type === "CLASS" ? (language() === "en" ? "Class" : "Clase") : event.event_type === "COMMUNITY" ? "Sangha" : (language() === "en" ? "Event" : "Evento");
@@ -561,6 +561,34 @@
     });
     const campaignRegistration = target.hasAttribute("data-upcoming-events");
     target.innerHTML = rows.length ? rows.map((event) => eventCard(event, past, campaignRegistration)).join("") : `<div class="root-page-note">${language() === "en" ? (past ? "Past events will appear here." : "New classes and activities will be announced here.") : (past ? "Aquí aparecerán los eventos pasados." : "Aquí se anunciarán las próximas clases y actividades.")}</div>`;
+    if (campaignRegistration) {
+      const form = document.querySelector("[data-visit-registration]");
+      const select = form?.querySelector("select[name='event_id']");
+      const submit = form?.querySelector("button[type='submit']");
+      const offerings = rows.filter((event) => event.registration_enabled);
+      if (select) {
+        const formatter = new Intl.DateTimeFormat(language() === "en" ? "en-US" : "es-MX", { dateStyle: "long" });
+        const empty = language() === "en" ? "No registrations are open right now" : "No hay inscripciones abiertas por el momento";
+        select.innerHTML = `<option value="">${offerings.length ? (language() === "en" ? "Choose a teaching" : "Elige una enseñanza") : empty}</option>` + offerings.map((event) => {
+          const title = localized(event, "title");
+          const date = event.starts_at ? formatter.format(new Date(event.starts_at)) : "";
+          return `<option value="${esc(event.id)}">${esc(title)}${date ? ` · ${esc(date)}` : ""}</option>`;
+        }).join("");
+      }
+      if (submit) submit.disabled = offerings.length === 0;
+      target.querySelectorAll("[data-visit-event]").forEach((link) => link.addEventListener("click", () => {
+        if (select) select.value = link.dataset.visitEvent;
+      }));
+      form?.addEventListener("submit", async (submitEvent) => {
+        submitEvent.preventDefault();
+        const eventId = select?.value;
+        if (!eventId) return;
+        if (submit) submit.disabled = true;
+        try { await registerForClass(eventId); }
+        catch (error) { fail(error); }
+        finally { if (submit) submit.disabled = false; }
+      });
+    }
   }
 
   async function renderGallery(target) {
@@ -624,7 +652,16 @@
     const galleryTarget = document.querySelector("[data-gallery-items]");
     const sanghaGalleryTarget = document.querySelector("[data-sangha-gallery]");
     const testimonialsTarget = document.querySelector("[data-testimonials]");
-    if (!client) return;
+    if (!client) {
+      if (upcomingTarget) {
+        const select = document.querySelector("[data-visit-registration] select[name='event_id']");
+        const submit = document.querySelector("[data-visit-registration] button[type='submit']");
+        if (select) select.innerHTML = `<option value="">${language() === "en" ? "Registration is temporarily unavailable" : "El registro no está disponible por el momento"}</option>`;
+        if (submit) submit.disabled = true;
+        status(language() === "en" ? "The registration service could not be reached. Please try again later." : "No fue posible conectar con el servicio de inscripción. Inténtalo más tarde.", "error");
+      }
+      return;
+    }
     const tasks = [];
     if (eventTarget) tasks.push(renderEvents(eventTarget, { type: "CLASS" }));
     if (upcomingTarget) tasks.push(renderEvents(upcomingTarget));
