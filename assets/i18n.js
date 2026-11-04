@@ -601,10 +601,16 @@
       'Solicita indicaciones de acceso por los canales oficiales.': 'Request access guidance through the official channels.'
     },
     'events': {
+      'Kunsang Gar Internacional · México 2026': 'Kunsang Gar International · Mexico 2026',
+      'Visita internacional': 'International visit',
+      'Visita de Geshe Dangsong Namgyal.': 'Visit of Geshe Dangsong Namgyal.',
+      'Kunsang Gar Internacional': 'Kunsang Gar International',
+      'Visita presencial en México · Geshe Dangsong Namgyal, Director Espiritual.': 'In-person visit to Mexico · Geshe Dangsong Namgyal, Spiritual Director.',
+      'Enseñanzas · Noviembre–diciembre 2026': 'Teachings · November–December 2026',
       'Visitas y actividades.': 'Visits and activities.',
       'Consulta las próximas visitas confirmadas y actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
       'Consulta las próximas visitas confirmadas y las actividades de Kunsang Gar.': 'See confirmed upcoming visits and activities from Kunsang Gar.',
-      'Visita octubre–noviembre': 'October–November visit',
+      'Visita 2026': '2026 visit',
       'Geshe Dangsong Namgyal, Director Espiritual de Kunsang Gar Internacional.': 'Geshe Dangsong Namgyal, Spiritual Director of Kunsang Gar International.',
       'Ciclo de Enseñanzas · Octubre–Noviembre 2026': 'Teaching Series · October–November 2026',
       'PRÓXIMA VISITA': 'UPCOMING VISIT',
@@ -726,7 +732,7 @@
     rime: ['Rimé | Kunsang Gar', 'A broad, non-sectarian vision of wisdom and practice.'],
     certification: ['Certification | Kunsang Gar', 'Naljor Certification and the Kunsang Gar Wisdom Program.'],
     prayers: ['Prayers | Kunsang Gar', 'Practice resources shared according to the appropriate guidance.'],
-    events: ['Mexico 2026 | Kunsang Gar', 'Public activities, upcoming visits and historical events.'],
+    events: ['Kunsang Gar International · Mexico 2026 | Kunsang Gar', 'Teachings and activities with Geshe Dangsong Namgyal in Mexico.'],
     programs: ['Programs | Kunsang Gar', 'Kunsang Gar study and practice programs.'],
     sangha: ['Sangha | Kunsang Gar', 'Study, practice and community with Kunsang Gar.'],
     donations: ['Donations | Kunsang Gar', 'Support Kunsang Gar through a one-time donation in MXN.'],
@@ -881,7 +887,7 @@
   };
 
   const hrefLabels = [
-    [/events\/?$/, 'Mexico 2026'], [/services\.html$/, 'Services'], [/index\.html$|^\/$/, 'Home'], [/contact\.html$/, 'Contact'],
+    [/events\/?$/, 'International visit'], [/services\.html$/, 'Services'], [/index\.html$|^\/$/, 'Home'], [/contact\.html$/, 'Contact'],
     [/donations\.html$/, 'Donations'], [/classes\.html$/, 'Classes'], [/kunsang-gar\.html$/, 'Kunsang Gar'],
     [/geshe-dangsong\.html$/, 'Geshe Dangsong'], [/tradicion-bon\.html$/, 'Bön Tradition'],
     [/nuevo-bon\.html$/, 'New Bön'], [/rime\.html$/, 'Rimé'], [/sangha\.html$/, 'Sangha'],

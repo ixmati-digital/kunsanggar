@@ -380,7 +380,7 @@
     } catch (error) { showCatalogError(); fail(error); }
   }
 
-  function eventCard(event, past = false) {
+  function eventCard(event, past = false, campaignRegistration = false) {
     const title = localized(event, "title");
     const description = localized(event, "description");
     const format = localized(event, "format");
@@ -391,7 +391,10 @@
     const when = date && endDate && date !== endDate ? `${date} – ${endDate}` : date;
     const image = publicImageUrl(event.image_path);
     const externalRegistration = event.registration_url && !/\.netlify\.app(?:\/|$)/i.test(new URL(event.registration_url, location.origin).hostname) ? event.registration_url : null;
-    const registration = !past && event.registration_enabled ? `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>` : (!past && externalRegistration ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>` : "");
+    const registration = !past && event.registration_enabled ? (campaignRegistration
+      ? `<a class="btn small" href="https://kunsanggarmexico.netlify.app/" target="_blank" rel="noopener">${language() === "en" ? "Single registration for the visit" : "Inscripción única para la visita"} ↗</a>`
+      : `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>`)
+      : (!past && externalRegistration ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>` : "");
     const typeLabel = event.event_type === "CLASS" ? (language() === "en" ? "Class" : "Clase") : event.event_type === "COMMUNITY" ? "Sangha" : (language() === "en" ? "Event" : "Evento");
     const teacher = localized(event, "teacher");
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
@@ -556,7 +559,8 @@
       const date = event.ends_at || event.starts_at;
       return past ? Boolean(date && new Date(date).getTime() < now) : Boolean(date && new Date(date).getTime() >= now);
     });
-    target.innerHTML = rows.length ? rows.map((event) => eventCard(event, past)).join("") : `<div class="root-page-note">${language() === "en" ? (past ? "Past events will appear here." : "New classes and activities will be announced here.") : (past ? "Aquí aparecerán los eventos pasados." : "Aquí se anunciarán las próximas clases y actividades.")}</div>`;
+    const campaignRegistration = target.hasAttribute("data-upcoming-events");
+    target.innerHTML = rows.length ? rows.map((event) => eventCard(event, past, campaignRegistration)).join("") : `<div class="root-page-note">${language() === "en" ? (past ? "Past events will appear here." : "New classes and activities will be announced here.") : (past ? "Aquí aparecerán los eventos pasados." : "Aquí se anunciarán las próximas clases y actividades.")}</div>`;
   }
 
   async function renderGallery(target) {

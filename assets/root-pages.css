@@ -102,6 +102,7 @@ body.has-pending-class-payment{padding-bottom:150px}
 .download-card p{margin:0;color:#655e63;font-size:.92rem}
 .download-card .btn{margin-top:auto;align-self:flex-start}
 .upcoming-banner{padding:24px;border-left:4px solid var(--sage);background:#eef3e8}
+.international-visit-logo{display:block;width:clamp(88px,12vw,120px);height:auto;margin:0 0 18px;border-radius:50%;}
 .upcoming-banner strong{display:block;margin-bottom:7px;color:var(--sage);font-family:Georgia,serif;font-size:1.45rem;font-weight:400}
 .archive-label{display:inline-block;padding:5px 8px;background:rgba(26,24,49,.08);color:#655e63;font-size:.7rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
 @media(max-width:800px){.editorial-columns,.download-grid{grid-template-columns:1fr}}
