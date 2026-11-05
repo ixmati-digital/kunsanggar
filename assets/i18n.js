@@ -903,7 +903,7 @@
 
   const hrefLabels = [
     [/events\/?$/, 'International visit'], [/services\.html$/, 'Services'], [/index\.html$|^\/$/, 'Home'], [/contact\.html$/, 'Contact'],
-    [/donations\.html$/, 'Donations'], [/classes\.html$/, 'Classes'], [/kunsang-gar\.html$/, 'Kunsang Gar'],
+    [/donations\.html$/, 'Donations'], [/classes\.html$/, 'Classes'], [/kunsang-gar\.html$/, 'Kunsang Gar International'],
     [/geshe-dangsong\.html$/, 'Geshe Dangsong'], [/tradicion-bon\.html$/, 'Bön Tradition'],
     [/nuevo-bon\.html$/, 'New Bön'], [/rime\.html$/, 'Rimé'], [/sangha\.html$/, 'Sangha'],
     [/certification\.html$/, 'Certification'], [/prayers\.html$/, 'Prayers'],
