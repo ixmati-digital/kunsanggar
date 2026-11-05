@@ -164,7 +164,7 @@
   .real-home .practitioner-link{border-left:0;padding-right:0}
   .real-home .home-hero{padding:58px 0 52px}
   .real-home .home-hero-grid,.real-home .home-section-grid,.real-home .teacher-feature,.real-home .wisdom-layout,.real-home .tradition-feature,.real-home .classes-layout,.real-home .certification-feature,.real-home .resources-layout{grid-template-columns:1fr;gap:40px}
-  .real-home .home-hero h1{font-size:clamp(3.25rem,16vw,5.4rem)}
+  .real-home .home-hero h1{font-size:clamp(2.35rem,10.5vw,4.4rem);line-height:.98;overflow-wrap:normal}
   .real-home .home-hero-media{max-width:520px;box-shadow:10px 12px 0 rgba(212,154,60,.16)}
   .real-home .home-section{padding:66px 0}
   .real-home .definition-grid{grid-template-columns:1fr}
@@ -188,7 +188,7 @@
   .real-home .brand{font-size:.63rem;letter-spacing:.06em}
   .real-home .brand img{width:36px;height:36px}
   .real-home .practitioner-link{font-size:.66rem}
-  .real-home .home-hero h1{font-size:clamp(3rem,16vw,4.5rem)}
+  .real-home .home-hero h1{font-size:clamp(2.2rem,10vw,3.5rem);line-height:1}
   .real-home .hero-display{font-size:1.75rem}
   .real-home .home-hero .button-row .btn,.real-home .home-section .button-row .btn{width:100%}
   .real-home .book-feature{grid-template-columns:1fr;max-width:300px;margin-inline:0}

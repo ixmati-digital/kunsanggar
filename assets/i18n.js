@@ -44,6 +44,9 @@
     'Enseñanzas y práctica': 'Teachings and practice',
     'Sabiduría antigua para la sociedad moderna': 'Ancient wisdom for modern society',
     'Kunsang Gar': 'Kunsang Gar',
+    'Kunsang Gar Internacional': 'Kunsang Gar International',
+    'Centro Budista · Kunsang Gar Internacional': 'Bön Center · Kunsang Gar International',
+    'Copyright 2026 Kunsang Gar Internacional.': 'Copyright 2026 Kunsang Gar International.',
     'Inicio': 'Home',
     'Clases': 'Classes',
     'Clases sabatinas': 'Saturday classes',
@@ -731,29 +734,29 @@
   };
 
   const titles = {
-    'admin-login': ['CMS sign in | Kunsang Gar', 'Sign in to the Kunsang Gar content management system.'],
-    home: ['Kunsang Gar | Wisdom, practice and community', 'Kunsang Gar: wisdom, Bön tradition, Dzogchen, classes, services and community.'],
-    services: ['Services | Kunsang Gar', 'Spiritual guidance, ceremonies, prayers and practice with Kunsang Gar.'],
-    contact: ['Contact | Kunsang Gar', 'Contact Kunsang Gar about classes, activities, services and donations.'],
-    classes: ['Classes | Kunsang Gar', 'Study, meditation and practice with the Kunsang Gar Wisdom Program.'],
-    class: ['Class | Kunsang Gar', 'Class details, registration and access information from Kunsang Gar.'],
-    'kunsang-gar': ['Kunsang Gar | Kunsang Gar', 'The vision, meaning and practice of Kunsang Gar.'],
-    'geshe-dangsong': ['Geshe Dangsong | Kunsang Gar', 'The life, study and teachings of Geshe Dangsong Namgyal.'],
-    'tradicion-bon': ['Bön Tradition | Kunsang Gar', 'The spiritual culture, history and practices of Bön.'],
-    'nuevo-bon': ['New Bön | Kunsang Gar', 'New Bön, a non-sectarian tradition inseparable from Bön and Indian Buddhism.'],
-    rime: ['Rimé | Kunsang Gar', 'A broad, non-sectarian vision of wisdom and practice.'],
-    certification: ['Certification | Kunsang Gar', 'Naljor Certification and the Kunsang Gar Wisdom Program.'],
-    prayers: ['Prayers | Kunsang Gar', 'Practice resources shared according to the appropriate guidance.'],
-    events: ['Kunsang Gar International · Mexico 2026 | Kunsang Gar', 'Teachings and activities with Geshe Dangsong Namgyal in Mexico.'],
-    programs: ['Programs | Kunsang Gar', 'Kunsang Gar study and practice programs.'],
-    sangha: ['Sangha | Kunsang Gar', 'Study, practice and community with Kunsang Gar.'],
-    donations: ['Donations | Kunsang Gar', 'Support Kunsang Gar through a one-time donation in MXN.'],
-    account: ['Practitioner area | Kunsang Gar', 'Access programs, resources and authorized teachings.'],
-    teachings: ['Teachings | Kunsang Gar', 'Study, contemplation and practice with Kunsang Gar.'],
-    library: ['Library | Kunsang Gar', 'Authorized resources for study and practice.']
-    , 'payment-success': ['Payment received | Kunsang Gar', 'Payment return status for Kunsang Gar.']
-    , 'payment-pending': ['Payment pending | Kunsang Gar', 'Pending payment status for Kunsang Gar.']
-    , 'payment-failure': ['Payment not completed | Kunsang Gar', 'Payment result for Kunsang Gar.']
+    'admin-login': ['CMS sign in | Kunsang Gar International', 'Sign in to the Kunsang Gar content management system.'],
+    home: ['Kunsang Gar International | Wisdom, practice and community', 'Kunsang Gar: wisdom, Bön tradition, Dzogchen, classes, services and community.'],
+    services: ['Services | Kunsang Gar International', 'Spiritual guidance, ceremonies, prayers and practice with Kunsang Gar.'],
+    contact: ['Contact | Kunsang Gar International', 'Contact Kunsang Gar about classes, activities, services and donations.'],
+    classes: ['Classes | Kunsang Gar International', 'Study, meditation and practice with the Kunsang Gar Wisdom Program.'],
+    class: ['Class | Kunsang Gar International', 'Class details, registration and access information from Kunsang Gar.'],
+    'kunsang-gar': ['Kunsang Gar | Kunsang Gar International', 'The vision, meaning and practice of Kunsang Gar.'],
+    'geshe-dangsong': ['Geshe Dangsong | Kunsang Gar International', 'The life, study and teachings of Geshe Dangsong Namgyal.'],
+    'tradicion-bon': ['Bön Tradition | Kunsang Gar International', 'The spiritual culture, history and practices of Bön.'],
+    'nuevo-bon': ['New Bön | Kunsang Gar International', 'New Bön, a non-sectarian tradition inseparable from Bön and Indian Buddhism.'],
+    rime: ['Rimé | Kunsang Gar International', 'A broad, non-sectarian vision of wisdom and practice.'],
+    certification: ['Certification | Kunsang Gar International', 'Naljor Certification and the Kunsang Gar Wisdom Program.'],
+    prayers: ['Prayers | Kunsang Gar International', 'Practice resources shared according to the appropriate guidance.'],
+    events: ['Kunsang Gar International · Mexico 2026 | Kunsang Gar International', 'Teachings and activities with Geshe Dangsong Namgyal in Mexico.'],
+    programs: ['Programs | Kunsang Gar International', 'Kunsang Gar study and practice programs.'],
+    sangha: ['Sangha | Kunsang Gar International', 'Study, practice and community with Kunsang Gar.'],
+    donations: ['Donations | Kunsang Gar International', 'Support Kunsang Gar through a one-time donation in MXN.'],
+    account: ['Practitioner area | Kunsang Gar International', 'Access programs, resources and authorized teachings.'],
+    teachings: ['Teachings | Kunsang Gar International', 'Study, contemplation and practice with Kunsang Gar.'],
+    library: ['Library | Kunsang Gar International', 'Authorized resources for study and practice.']
+    , 'payment-success': ['Payment received | Kunsang Gar International', 'Payment return status for Kunsang Gar.']
+    , 'payment-pending': ['Payment pending | Kunsang Gar International', 'Pending payment status for Kunsang Gar.']
+    , 'payment-failure': ['Payment not completed | Kunsang Gar International', 'Payment result for Kunsang Gar.']
   };
 
   // Longer doctrinal paragraphs are kept as explicit, conservative translations.
