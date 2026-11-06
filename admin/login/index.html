@@ -20,7 +20,7 @@
     .admin-login-card>p{margin-bottom:22px}
     .admin-login-form{display:grid;gap:15px}
     .admin-login-form[hidden]{display:none!important}
-    .admin-login-reset{margin:12px 0;padding:4px 0;border:0;background:transparent;color:#8a342e;font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+    .admin-login-reset{display:inline-block;margin:12px 0;padding:4px 0;border:0;background:transparent;color:#8a342e;font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
     .admin-login-reset:focus-visible{outline:3px solid #dba63d;outline-offset:4px}
     .admin-login-form .btn{width:100%;margin-top:4px}
     .admin-login-status{margin-top:16px;padding:12px;border-radius:8px;background:#f3eadc;color:var(--admin-ink)}
@@ -40,17 +40,20 @@
         <label class="field" for="admin-email">Correo electrónico<input id="admin-email" name="email" type="email" autocomplete="username" required></label>
         <label class="field" for="admin-password">Contraseña<input id="admin-password" name="password" type="password" autocomplete="current-password" required></label>
         <button class="btn" type="submit">Entrar al CMS</button>
+        <div class="admin-login-status" data-platform-status role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1" hidden></div>
+        <a class="admin-login-reset" data-auth-switch-link href="/account/" hidden>Ir al área del practicante</a>
       </form>
-      <button class="admin-login-reset" type="button" data-show-password-reset>¿Olvidaste tu contraseña?</button>
-      <form class="admin-login-form" data-password-reset-request hidden>
+      <a class="admin-login-reset" href="#password-reset" data-show-password-reset>¿Olvidaste tu contraseña?</a>
+      <form id="password-reset" class="admin-login-form" data-password-reset-request hidden>
         <label class="field" for="cms-reset-email">Correo electrónico<input id="cms-reset-email" name="email" type="email" autocomplete="email" required></label>
         <button class="btn" type="submit">Enviar enlace para restablecer</button>
+        <div class="admin-login-status" data-password-reset-status role="status" aria-live="polite" aria-atomic="true" hidden></div>
       </form>
       <form class="admin-login-form" data-password-reset-complete hidden>
         <label class="field" for="cms-new-password">Nueva contraseña<input id="cms-new-password" name="password" type="password" autocomplete="new-password" minlength="8" required></label>
         <button class="btn" type="submit">Guardar nueva contraseña</button>
+        <div class="admin-login-status" data-password-reset-status role="status" aria-live="polite" aria-atomic="true" hidden></div>
       </form>
-      <div class="admin-login-status" data-platform-status role="status" aria-live="polite" hidden></div>
     </section>
   </main>
   <script>
@@ -76,7 +79,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/platform-config.js?v=public-classes-1"></script>
-  <script src="/assets/platform.js?v=password-recovery-20261024-1"></script>
+  <script src="/assets/platform.js?v=auth-ux-20261106-2"></script>
   <script src="/assets/i18n.js?v=global-brand-20261105-3"></script>
 </body>
 </html>

@@ -26,15 +26,25 @@
     el.textContent = message;
     el.dataset.status = kind;
     el.hidden = false;
+    if (kind === "error" && !el.closest("[hidden]")) {
+      requestAnimationFrame(() => el.scrollIntoView({ block: "nearest", behavior: "smooth" }));
+    }
   });
   const fail = (error) => { console.error("Kunsang Gar", error); status("No se pudo completar. Inténtalo de nuevo.", "error"); };
   const authError = (error, mode) => {
     const message = String(error?.message || "").toLowerCase();
-    if (message.includes("invalid login") || message.includes("invalid credentials")) return "El correo o la contraseña no son correctos.";
+    if (error?.code === "KG_ROLE_MISMATCH") return error.message;
+    const en = language() === "en";
+    if (message.includes("invalid login") || message.includes("invalid credentials")) return en ? "The email or password is incorrect." : "El correo o la contraseña no son correctos.";
+    if (message.includes("email not confirmed")) return en ? "Confirm your email using the link we sent, then try signing in again." : "Confirma tu correo electrónico desde el enlace que te enviamos y vuelve a iniciar sesión.";
+    if (message.includes("too many requests") || message.includes("rate limit")) return en ? "There have been several attempts. Wait a moment before trying again." : "Se realizaron varios intentos. Espera un momento antes de volver a intentarlo.";
+    if (message.includes("failed to fetch") || message.includes("network")) return en ? "We could not connect to the sign-in service. Check your connection and try again." : "No se pudo conectar con el servicio de acceso. Comprueba tu conexión e inténtalo de nuevo.";
     if (message.includes("already registered") || message.includes("already been registered")) return "Ya existe una cuenta con ese correo. Inicia sesión.";
     if (message.includes("password") && (message.includes("least") || message.includes("short"))) return "La contraseña debe tener al menos 8 caracteres.";
     if (message.includes("email") && (message.includes("invalid") || message.includes("valid"))) return "Revisa el correo electrónico e inténtalo de nuevo.";
-    return mode === "register" ? "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo." : "No se pudo iniciar sesión. Revisa tus datos e inténtalo de nuevo.";
+    return mode === "register"
+      ? (en ? "We could not create the account. Check the details and try again." : "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.")
+      : (en ? "We could not sign you in. Check your details and try again." : "No se pudo iniciar sesión. Revisa tus datos e inténtalo de nuevo.");
   };
   const slugify = (text) => String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
   const fmtDate = (value) => value ? new Intl.DateTimeFormat(language() === "en" ? "en-US" : "es-MX", { dateStyle: "medium" }).format(new Date(value)) : "";
@@ -75,9 +85,16 @@
     const allowedRoles = expectedRole === "ADMIN" ? ["ADMIN"] : expectedRole === "CMS" ? ["ADMIN", "CONTENT_MANAGER"] : [expectedRole];
     if (!profileData || !allowedRoles.includes(profileData.role)) {
       await client.auth.signOut();
-      throw new Error(["ADMIN", "CMS"].includes(expectedRole)
-        ? "Esta cuenta no tiene acceso al CMS. Comprueba tus datos o contacta al administrador."
-        : "Esta cuenta no tiene acceso al área de estudiantes.");
+      const roleError = new Error(expectedRole === "PRACTITIONER" && ["ADMIN", "CONTENT_MANAGER"].includes(profileData?.role)
+        ? (language() === "en" ? "This is an administrator account. Sign in through the CMS." : "Esta cuenta pertenece al equipo administrativo. Inicia sesión en el CMS.")
+        : ["ADMIN", "CMS"].includes(expectedRole) && profileData?.role === "PRACTITIONER"
+          ? (language() === "en" ? "This is a student account. Sign in through the practitioner area." : "Esta cuenta es de estudiante. Inicia sesión en el área del practicante.")
+          : ["ADMIN", "CMS"].includes(expectedRole)
+            ? "Esta cuenta no tiene acceso al CMS. Comprueba tus datos o contacta al administrador."
+            : "Esta cuenta no tiene acceso al área de estudiantes.");
+      roleError.code = "KG_ROLE_MISMATCH";
+      roleError.suggestedPath = expectedRole === "PRACTITIONER" ? "/admin/login/" : "/account/";
+      throw roleError;
     }
     const requested = new URLSearchParams(location.search).get("next");
     window.location.replace(safeNext(requested) || (["ADMIN", "CMS"].includes(expectedRole) ? "/admin/" : "/account/"));
@@ -99,10 +116,27 @@
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const button = form.querySelector("button[type=submit]");
+      const defaultButtonText = button.dataset.defaultText || button.textContent.trim();
+      button.dataset.defaultText = defaultButtonText;
       button.disabled = true;
-      status("Iniciando sesión…");
+      button.textContent = language() === "en" ? "Signing in…" : "Iniciando sesión…";
+      status(language() === "en" ? "Signing in…" : "Iniciando sesión…");
       try { await login(form.email.value.trim(), form.password.value); }
-      catch (error) { button.disabled = false; status(authError(error, "login"), "error"); }
+      catch (error) {
+        button.disabled = false;
+        button.textContent = defaultButtonText;
+        status(authError(error, "login"), "error");
+        const roleHelp = form.querySelector("[data-auth-switch-link]");
+        if (roleHelp) {
+          roleHelp.hidden = error?.code !== "KG_ROLE_MISMATCH" || !error.suggestedPath;
+          if (!roleHelp.hidden) {
+            roleHelp.href = error.suggestedPath;
+            roleHelp.textContent = language() === "en"
+              ? (error.suggestedPath === "/admin/login/" ? "Go to CMS sign in" : "Go to practitioner sign in")
+              : (error.suggestedPath === "/admin/login/" ? "Ir al acceso del CMS" : "Ir al área del practicante");
+          }
+        }
+      }
     });
     const registerForm = document.querySelector("[data-register-form]");
     registerForm?.addEventListener("submit", async (event) => {
@@ -131,6 +165,14 @@
     const loginForm = document.querySelector("[data-login-form]");
     const toggle = document.querySelector("[data-show-password-reset]");
     const resetMode = new URLSearchParams(location.search).get("reset") === "1";
+    const recoveryStatus = (form, message, kind = "success") => {
+      const target = form?.querySelector("[data-password-reset-status]");
+      if (!target) return;
+      target.textContent = message;
+      target.dataset.status = kind;
+      target.hidden = false;
+      requestAnimationFrame(() => target.scrollIntoView({ block: "nearest", behavior: "smooth" }));
+    };
     if (!requestForm || requestForm.dataset.bound) return;
     requestForm.dataset.bound = "true";
     if (resetMode) {
@@ -139,7 +181,8 @@
       requestForm.hidden = true;
       completeForm.hidden = false;
     }
-    toggle?.addEventListener("click", () => {
+    toggle?.addEventListener("click", (event) => {
+      event.preventDefault();
       const opening = requestForm.hidden;
       requestForm.hidden = !opening;
       if (loginForm) loginForm.hidden = opening;
@@ -155,9 +198,9 @@
       try {
         const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: redirectTo.toString() });
         if (error) throw error;
-        status(language() === "en" ? "If that email is registered, a password reset link will arrive shortly." : "Si el correo está registrado, recibirás un enlace para restablecer la contraseña.");
+        recoveryStatus(requestForm, language() === "en" ? "If that email is registered, a password reset link will arrive shortly." : "Si el correo está registrado, recibirás un enlace para restablecer la contraseña.");
       } catch (error) {
-        status(language() === "en" ? "Could not send the reset email. Check the address and try again." : "No se pudo enviar el correo de recuperación. Revisa la dirección e inténtalo de nuevo.", "error");
+        recoveryStatus(requestForm, language() === "en" ? "Could not send the reset email. Check the address and try again." : "No se pudo enviar el correo de recuperación. Revisa la dirección e inténtalo de nuevo.", "error");
         button.disabled = false;
       }
     });
@@ -168,7 +211,7 @@
       try {
         const { error } = await client.auth.updateUser({ password: completeForm.elements.password.value });
         if (error) throw error;
-        status(language() === "en" ? "Password updated. Sign in with your new password." : "Contraseña actualizada. Inicia sesión con tu nueva contraseña.");
+        recoveryStatus(completeForm, language() === "en" ? "Password updated. Sign in with your new password." : "Contraseña actualizada. Inicia sesión con tu nueva contraseña.");
         await client.auth.signOut();
         completeForm.reset();
         completeForm.hidden = true;
@@ -176,7 +219,7 @@
         if (toggle) toggle.hidden = false;
         history.replaceState(null, "", location.pathname);
       } catch (error) {
-        status(language() === "en" ? "Could not update the password. Reopen the link from your email and try again." : "No se pudo actualizar la contraseña. Abre de nuevo el enlace del correo e inténtalo otra vez.", "error");
+        recoveryStatus(completeForm, language() === "en" ? "Could not update the password. Reopen the link from your email and try again." : "No se pudo actualizar la contraseña. Abre de nuevo el enlace del correo e inténtalo otra vez.", "error");
         button.disabled = false;
       }
     });
@@ -288,7 +331,7 @@
     const action = enrolled
       ? `<a class="btn small" href="/library/?program=${encodeURIComponent(program.id)}">${language() === "en" ? "Continue studying" : "Continuar estudiando"}</a>`
       : program.allow_self_enrollment
-      ? `<button class="btn small" type="button" data-enroll-program="${esc(program.id)}">${language() === "en" ? "Join class" : "Inscribirme"}</button>`
+      ? `<button class="btn small" type="button" data-enroll-program="${esc(program.id)}">${program.enrollment_payment_mode === "FREE" ? (language() === "en" ? "Enroll for free" : "Inscribirme gratis") : (language() === "en" ? "Request enrollment" : "Solicitar inscripción")}</button>`
       : `<a class="btn small" href="/library/?program=${encodeURIComponent(program.id)}">${language() === "en" ? "View materials" : "Ver materiales"}</a>`;
     return `<article class="root-page-card"><h3>${esc(title)}</h3>${description ? `<p>${esc(description)}</p>` : ""}${meta ? `<p class="platform-meta">${esc(meta)}</p>` : ""}<div class="root-page-actions">${action}</div></article>`;
   }
@@ -318,17 +361,18 @@
       window.location.href = `/library/?program=${encodeURIComponent(programId)}`;
       return;
     }
-    if (existing?.status === "PENDING") {
-      status(language() === "en" ? "Your request is awaiting administrator review. Access is not active yet." : "Tu solicitud está pendiente de revisión. El acceso todavía no está activo.");
-      return;
-    }
-    if (existing) {
+    if (existing?.status === "CANCELLED") {
       status(language() === "en" ? "Contact Kunsang Gar to request reactivation." : "Contacta a Kunsang Gar para solicitar la reactivación.", "error");
       return;
     }
-    const { error } = await client.from("enrollments").insert({ user_id: session.user.id, program_id: programId, status: "PENDING" });
+    const { data: result, error } = await client.rpc("request_program_enrollment", { p_program_id: programId });
     if (error) throw error;
-    status(language() === "en" ? "Request sent. The administrator will review your registration and payment before enabling access." : "Solicitud enviada. El administrador revisará la inscripción y el pago antes de habilitar el acceso.");
+    if (result === "ACTIVE") {
+      status(language() === "en" ? "Enrollment complete. Your program is ready." : "Inscripción completada. Ya puedes acceder al programa.", "success");
+      window.location.assign(`/library/?program=${encodeURIComponent(programId)}`);
+      return;
+    }
+    status(language() === "en" ? "Your request is saved. Access remains pending until the program’s payment setup or verified payment is complete." : "Tu solicitud quedó registrada. El acceso sigue pendiente de que se configure el pago del programa o se verifique el pago correspondiente.");
   }
 
   async function loadPrograms(target) {

@@ -8,7 +8,7 @@
   <meta name="description" content="Acceso al área del practicante de Kunsang Gar.">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/home.css">
-  <link rel="stylesheet" href="/assets/root-pages.css?v=global-brand-20261105">
+  <link rel="stylesheet" href="/assets/root-pages.css?v=auth-ux-20261106-2">
 </head>
 <body class="site-page real-home root-page" data-platform-page="account">
   <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -41,15 +41,19 @@
             <label for="account-email">Correo electrónico<input id="account-email" name="email" type="email" autocomplete="email" required></label>
             <label for="account-password">Contraseña<input id="account-password" name="password" type="password" autocomplete="current-password" required></label>
             <button class="btn" type="submit">Iniciar sesión</button>
+            <div class="root-page-note auth-form-status" data-platform-status role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1" hidden></div>
+            <a class="auth-role-switch" data-auth-switch-link href="/admin/login/" hidden>Ir al acceso del CMS</a>
           </form>
-          <button class="text-button" type="button" data-show-password-reset>¿Olvidaste tu contraseña?</button>
-          <form class="root-page-form" data-password-reset-request hidden>
+          <a class="text-button" href="#password-reset" data-show-password-reset>¿Olvidaste tu contraseña?</a>
+          <form id="password-reset" class="root-page-form" data-password-reset-request hidden>
             <label for="account-reset-email">Correo electrónico<input id="account-reset-email" name="email" type="email" autocomplete="email" required></label>
             <button class="btn secondary" type="submit">Enviar enlace para restablecer</button>
+            <div class="root-page-note" data-password-reset-status role="status" aria-live="polite" aria-atomic="true" hidden></div>
           </form>
           <form class="root-page-form" data-password-reset-complete hidden>
             <label for="account-new-password">Nueva contraseña<input id="account-new-password" name="password" type="password" autocomplete="new-password" minlength="8" required></label>
             <button class="btn" type="submit">Guardar nueva contraseña</button>
+            <div class="root-page-note" data-password-reset-status role="status" aria-live="polite" aria-atomic="true" hidden></div>
           </form>
           <div class="account-register" data-register-box>
             <p><strong>¿Aún no tienes cuenta?</strong></p>
@@ -61,7 +65,6 @@
             </form>
             <div data-register-status class="root-page-note" hidden></div>
           </div>
-          <div data-platform-status class="root-page-note" hidden></div>
         </div>
         <div class="root-page-copy" data-account-box hidden>
           <p class="eyebrow">Sesión activa</p>
@@ -78,6 +81,6 @@
   <script src="/assets/site.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/platform-config.js?v=public-classes-1"></script>
-  <script src="/assets/platform.js?v=password-recovery-20261024-1"></script>
+  <script src="/assets/platform.js?v=auth-ux-20261106-2"></script>
   <script src="/assets/i18n.js?v=global-brand-20261105-3"></script></body>
 </html>

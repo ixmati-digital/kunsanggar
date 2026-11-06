@@ -66,6 +66,10 @@
 .root-page-card p{color:#655e63}
 .event-card-image{display:block;width:100%;height:auto;max-height:320px;object-fit:contain;background:#f7f5ef;margin:0 0 16px}
 .root-page-form{display:grid;gap:14px;max-width:560px;padding:26px;background:#fff;border:1px solid rgba(26,24,49,.14)}
+.root-page-form .auth-form-status{margin:2px 0 0;padding:12px 14px;line-height:1.5;overflow-wrap:anywhere}
+.auth-role-switch{width:fit-content;color:var(--coral);font-weight:800;text-underline-offset:3px}
+.auth-role-switch:focus-visible{outline:3px solid var(--ochre);outline-offset:4px}
+.text-button{display:inline-block;text-decoration:underline;text-underline-offset:3px}
 .root-page-form label{display:grid;gap:7px;font-weight:800}
 .root-page-form input{min-height:46px;padding:0 12px;border:1px solid rgba(26,24,49,.22);border-radius:4px;font:inherit}
 .editorial-content{max-width:900px}
