@@ -32,6 +32,11 @@
   };
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const t = (key) => copy[key] || key;
+  const authorLabel = (value) => {
+    const name = String(value || '').trim();
+    if (!name || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(name) || ['Miembro de Kunsang Gar', 'Kunsang Gar member'].includes(name)) return t('nameFallback');
+    return name;
+  };
   const formatDate = (value) => new Intl.DateTimeFormat(en ? 'en-US' : 'es-MX', {dateStyle:'medium', timeStyle:'short'}).format(new Date(value));
   let user = null;
   let moderator = false;
@@ -62,7 +67,7 @@
   function postMarkup(post, detail = false) {
     const deleted = post.status === 'DELETED';
     const content = deleted ? `<p class="community-body">${esc(t('deleted'))}</p>` : `<p class="community-body">${esc(post.body)}</p>`;
-    return `<article class="community-post" data-post-card="${esc(post.id)}"><div class="community-byline"><strong>${esc(post.author_name || t('nameFallback'))}</strong><time datetime="${esc(post.created_at)}">${esc(formatDate(post.created_at))}</time>${statusBadge(post.status)}</div><h2>${detail ? esc(post.title) : `<a href="/community/?id=${encodeURIComponent(post.id)}">${esc(post.title)}</a>`}</h2>${content}${!detail ? `<div class="community-actions"><a class="btn small" href="/community/?id=${encodeURIComponent(post.id)}">${esc(t('open'))}</a></div>` : ''}${postActions(post)}${editPostForm(post)}</article>`;
+    return `<article class="community-post" data-post-card="${esc(post.id)}"><div class="community-byline"><strong>${esc(authorLabel(post.author_name))}</strong><time datetime="${esc(post.created_at)}">${esc(formatDate(post.created_at))}</time>${statusBadge(post.status)}</div><h2>${detail ? esc(post.title) : `<a href="/community/?id=${encodeURIComponent(post.id)}">${esc(post.title)}</a>`}</h2>${content}${!detail ? `<div class="community-actions"><a class="btn small" href="/community/?id=${encodeURIComponent(post.id)}">${esc(t('open'))}</a></div>` : ''}${postActions(post)}${editPostForm(post)}</article>`;
   }
 
   function replyMarkup(reply) {
@@ -71,7 +76,7 @@
     const actions = own || canModerate ? `<div class="community-actions">${own ? `<button class="btn secondary small" type="button" data-edit-reply-open="${esc(reply.id)}">${esc(t('edit'))}</button><button class="btn secondary small" type="button" data-delete-reply="${esc(reply.id)}">${esc(t('remove'))}</button>` : canModerate ? `<button class="btn secondary small" type="button" data-delete-reply="${esc(reply.id)}">${esc(t('remove'))}</button>` : ''}${canModerate ? `<button class="btn secondary small" type="button" data-moderate-reply="${esc(reply.id)}" data-next-status="${reply.status === 'HIDDEN' ? 'PUBLISHED' : 'HIDDEN'}">${esc(t(reply.status === 'HIDDEN' ? 'restore' : 'hide'))}</button>` : ''}</div>` : '';
     const body = reply.status === 'DELETED' ? t('removedReply') : reply.body;
     const edit = own ? `<form class="community-form community-edit-form" data-edit-reply="${esc(reply.id)}" hidden><label>${esc(t('bodyLabel'))}<textarea name="body" maxlength="8000" minlength="1" required>${esc(reply.body)}</textarea></label><div class="community-actions"><button class="btn small" type="submit">${esc(t('save'))}</button><button class="btn secondary small" type="button" data-edit-reply-cancel="${esc(reply.id)}">${esc(t('cancel'))}</button></div></form>` : '';
-    return `<article class="community-reply"><div class="community-byline"><h3>${esc(reply.author_name || t('nameFallback'))}</h3><time datetime="${esc(reply.created_at)}">${esc(formatDate(reply.created_at))}</time>${statusBadge(reply.status)}</div><p class="community-body">${esc(body)}</p>${actions}${edit}</article>`;
+    return `<article class="community-reply"><div class="community-byline"><h3>${esc(authorLabel(reply.author_name))}</h3><time datetime="${esc(reply.created_at)}">${esc(formatDate(reply.created_at))}</time>${statusBadge(reply.status)}</div><p class="community-body">${esc(body)}</p>${actions}${edit}</article>`;
   }
 
   function composer() {
