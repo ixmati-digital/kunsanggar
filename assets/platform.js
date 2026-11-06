@@ -12,6 +12,7 @@
     if (email) url.searchParams.set("prefilled_email", email);
     return url.toString();
   };
+  const hasConfiguredClassPrice = (event) => event?.registration_enabled === true && Number.isFinite(Number(event?.price_mxn)) && Number(event?.price_mxn) > 0;
   const language = () => document.documentElement.lang === "en" ? "en" : "es";
   const localized = (row, key) => language() === "en" ? (row?.[`${key}_en`] || row?.[key] || "") : (row?.[key] || "");
   const safeNext = (value) => value?.startsWith("/") && !value.startsWith("//") ? value : null;
@@ -261,9 +262,9 @@
     document.querySelectorAll("[data-logout]").forEach((el) => el.addEventListener("click", async () => { await client.auth.signOut(); window.location.replace("/account/"); }));
     const registrationList = document.createElement("section");
     registrationList.className = "account-class-registrations";
-    registrationList.innerHTML = `<h3>${language() === "en" ? "My classes and registrations" : "Mis clases e inscripciones"}<\/h3><p class="account-registration-intro">${language() === "en" ? "Continue to Stripe to complete an outstanding contribution. Access activates automatically only when the class amount is configured and Stripe confirms that exact amount." : "Continúa a Stripe para completar una aportación pendiente. El acceso se activa automáticamente solo cuando la clase tiene un importe configurado y Stripe confirma exactamente ese importe."}</p><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
+    registrationList.innerHTML = `<h3>${language() === "en" ? "My classes and registrations" : "Mis clases e inscripciones"}<\/h3><p class="account-registration-intro">${language() === "en" ? "Review your requests here. A payment option appears only when the class has a configured amount." : "Consulta aquí tus solicitudes. La opción de pago aparece solo cuando la clase tiene un importe configurado."}</p><div data-class-registrations>${language() === "en" ? "Loading…" : "Cargando…"}<\/div>`;
     accountBox.appendChild(registrationList);
-    const { data: registrations, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status,created_at,events(title,title_en,slug,starts_at,program_id,price_mxn)").eq("user_id", session.user.id).order("created_at", { ascending: false });
+    const { data: registrations, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status,created_at,events(title,title_en,slug,starts_at,program_id,price_mxn,registration_enabled)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (registrationError) throw registrationError;
     const list = registrationList.querySelector("[data-class-registrations]");
     const labels = { PENDING: language() === "en" ? "Awaiting review" : "Pendiente de revisión", APPROVED: language() === "en" ? "Approved" : "Aprobada", REJECTED: language() === "en" ? "Not approved" : "No aprobada", CANCELLED: language() === "en" ? "Cancelled" : "Cancelada" };
@@ -278,12 +279,13 @@
       const active = ["PENDING", "APPROVED"].includes(row.status);
       const classHref = row.events?.slug ? `/class.html?slug=${encodeURIComponent(row.events.slug)}` : "/classes.html";
       const paymentUrl = stripeClassPaymentUrl(row.id, session.user.email);
-      const paymentAmount = row.events?.price_mxn != null
+      const paymentReady = hasConfiguredClassPrice(row.events);
+      const paymentAmount = paymentReady
         ? (language() === "en" ? `Stripe contribution: MXN $${Number(row.events.price_mxn).toLocaleString("en-US")}.` : `Aportación indicada: $${Number(row.events.price_mxn).toLocaleString("es-MX")} MXN.`)
-        : (language() === "en" ? "Choose your variable contribution amount in MXN on Stripe." : "Elige en Stripe el monto de tu aportación variable en MXN.");
+        : (language() === "en" ? "Payment details are not configured yet. Your request is saved; no payment has been requested." : "Los datos de pago aún no están configurados. Tu solicitud está guardada; no se ha solicitado ningún pago.");
       let nextStep = "";
       if (!isPaid(row) && active) {
-        nextStep = `<p class="account-registration-next">${language() === "en" ? "When you’re ready, continue your contribution in Stripe. This class has no amount configured yet, so the team must verify payment before granting access. Returning here does not confirm payment." : "Cuando estés listo, continúa tu aportación en Stripe. Esta clase aún no tiene un importe configurado, así que el equipo debe verificar el pago antes de habilitar el acceso. Volver aquí no confirma el pago."} ${esc(paymentAmount)}</p><div class="root-page-actions account-registration-actions"><a class="btn" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue to Stripe payment ↗" : "Continuar al pago con Stripe ↗"}</a><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "Return to this class" : "Volver a esta clase"}</a></div>`;
+        nextStep = `<p class="account-registration-next">${esc(paymentAmount)} ${paymentReady ? (language() === "en" ? "Access activates only after Stripe confirms this exact amount." : "El acceso se activa únicamente cuando Stripe confirma este importe exacto.") : ""}</p><div class="root-page-actions account-registration-actions">${paymentReady ? `<a class="btn" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue to Stripe payment ↗" : "Continuar al pago con Stripe ↗"}</a>` : ""}<a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "Return to this class" : "Volver a esta clase"}</a></div>`;
       } else if (isPaid(row) && row.status === "APPROVED") {
         const materialsUrl = row.events?.program_id ? `/library/?program=${encodeURIComponent(row.events.program_id)}` : "/library/";
         nextStep = `<div class="root-page-actions account-registration-actions"><a class="btn" href="${materialsUrl}">${language() === "en" ? "Open my materials" : "Acceder a mis materiales"}</a><a class="btn secondary" href="${esc(classHref)}">${language() === "en" ? "View this class" : "Ver esta clase"}</a></div>`;
@@ -434,10 +436,7 @@
     const endDate = event.ends_at ? formatter.format(new Date(event.ends_at)) : "";
     const when = date && endDate && date !== endDate ? `${date} – ${endDate}` : date;
     const image = publicImageUrl(event.image_path);
-    const externalRegistration = safeExternalRegistration(event.registration_url);
-    const registration = past ? "" : externalRegistration
-      ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>`
-      : event.registration_enabled
+    const registration = past ? "" : event.registration_enabled
         ? (campaignRegistration
           ? `<a class="btn small" href="#visit-registration" data-visit-event="${esc(event.id)}">${language() === "en" ? "Register for this teaching" : "Inscribirme a esta enseñanza"}</a>`
           : `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>`)
@@ -446,16 +445,6 @@
     const teacher = localized(event, "teacher");
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
     return `<article class="root-page-card event-card">${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}" loading="lazy">` : ""}<span class="pill">${esc(typeLabel)}${format ? ` · ${esc(format)}` : ""}</span><h3>${esc(title)}</h3>${when ? `<p class="platform-meta">${esc(when)}${locationText ? ` · ${esc(locationText)}` : ""}</p>` : ""}${teacher ? `<p class="platform-meta">${language() === "en" ? "Teacher" : "Maestro"}: ${esc(teacher)}</p>` : ""}${price ? `<p class="platform-meta">${language() === "en" ? "Price" : "Precio"}: ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}${registration ? `<div class="root-page-actions">${registration}</div>` : ""}</article>`;
-  }
-
-  function safeExternalRegistration(value) {
-    if (!value) return null;
-    try {
-      const candidate = new URL(value, location.origin);
-      return ["https:", "http:"].includes(candidate.protocol) ? candidate.toString() : null;
-    } catch {
-      return null;
-    }
   }
 
   async function renderPendingClassPayments() {
@@ -470,7 +459,7 @@
       target.dataset.pendingClassPayments = "";
       document.body.appendChild(target);
     }
-    const { data, error } = await client.from("class_registrations").select("id,status,payment_status,events(title,title_en,slug,starts_at,registration_enabled)").eq("user_id", session.user.id).order("created_at", { ascending: false });
+    const { data, error } = await client.from("class_registrations").select("id,status,payment_status,events(title,title_en,slug,starts_at,registration_enabled,price_mxn)").eq("user_id", session.user.id).order("created_at", { ascending: false });
     if (error) throw error;
     const pending = (data || []).filter((row) => ["PENDING", "APPROVED"].includes(row.status) && !["CONFIRMED", "WAIVED"].includes(row.payment_status) && row.events?.registration_enabled);
     if (!pending.length) return;
@@ -478,9 +467,10 @@
       const title = localized(row.events, "title") || (language() === "en" ? "Your class" : "Tu clase");
       const classHref = row.events?.slug ? `/class.html?slug=${encodeURIComponent(row.events.slug)}` : "/account/";
       const paymentUrl = stripeClassPaymentUrl(row.id, session.user.email);
-      return `<li><strong>${esc(title)}</strong><div class="class-payment-nudge-actions"><a href="${esc(classHref)}">${language() === "en" ? "Return to class details" : "Volver a los detalles de la clase"}</a><a class="btn small" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue when ready ↗" : "Continuar cuando quieras ↗"}</a></div></li>`;
+      const paymentAction = hasConfiguredClassPrice(row.events) ? `<a class="btn small" href="${esc(paymentUrl)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Continue when ready ↗" : "Continuar cuando quieras ↗"}</a>` : `<span class="platform-meta">${language() === "en" ? "Payment details pending configuration" : "Pago pendiente de configuración"}</span>`;
+      return `<li><strong>${esc(title)}</strong><div class="class-payment-nudge-actions"><a href="${esc(classHref)}">${language() === "en" ? "Return to class details" : "Volver a los detalles de la clase"}</a>${paymentAction}</div></li>`;
     }).join("");
-    target.innerHTML = `<aside class="class-payment-nudge" role="region" aria-live="polite" aria-label="${language() === "en" ? "Your pending class registration" : "Tu inscripción pendiente"}"><button class="class-payment-nudge-close" type="button" aria-label="${language() === "en" ? "Dismiss payment reminder for this session" : "Cerrar recordatorio durante esta sesión"}" title="${language() === "en" ? "Dismiss for this session" : "Cerrar por esta sesión"}">×</button><div class="class-payment-nudge-inner"><div><p class="eyebrow">${language() === "en" ? "Registration in progress" : "Inscripción en curso"}</p><p>${language() === "en" ? "Your class is saved. You can return to its details or continue your contribution whenever you’re ready." : "Tu clase está guardada. Puedes volver a sus detalles o continuar tu aportación cuando quieras."}</p><ul>${entries}</ul></div><a class="class-payment-nudge-account" href="/account/">${language() === "en" ? "My account" : "Mi cuenta"}</a></div></aside>`;
+    target.innerHTML = `<aside class="class-payment-nudge" role="region" aria-live="polite" aria-label="${language() === "en" ? "Your pending class registration" : "Tu inscripción pendiente"}"><button class="class-payment-nudge-close" type="button" aria-label="${language() === "en" ? "Dismiss payment reminder for this session" : "Cerrar recordatorio durante esta sesión"}" title="${language() === "en" ? "Dismiss for this session" : "Cerrar por esta sesión"}">×</button><div class="class-payment-nudge-inner"><div><p class="eyebrow">${language() === "en" ? "Registration in progress" : "Inscripción en curso"}</p><p>${language() === "en" ? "Your class request is saved. Payment options appear when configured." : "Tu solicitud está guardada. Las opciones de pago aparecerán cuando estén configuradas."}</p><ul>${entries}</ul></div><a class="class-payment-nudge-account" href="/account/">${language() === "en" ? "My account" : "Mi cuenta"}</a></div></aside>`;
     target.querySelector(".class-payment-nudge-close")?.addEventListener("click", () => {
       sessionStorage.setItem(dismissedKey, "1");
       target.remove();
@@ -513,9 +503,10 @@
 
   async function registerForClass(eventId) {
     const session = await current();
-    const event = await client.from("events").select("slug,title").eq("id", eventId).eq("status", "PUBLISHED").maybeSingle();
+    const event = await client.from("events").select("slug,title,registration_enabled,price_mxn").eq("id", eventId).eq("status", "PUBLISHED").maybeSingle();
     if (event.error) throw event.error;
     if (!event.data) throw new Error(language() === "en" ? "This class is no longer available." : "La clase ya no está disponible.");
+    if (!event.data.registration_enabled) throw new Error(language() === "en" ? "Registration is not open for this activity." : "La inscripción no está abierta para esta actividad.");
     if (!session) {
       const next = `/class.html?slug=${encodeURIComponent(event.data.slug)}&register=1`;
       window.location.href = `/account/?next=${encodeURIComponent(next)}`;
@@ -527,15 +518,21 @@
       if (existing.payment_status === "CONFIRMED" || existing.payment_status === "WAIVED") {
         status(language() === "en" ? (existing.status === "APPROVED" ? "Payment verified. Your access is approved." : "Payment verified. Access is syncing.") : (existing.status === "APPROVED" ? "Pago verificado. Tu acceso está aprobado." : "Pago verificado. El acceso se está sincronizando."));
       } else {
-        status(language() === "en" ? (existing.status === "APPROVED" ? "Your request is approved; payment confirmation is still required." : "Your request is saved. Continue to Stripe; access opens only after the configured amount is confirmed.") : (existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : "Tu solicitud está registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado."));
-        window.location.assign(stripeClassPaymentUrl(existing.id, session.user.email));
+        const paymentReady = hasConfiguredClassPrice(event.data);
+        status(language() === "en" ? (existing.status === "APPROVED" ? "Your request is approved; payment confirmation is still required." : paymentReady ? "Your request is saved. Continue to Stripe; access opens only after the configured amount is confirmed." : "Your request is saved. Payment details are not configured yet; no payment has been requested.") : (existing.status === "APPROVED" ? "Tu solicitud está aprobada; espera la confirmación del pago." : paymentReady ? "Tu solicitud está registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado." : "Tu solicitud está registrada. Los datos de pago aún no están configurados; no se ha solicitado ningún pago."));
+        window.location.assign(paymentReady ? stripeClassPaymentUrl(existing.id, session.user.email) : "/account/");
       }
       return;
     }
     const { data: registration, error } = await client.from("class_registrations").insert({ event_id: eventId, user_id: session.user.id }).select("id").single();
     if (error) throw error;
-    status(language() === "en" ? "Request saved. Continue to Stripe; access opens only after the configured amount is confirmed." : "Solicitud enviada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
-    window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email));
+    if (hasConfiguredClassPrice(event.data)) {
+      status(language() === "en" ? "Request saved. Continue to Stripe; access opens only after the configured amount is confirmed." : "Solicitud enviada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado.");
+      window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email));
+    } else {
+      status(language() === "en" ? "Request saved. Payment details are not configured yet; no payment has been requested." : "Solicitud enviada. Los datos de pago aún no están configurados; no se ha solicitado ningún pago.", "success");
+      window.location.assign("/account/");
+    }
   }
 
   async function classDetailPage() {
@@ -558,11 +555,9 @@
     const end = event.ends_at ? fmtDate(event.ends_at) : "";
     const when = date && end && date !== end ? `${date} – ${end}` : date;
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
-    const externalRegistration = safeExternalRegistration(event.registration_url);
-    const registrationAction = externalRegistration
-      ? `<p><a class="btn" href="${esc(externalRegistration)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Register" : "Inscribirme"} ↗</a></p>`
-      : event.registration_enabled
-        ? `<p>${language() === "en" ? (event.price_mxn != null ? "Continue to Stripe in MXN. Access activates automatically only when Stripe confirms this exact configured amount; returning here does not confirm payment." : "Continue to Stripe in MXN. This class has no amount configured yet, so the team must verify payment before granting access.") : (event.price_mxn != null ? "Continúa a Stripe para pagar en MXN. El acceso se activa automáticamente solo cuando Stripe confirma exactamente este importe configurado; volver aquí no confirma el pago." : "Continúa a Stripe para pagar en MXN. Esta clase aún no tiene un importe configurado; el equipo debe verificar el pago antes de habilitar el acceso.")}</p><button class="btn" type="button" data-register-class data-event-id="${esc(event.id)}">${language() === "en" ? "Request registration" : "Solicitar inscripción y pagar con Stripe"}</button><p><a href="/account/">${language() === "en" ? "View my account and registrations" : "Ver mi cuenta e inscripciones"}</a></p>`
+    const paymentReady = hasConfiguredClassPrice(event);
+    const registrationAction = event.registration_enabled
+        ? `<p>${paymentReady ? (language() === "en" ? "Continue to Stripe in MXN. Access activates only after Stripe confirms this exact configured amount; returning here does not confirm payment." : "Continúa a Stripe para pagar en MXN. El acceso se activa únicamente cuando Stripe confirma este importe exacto; volver aquí no confirma el pago.") : (language() === "en" ? "Registration is available. Payment details are not configured yet, so this request will be saved without starting a payment." : "La inscripción está disponible. Los datos de pago aún no están configurados; la solicitud se guardará sin iniciar un cobro.")}</p><button class="btn" type="button" data-register-class data-event-id="${esc(event.id)}">${language() === "en" ? (paymentReady ? "Request registration and continue to Stripe" : "Request registration") : (paymentReady ? "Solicitar inscripción y continuar a Stripe" : "Solicitar inscripción")}</button><p><a href="/account/">${language() === "en" ? "View my account and registrations" : "Ver mi cuenta e inscripciones"}</a></p>`
         : `<p>${language() === "en" ? "Registration is not open yet." : "El registro aún no está abierto."}</p>`;
     target.innerHTML = `${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}">` : ""}<p class="eyebrow">${language() === "en" ? "Class" : "Clase"}</p><h1>${esc(title)}</h1>${when ? `<p class="platform-meta">${esc(when)}</p>` : ""}${teacher ? `<p><strong>${language() === "en" ? "Teacher:" : "Maestro:"}</strong> ${esc(teacher)}</p>` : ""}${format ? `<p><strong>${language() === "en" ? "Format:" : "Modalidad:"}</strong> ${esc(format)}</p>` : ""}${locationText ? `<p><strong>${language() === "en" ? "Location:" : "Lugar:"}</strong> ${esc(locationText)}</p>` : ""}${price ? `<p><strong>${language() === "en" ? "Price:" : "Precio:"}</strong> ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}<div data-platform-status class="root-page-note" hidden role="status" aria-live="polite"></div>${registrationAction}`;
     document.querySelector("[data-register-class]")?.addEventListener("click", async (clickEvent) => {
@@ -572,7 +567,7 @@
       catch (error) { button.disabled = false; fail(error); }
     });
     const session = await current();
-    if (session && event.registration_enabled && !externalRegistration) {
+    if (session && event.registration_enabled) {
       const { data: registration, error: registrationError } = await client.from("class_registrations").select("id,status,payment_status").eq("event_id", event.id).eq("user_id", session.user.id).maybeSingle();
       if (registrationError) throw registrationError;
       const button = document.querySelector("[data-register-class]");
@@ -580,12 +575,12 @@
         const paid = ["CONFIRMED", "WAIVED"].includes(registration.payment_status);
         const closed = ["REJECTED", "CANCELLED"].includes(registration.status);
         status(language() === "en"
-          ? (closed ? "This request is closed. Contact the team if you need help." : paid ? (registration.status === "APPROVED" ? "Payment verified and access approved." : "Payment verified. Access is syncing.") : "Your request is saved. Continue to Stripe; access opens only after the configured amount is confirmed.")
-          : (closed ? "Esta solicitud está cerrada. Contacta al equipo si necesitas ayuda." : paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado. El acceso se está sincronizando.") : "Solicitud registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado."));
+          ? (closed ? "This request is closed. Contact the team if you need help." : paid ? (registration.status === "APPROVED" ? "Payment verified and access approved." : "Payment verified. Access is syncing.") : paymentReady ? "Your request is saved. Continue to Stripe; access opens only after the configured amount is confirmed." : "Your request is saved. Payment details are not configured yet; no payment has been requested.")
+          : (closed ? "Esta solicitud está cerrada. Contacta al equipo si necesitas ayuda." : paid ? (registration.status === "APPROVED" ? "Pago verificado y acceso aprobado." : "Pago verificado. El acceso se está sincronizando.") : paymentReady ? "Solicitud registrada. Completa el pago en Stripe; el acceso se activa al confirmarse el importe configurado." : "Solicitud registrada. Los datos de pago aún no están configurados y no se ha iniciado un cobro."));
         if (button) {
           const statefulButton = button.cloneNode(true);
           button.replaceWith(statefulButton);
-          statefulButton.textContent = language() === "en" ? (closed ? "Request closed" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Open my materials" : "View my registration") : "Syncing access") : "Continue to Stripe payment") : (closed ? "Solicitud cerrada" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Acceder a mis materiales" : "Ver mi inscripción") : "Sincronizando acceso") : "Continuar al pago con Stripe");
+          statefulButton.textContent = language() === "en" ? (closed ? "Request closed" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Open my materials" : "View my registration") : "Syncing access") : paymentReady ? "Continue to Stripe payment" : "Registration saved") : (closed ? "Solicitud cerrada" : paid ? (registration.status === "APPROVED" ? (event.program_id ? "Acceder a mis materiales" : "Ver mi inscripción") : "Sincronizando acceso") : paymentReady ? "Continuar al pago con Stripe" : "Inscripción registrada");
           if (closed) {
             statefulButton.disabled = true;
             const contactLink = document.createElement("a");
@@ -596,7 +591,8 @@
           } else if (paid) {
             statefulButton.disabled = registration.status !== "APPROVED";
             if (registration.status === "APPROVED") statefulButton.addEventListener("click", () => { window.location.href = event.program_id ? `/library/?program=${encodeURIComponent(event.program_id)}` : "/account/"; });
-          } else statefulButton.addEventListener("click", () => { window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email)); });
+          } else if (paymentReady) statefulButton.addEventListener("click", () => { window.location.assign(stripeClassPaymentUrl(registration.id, session.user.email)); });
+          else statefulButton.disabled = true;
         }
       }
     }
