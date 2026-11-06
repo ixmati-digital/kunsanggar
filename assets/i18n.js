@@ -763,6 +763,7 @@
     events: ['Kunsang Gar International · Mexico 2026 | Kunsang Gar International', 'Teachings and activities with Geshe Dangsong Namgyal in Mexico.'],
     programs: ['Programs | Kunsang Gar International', 'Kunsang Gar study and practice programs.'],
     sangha: ['Sangha | Kunsang Gar International', 'Study, practice and community with Kunsang Gar.'],
+    community: ['Community | Kunsang Gar International', 'Community discussions and replies for Kunsang Gar members.'],
     donations: ['Donations | Kunsang Gar International', 'Support Kunsang Gar through a one-time donation in MXN.'],
     account: ['Practitioner area | Kunsang Gar International', 'Access programs, resources and authorized teachings.'],
     teachings: ['Teachings | Kunsang Gar International', 'Study, contemplation and practice with Kunsang Gar.'],
