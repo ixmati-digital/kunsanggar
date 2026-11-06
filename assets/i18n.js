@@ -664,6 +664,13 @@
       'La Sangha de Kunsang Gar reúne a personas interesadas en profundizar en el estudio, la meditación y la tradición Yungdrung Bön.': 'The Kunsang Gar Sangha brings together people interested in deepening their study, meditation and practice of the Yungdrung Bön tradition.',
       'Consulta las actividades públicas y los canales oficiales de Kunsang Gar para conocer los próximos encuentros.': 'Consult Kunsang Gar public activities and official channels for upcoming gatherings.'
     },
+    community: {
+      'Conversación de la comunidad.': 'Community conversations.',
+      'Un espacio para compartir preguntas, comentarios y respuestas con la comunidad.': 'A place to ask questions, share comments and reply to others in the community.',
+      'Volver a mi cuenta': 'Back to my account',
+      'Espacio para miembros con sesión iniciada': 'For signed-in members.',
+      'Cargando conversación…': 'Loading conversation…'
+    },
     donations: {
       'Donaciones.': 'Donations.',
       'Tu apoyo ayuda a sostener el estudio, la práctica, las actividades y la comunidad de Kunsang Gar.': 'Your support sustains the study, practice, activities and community of Kunsang Gar.',
