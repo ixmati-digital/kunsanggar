@@ -390,15 +390,28 @@
     const endDate = event.ends_at ? formatter.format(new Date(event.ends_at)) : "";
     const when = date && endDate && date !== endDate ? `${date} – ${endDate}` : date;
     const image = publicImageUrl(event.image_path);
-    const externalRegistration = event.registration_url && !/\.netlify\.app(?:\/|$)/i.test(new URL(event.registration_url, location.origin).hostname) ? event.registration_url : null;
-    const registration = !past && event.registration_enabled ? (campaignRegistration
-      ? `<a class="btn small" href="#visit-registration" data-visit-event="${esc(event.id)}">${language() === "en" ? "Register for this teaching" : "Inscribirme a esta enseñanza"}</a>`
-      : `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>`)
-      : (!past && externalRegistration ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>` : "");
+    const externalRegistration = safeExternalRegistration(event.registration_url);
+    const registration = past ? "" : externalRegistration
+      ? `<a class="btn small" href="${esc(externalRegistration)}" target="_blank" rel="noopener noreferrer">${language() === "en" ? "Register" : "Inscribirme"} ↗</a>`
+      : event.registration_enabled
+        ? (campaignRegistration
+          ? `<a class="btn small" href="#visit-registration" data-visit-event="${esc(event.id)}">${language() === "en" ? "Register for this teaching" : "Inscribirme a esta enseñanza"}</a>`
+          : `<a class="btn small" href="/class.html?slug=${encodeURIComponent(event.slug)}">${language() === "en" ? "Details and registration" : "Detalles e inscripción"}</a>`)
+        : "";
     const typeLabel = event.event_type === "CLASS" ? (language() === "en" ? "Class" : "Clase") : event.event_type === "COMMUNITY" ? "Sangha" : (language() === "en" ? "Event" : "Evento");
     const teacher = localized(event, "teacher");
     const price = event.price_mxn != null ? new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(event.price_mxn)) : "";
     return `<article class="root-page-card event-card">${image ? `<img class="event-card-image" src="${esc(image)}" alt="${esc(title)}" loading="lazy">` : ""}<span class="pill">${esc(typeLabel)}${format ? ` · ${esc(format)}` : ""}</span><h3>${esc(title)}</h3>${when ? `<p class="platform-meta">${esc(when)}${locationText ? ` · ${esc(locationText)}` : ""}</p>` : ""}${teacher ? `<p class="platform-meta">${language() === "en" ? "Teacher" : "Maestro"}: ${esc(teacher)}</p>` : ""}${price ? `<p class="platform-meta">${language() === "en" ? "Price" : "Precio"}: ${esc(price)}</p>` : ""}${description ? `<p>${esc(description)}</p>` : ""}${registration ? `<div class="root-page-actions">${registration}</div>` : ""}</article>`;
+  }
+
+  function safeExternalRegistration(value) {
+    if (!value) return null;
+    try {
+      const candidate = new URL(value, location.origin);
+      return ["https:", "http:"].includes(candidate.protocol) ? candidate.toString() : null;
+    } catch {
+      return null;
+    }
   }
 
   async function renderPendingClassPayments() {
